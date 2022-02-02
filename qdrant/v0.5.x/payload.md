@@ -197,7 +197,7 @@ To mark a field as indexable, you can use the following:
 REST API
 
 ```
-POST /collections/{collection_name}/index
+PUT /collections/{collection_name}/index
 
 {
     "field_name": "name_of_the_field_to_index"
