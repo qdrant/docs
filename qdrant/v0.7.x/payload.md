@@ -88,10 +88,10 @@ Example of single and multiple `keyword` values:
 ```json
 {
     "name": "Alice",
-    "comments": [
-        "Very nice hat!",
-        "I don't like this jeans",
-        "Just what I was looking for."
+    "friends": [
+        "bob",
+        "eva",
+        "jack"
     ]
 }
 ```
