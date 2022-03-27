@@ -14,7 +14,7 @@ Their necessity is determined by the [optimizer](../optimizer) settings and depe
 ## Payload Index
 
 Payload index in Qdrant is similar to the index in conventional document-oriented databases.
-This index is built for a specific field and is used for quick point requests by the corresponding filtering condition.
+This index is built for a specific field and type and is used for quick point requests by the corresponding filtering condition.
 
 The index is also used to accurately estimate the filter cardinality, which helps the [query planned](../search) choose a search strategy.
 
@@ -28,7 +28,8 @@ REST API
 PUT /collections/{collection_name}/index
 
 {
-    "field_name": "name_of_the_field_to_index"
+    "field_name": "name_of_the_field_to_index",
+    "field_type": "keyword"
 }
 ```
 
