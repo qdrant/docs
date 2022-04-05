@@ -387,7 +387,7 @@ Returns all point with `color` = `red`.
             {
                 "id": 0,
                 "payload": {
-                    "color": { "type": "keyword", "value": [ "red" ] }
+                    "color": "red"
                 }
             }
         ]

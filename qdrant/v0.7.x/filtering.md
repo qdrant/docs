@@ -203,7 +203,7 @@ Let's look at the existing condition variants and what types of data they apply 
 ```
 
 
-The simplest kind of condition is one that checks if the stored value equals the given one. If several values are stored, at least one of them should match the condition. You can apply it to payloads of type `keyword` or `integer`.
+The simplest kind of condition is one that checks if the stored value equals the given one. If several values are stored, at least one of them should match the condition. You can apply it to [keyword](../payload/#keyword) and [integer](../payload/#integer) payloads.
 
 ### Range
 
@@ -229,7 +229,7 @@ Comparisons that can be used:
 - `lt` - less than
 - `lte` - less than or equal
 
-Can be applied to payloads of type `float` or `integer`.
+Can be applied to [float](../payload/#float) and [integer](../payload/#integer) payloads.
 
 ### Geo
 
@@ -269,7 +269,7 @@ It matches with `location`s inside a rectangle with the coordinates of the upper
 It matches with `location`s inside a circle with the `center` at the center and a radius of `radius` meters.
 
 If several values are stored, at least one of them should match the condition.
-These conditions can only be applied to payloads of the `geo` type.
+These conditions can only be applied to payloads which matches the [geo-data format](../payload/#geo).
 
 
 ### Has id
