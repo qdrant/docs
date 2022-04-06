@@ -296,7 +296,7 @@ POST /collections/{collection_name}/points/delete
             {
                 "key": "color"
                 "match": {
-                    "keyword": "red"
+                    "value": "red"
                 }
             }
         ]
@@ -366,7 +366,7 @@ POST /collections/{collection_name}/points/scroll
             {
                 "key": "color",
                 "match": {
-                    "keyword": "red"
+                    "value": "red"
                 }
             }
         ]

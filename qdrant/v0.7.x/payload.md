@@ -79,6 +79,19 @@ Example of single and multiple `float` values:
 }
 ```
 
+### Bool
+
+Bool - is binary value equals to `true` or `false`.
+
+Example of single and multiple `bool` values:
+
+```json
+{
+    "is_delivered": true,
+    "responses": [false, false, true, false]
+}
+```
+
 ### Keyword
 
 `keyword` - string value.
