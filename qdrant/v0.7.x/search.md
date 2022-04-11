@@ -68,7 +68,7 @@ POST /collections/{collection_name}/points/search
             {
                 "key": "city",
                 "match": {
-                    "keyword": "London"
+                    "value": "London"
                 }
             }
         ]
@@ -169,7 +169,7 @@ POST /collections/{collection_name}/points/recommend
             {
                 "key": "city",
                 "match": {
-                    "keyword": "London"
+                    "value": "London"
                 }
             }
         ]
