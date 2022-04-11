@@ -42,7 +42,7 @@ This feature is implemented as additional filters during the search and will ena
 
 During the filtering, Qdrant will check the conditions over those values that match the type of the filtering condition. If the stored value type does not fit the filtering condition - it will be considered not satisfied.
 
-For example, you will not get a empty output if you apply the [range condition](../filtering/#range) on the string data.
+For example, you will get an empty output if you apply the [range condition](../filtering/#range) on the string data.
 
 Qdrant also allows multiple values of the same type to be stored and applied to the filter at once.
 The condition will be considered satisfied if at least one value meets the condition.

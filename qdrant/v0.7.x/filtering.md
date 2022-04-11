@@ -275,7 +275,7 @@ It matches with `location`s inside a rectangle with the coordinates of the upper
 It matches with `location`s inside a circle with the `center` at the center and a radius of `radius` meters.
 
 If several values are stored, at least one of them should match the condition.
-These conditions can only be applied to payloads which matches the [geo-data format](../payload/#geo).
+These conditions can only be applied to payloads that match the [geo-data format](../payload/#geo).
 
 ### Values count
 
