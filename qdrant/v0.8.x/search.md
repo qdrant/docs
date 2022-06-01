@@ -115,6 +115,15 @@ Example result of this API would be
 
 The `result` contains ordered by `score` list of found point ids.
 
+### Filtering results by score
+
+In addition to payload filtering, it might be useful to filter out results with a low similarity score.
+For example, if you know the minimal acceptance score for your model and do not want any results which are less similar than the threshold.
+In this case, you can use `score_threshold` parameter of the search query.
+It will exclude all results with a score worse than the given.
+
+<aside role="status">This parameter may exclude lower or higher scores depending on the used metric. For example, higher scores of Euclidean metric are considered more distant and, therefore, will be excluded.</aside>
+
 ### Payload in vector in the result
 
 By default, retrieval methods do not return any stored information.
@@ -153,6 +162,8 @@ This API uses vector search without involving the neural network encoder for alr
 The recommendation API allows specifying several positive and negative vector IDs, which the service will combine into a certain average vector.
 
 ` average_vector = avg(positive_vectors) + ( avg(positive_vectors) - avg(negative_vectors) )`
+
+If there is only one positive ID provided - this request is equivalent to the regular search with vector of that point.
 
 Vector components that have a greater value in a negative vector are penalized, and those that have a greater value in a positive vector, on the contrary, are amplified.
 This average vector will be used to find the most similar vectors in the collection.

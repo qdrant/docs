@@ -36,11 +36,15 @@ PUT /collections/example_collection
 
 In addition to the required options, you can also specify custom values for the following collection options:
 
-- `hnsw_config`
-- `wal_config`
-- `optimizers_config`
+- `hnsw_config` - see [indexing](../indexing/#vector-index) for details.
+- `wal_config` - Write-Ahead-Log related configuration. See more details about [WAL](../storage/#versioning)
+- `optimizers_config` - see [optimizer](../optimizer) for details.
+- `shard_number` - which defines how many shards the collection should have. See [distributed deployment](../distributed_deployment#sharding) section for details.
+- `on_disk_payload` - defines where to store payload data. If `true` - payload will be stored on disk only. Might be useful for limiting the RAM usage in case of large payload.
 
-See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operation/create_collection) and a [configuration file](https://github.com/qdrant/qdrant/blob/master/config/config.yaml) for more information about collection parameters. 
+Default parameters for the optional collection parameters are defined in [configuration file](https://github.com/qdrant/qdrant/blob/master/config/config.yaml).
+
+See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operation/create_collection) and a [configuration file](https://github.com/qdrant/qdrant/blob/master/config/config.yaml) for more information about collection parameters.
 
 
 <!-- 
