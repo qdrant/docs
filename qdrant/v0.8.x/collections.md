@@ -37,9 +37,11 @@ from qdrant_client import QdrantClient
 
 client = QdrantClient(host="localhost", port=6333)
 
-client.recreate_collection(name="{collection_name}", 
-                           vector_size=300, 
-                           distance="Cosine")
+client.recreate_collection(
+    name="{collection_name}",
+    distance="Cosine",
+    vector_size=300, 
+)
 ```
 
 In addition to the required options, you can also specify custom values for the following collection options:
@@ -71,13 +73,6 @@ DELETE /collections/{collection_name}
 ```python
 client.delete_collection(collection_name="{collection_name}")
 ```
-
-<!-- 
-#### Python
-
-```python
-```
- -->
 
 
 ### Update collection parameters
