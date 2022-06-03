@@ -60,8 +60,9 @@ Let's look at an example of a search query.
 
 REST API - API Schema definition is available [here](https://qdrant.github.io/qdrant/redoc/index.html#operation/search_points)
 
-```
+```http request
 POST /collections/{collection_name}/points/search
+
 {
     "filter": {
         "must": [
@@ -81,11 +82,31 @@ POST /collections/{collection_name}/points/search
 }
 ```
 
-
-<!--
 ```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.search(
+    collection_name="{collection_name}",
+    query_filter=models.Filter(
+        must=[
+            models.FieldCondition(
+                key="city",
+                match=models.MatchValue(
+                    value="London",
+                ),
+            )
+        ]
+    ),
+    search_params=models.SearchParams(
+        hnsw_ef=128
+    ),
+    query_vector=[0.2, 0.1, 0.9, 0.7],
+    top=3,
+)
 ```
- -->
 
 In this example, we are looking for vectors similar to vector `[0.2, 0.1, 0.9, 0.7]`. 
 Parameter `top` specifies the amount of most similar results we would like to retrieve.
@@ -101,7 +122,7 @@ See details of possible filters and their work in the [filtering](../filtering) 
 
 Example result of this API would be 
 
-```
+```json
 {
   "result": [
     { "id": 10, "score": 0.81 },
@@ -131,8 +152,9 @@ Additional parameters `with_vector` and `with_payload` could alter this behavior
 
 Example:
 
-```
+```http request
 POST /collections/{collection_name}/points/search
+
 {
     "vector": [0.2, 0.1, 0.9, 0.7],
     "with_vector": true,
@@ -140,16 +162,36 @@ POST /collections/{collection_name}/points/search
 }
 ```
 
+```python
+client.search(
+    collection_name="{collection_name}",
+    query_vector=[0.2, 0.1, 0.9, 0.7],
+    with_vector=True,
+    with_payload=True,
+)
+```
+
 Parameter `with_payload` might also be used to include or exclude specific fields only:
 
-```
+```http request
 POST /collections/{collection_name}/points/search
+
 {
     "vector": [0.2, 0.1, 0.9, 0.7],
     "with_payload": {
       "exclude": ["city"]
     }
 }
+```
+
+```python
+client.search(
+    collection_name="{collection_name}",
+    query_vector=[0.2, 0.1, 0.9, 0.7],
+    with_payload=models.PayloadSelectorExclude(
+        exclude=["city"],
+    ),
+)
 ```
 
 ## Recommendation API
@@ -171,7 +213,7 @@ This average vector will be used to find the most similar vectors in the collect
 
 REST API - API Schema definition is available [here](https://qdrant.github.io/qdrant/redoc/index.html#operation/recommend_points)
 
-```
+```http request
 POST /collections/{collection_name}/points/recommend
 
 {
@@ -191,9 +233,28 @@ POST /collections/{collection_name}/points/recommend
 }
 ```
 
+```python
+client.recommend(
+    collection_name="{collection_name}",
+    query_filter=models.Filter(
+        must=[
+            models.FieldCondition(
+                key="city",
+                match=models.MatchValue(
+                    value="London",
+                ),
+            )
+        ]
+    ),
+    negative=[718],
+    positive=[100, 231],
+    top=10,
+)
+```
+
 Example result of this API would be 
 
-```
+```json
 {
   "result": [
     { "id": 10, "score": 0.81 },
@@ -204,9 +265,3 @@ Example result of this API would be
   "time": 0.001
 }
 ```
-
-
-<!-- 
-```python
-```
--->
