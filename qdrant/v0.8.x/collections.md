@@ -22,9 +22,7 @@ These settings can be changed at any time by a corresponding request.
 
 ### Create collection
 
-With REST API
-
-```
+```http request
 PUT /collections/example_collection
 
 {
@@ -32,6 +30,16 @@ PUT /collections/example_collection
     "distance": "Cosine",
     "vector_size": 300
 }
+```
+
+```python
+from qdrant_client import QdrantClient
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.recreate_collection(name="example_collection", 
+                           vector_size=300, 
+                           distance="Cosine")
 ```
 
 In addition to the required options, you can also specify custom values for the following collection options:
@@ -56,10 +64,12 @@ See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operat
 
 ### Delete collection
 
-With REST API
-
-```
+```http request
 DELETE /collections/example_collection
+```
+
+```python
+client.delete_collection(collection_name="example_collection")
 ```
 
 <!-- 
@@ -76,7 +86,7 @@ Dynamic parameter updates may be helpful, for example, for more efficient initia
 With these settings, you can disable indexing during the upload process.  And enable it immediately after the upload is finished.
 As a result, you will not waste extra computation resources on rebuilding the index.
 
-```
+```http request
 PATCH /collections/example_collection
 
 {
@@ -112,7 +122,7 @@ Since all changes of aliases happen atomically, no concurrent requests will be a
 
 ### Create alias
 
-```
+```http request
 POST /collections/aliases
 
 {
@@ -137,7 +147,7 @@ POST /collections/aliases
 
 ### Remove alias
 
-```
+```http request
 POST /collections/aliases
 
 {
@@ -164,7 +174,7 @@ Multiple alias actions are performed atomically.
 For example, you can switch underlying collection with the following command:
 
 
-```
+```http request
 POST /collections/aliases
 
 {
