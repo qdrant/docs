@@ -23,7 +23,7 @@ These settings can be changed at any time by a corresponding request.
 ### Create collection
 
 ```http request
-PUT /collections/example_collection
+PUT /collections/{collection_name}
 
 {
     "name": "example_collection",
@@ -37,7 +37,7 @@ from qdrant_client import QdrantClient
 
 client = QdrantClient(host="localhost", port=6333)
 
-client.recreate_collection(name="example_collection", 
+client.recreate_collection(name="{collection_name}", 
                            vector_size=300, 
                            distance="Cosine")
 ```
@@ -65,11 +65,11 @@ See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operat
 ### Delete collection
 
 ```http request
-DELETE /collections/example_collection
+DELETE /collections/{collection_name}
 ```
 
 ```python
-client.delete_collection(collection_name="example_collection")
+client.delete_collection(collection_name="{collection_name}")
 ```
 
 <!-- 
@@ -87,7 +87,7 @@ With these settings, you can disable indexing during the upload process.  And en
 As a result, you will not waste extra computation resources on rebuilding the index.
 
 ```http request
-PATCH /collections/example_collection
+PATCH /collections/{collection_name}
 
 {
     "optimizers_config": {
