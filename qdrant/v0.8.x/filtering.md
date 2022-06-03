@@ -58,8 +58,14 @@ client.scroll(
     collection_name="{collection_name}", 
     scroll_filter=models.Filter(
         must=[
-            models.FieldCondition(key="city", match=models.Match(value="London")),
-            models.FieldCondition(key="color", match=models.Match(value="red")),
+            models.FieldCondition(
+                key="city", 
+                match=models.Match(value="London"),
+            ),
+            models.FieldCondition(
+                key="color",
+                match=models.Match(value="red"),
+            ),
         ]
     ),
 )
@@ -100,8 +106,14 @@ client.scroll(
     collection_name="{collection_name}", 
     scroll_filter=models.Filter(
         should=[
-            models.FieldCondition(key="city", match=models.Match(value="London")),
-            models.FieldCondition(key="color", match=models.Match(value="red")),
+            models.FieldCondition(
+                key="city", 
+                match=models.Match(value="London"),
+            ),
+            models.FieldCondition(
+                key="color", 
+                match=models.Match(value="red"),
+            ),
         ]
     ),
 )
@@ -145,8 +157,14 @@ client.scroll(
     collection_name="{collection_name}", 
     scroll_filter=models.Filter(
         must_not=[
-            models.FieldCondition(key="city", match=models.Match(value="London")),
-            models.FieldCondition(key="color", match=models.Match(value="red")),
+            models.FieldCondition(
+                key="city", 
+                match=models.Match(value="London")
+            ),
+            models.FieldCondition(
+                key="color", 
+                match=models.Match(value="red")
+            ),
         ]
     ),
 )
@@ -190,10 +208,16 @@ client.scroll(
     collection_name="{collection_name}", 
     scroll_filter=models.Filter(
         must=[
-            models.FieldCondition(key="city", match=models.Match(value="London")),
+            models.FieldCondition(
+                key="city", 
+                match=models.Match(value="London")
+            ),
         ],
         must_not=[
-            models.FieldCondition(key="color", match=models.Match(value="red")),
+            models.FieldCondition(
+                key="color", 
+                match=models.Match(value="red")
+            ),
         ],
     ),
 )
@@ -237,8 +261,14 @@ client.scroll(
         must_not=[
             models.Filter(
                 must=[
-                    models.FieldCondition(key="city", match=models.Match(value="London")),
-                    models.FieldCondition(key="color", match=models.Match(value="red")),
+                    models.FieldCondition(
+                        key="city", 
+                        match=models.Match(value="London")
+                    ),
+                    models.FieldCondition(
+                        key="color", 
+                        match=models.Match(value="red")
+                    ),
                 ],
             ),
         ],
