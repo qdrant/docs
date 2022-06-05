@@ -15,6 +15,33 @@ sudo docker info
 ```
 
 * If you do not see the server listed, start the Docker daemon.
+To manually setup Docker daemon if you don’t want to use a system utility, you can manually run it using the dockerd command. You might also need to use sudo, but this is totally dependent on your operating system config.
+
+ ``` $dockerd
+```
+To configure the Docker daemon, you can either use a JSON file or use flags when starting ``` dockerd```
+If your preferred option is JSON, you can create a file at /C:\ProgramData\docker\config\daemon.json for Windows or for MacOS, go to the whale in the taskbar - Preferences - Daemon
+
+*** This is a sample of the JSON configuration file
+```
+{
+  "debug": true,
+  "tls": true,
+  "tlscert": "/var/docker/server.pem",
+  "tlskey": "/var/docker/serverkey.pem",
+  "hosts": ["tcp://192.168.59.3:2376"]
+}
+```
+
+*** For flags as stated above, here’s an example of how to manually start the Docker daemon
+```
+ $dockerd --debug \
+  --tls=true \
+  --tlscert=/var/docker/server.pem \
+  --tlskey=/var/docker/serverkey.pem \
+  --host tcp://192.168.59.3:2376
+```
+
 * On Linux, Docker needs `sudo` privileges. To run Docker commands without `sudo` privileges, create a docker group and add your users (see [Post-installation Steps for Linux](https://docs.docker.com/engine/install/linux-postinstall/) for details).
 
 
