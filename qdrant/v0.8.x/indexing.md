@@ -22,9 +22,7 @@ Creating an index requires additional computational resources and memory, so cho
 
 To mark a field as indexable, you can use the following:
 
-REST API
-
-```
+```http request
 PUT /collections/{collection_name}/index
 
 {
@@ -33,12 +31,15 @@ PUT /collections/{collection_name}/index
 }
 ```
 
-<!-- 
-With Python client
-
 ```python
+from qdrant_client import QdrantClient
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.create_payload_index(collection_name="{collection_name}", 
+                            field_name="name_of_the_field_to_index", 
+                            field_type="keyword")
 ```
- -->
 
  Available field types are:
 

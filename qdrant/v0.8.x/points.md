@@ -59,7 +59,7 @@ Examples of UUID string representations:
 That means that in every request UUID string could be used instead of numerical id.
 Example:
 
-```
+```http request
 PUT /collections/{collection_name}/points
 
 {
@@ -73,18 +73,29 @@ PUT /collections/{collection_name}/points
 }
 ```
 
-<!-- 
-
-Python client:
-
 ```python
-``` 
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
 
--->
+client = QdrantClient(host="localhost", port=6333)
+
+client.upsert(
+    collection_name="{collection_name}",
+    points=[
+        models.PointStruct(
+            id="5c56c793-69f3-4fbf-87e6-c4bf54c28c26",
+            payload={
+                "color": "red",
+            },
+            vector=[0.9, 0.1, 0.1],
+        ),
+    ]
+)
+``` 
 
 and
 
-```
+```http request
 PUT /collections/{collection_name}/points
 
 {
@@ -98,16 +109,22 @@ PUT /collections/{collection_name}/points
 }
 ```
 
-<!-- 
-
-Python client:
-
 ```python
+client.upsert(
+    collection_name="{collection_name}",
+    points=[
+        models.PointStruct(
+            id=1,
+            payload={
+                "color": "red",
+            },
+            vector=[0.9, 0.1, 0.1],
+        ),
+    ]
+)
 ``` 
 
--->
-
-both are possible.
+are both possible.
 
 ## Upload points
 
@@ -119,7 +136,7 @@ Internally, these options do not differ and are made only for the convenience of
 
 Create points with REST API :
 
-```
+```http request
 PUT /collections/{collection_name}/points
 
 {
@@ -133,15 +150,34 @@ PUT /collections/{collection_name}/points
         "vectors": [
             [0.9, 0.1, 0.1],
             [0.1, 0.9, 0.1],
-            [0.1, 0.1, 0.9],
+            [0.1, 0.1, 0.9]
         ]
     }
 }
 ```
 
+```python
+client.upsert(
+    collection_name="{collection_name}",
+    points=models.Batch(
+        ids=[1, 2, 3],
+        payloads=[
+            {"color": "red"},
+            {"color": "green"},
+            {"color": "blue"},
+        ],
+        vectors=[
+            [0.9, 0.1, 0.1],
+            [0.1, 0.9, 0.1],
+            [0.1, 0.1, 0.9],
+        ]
+    ),
+)
+``` 
+
 or record-oriented equivalent:
 
-```
+```http request
 PUT /collections/{collection_name}/points
 
 {
@@ -164,6 +200,35 @@ PUT /collections/{collection_name}/points
     ]
 }
 ```
+
+```python
+client.upsert(
+    collection_name="{collection_name}",
+    points=[
+        models.PointStruct(
+            id=1,
+            payload={
+                "color": "red",
+            },
+            vector=[0.9, 0.1, 0.1],
+        ),
+        models.PointStruct(
+            id=2,
+            payload={
+                "color": "green",
+            },
+            vector=[0.1, 0.9, 0.1],
+        ),
+        models.PointStruct(
+            id=3,
+            payload={
+                "color": "blue",
+            },
+            vector=[0.1, 0.1, 0.9],
+        ),
+    ]
+)
+``` 
 
 <!-- 
 
@@ -195,7 +260,7 @@ The second is to modify the payload, for which there are several methods.
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/set_payload)):
 
-```
+```http request
 POST /collections/{collection_name}/points/payload
 
 {
@@ -209,20 +274,22 @@ POST /collections/{collection_name}/points/payload
 }
 ```
 
-<!-- 
-
-Python client:
-
 ```python
-``` 
-
--->
+client.set_payload(
+    collection_name="{collection_name}",
+    payload={
+        "property1": "string",
+        "property2": "string",
+    },
+    points=[0, 3, 10],
+)
+```
 
 #### Delete payload keys
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/delete_payload)):
 
-```
+```http request
 POST /collections/{collection_name}/points/payload/delete
 
 {
@@ -231,14 +298,13 @@ POST /collections/{collection_name}/points/payload/delete
 }
 ```
 
-<!-- 
-
-Python client:
-
 ```python
+client.delete_payload(
+    collection_name="{collection_name}",
+    keys=["color", "price"],
+    points=[0, 3, 100],
+)
 ``` 
-
--->
 
 #### Clear payload
 
@@ -246,7 +312,7 @@ This method removes all payload keys from specified points
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/clear_payload)):
 
-```
+```http request
 POST /collections/{collection_name}/points/payload/clear
 
 {
@@ -254,21 +320,21 @@ POST /collections/{collection_name}/points/payload/clear
 }
 ```
 
-<!--
-
- Python client:
-
 ```python
-``` 
-
--->
+client.clear_payload(
+    collection_name="{collection_name}",
+    points_selector=models.PointIdsList(
+        points=[0, 3, 100],
+    )
+)
+```
 
 ## Delete points
 
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/delete_points)):
 
-```
+```http request
 POST /collections/{collection_name}/points/delete
 
 {
@@ -276,18 +342,18 @@ POST /collections/{collection_name}/points/delete
 }
 ```
 
-<!--
-
- Python client:
-
 ```python
+client.delete(
+    collection_name="{collection_name}",
+    points_selector=models.PointIdsList(
+        points=[0, 3, 100],
+    ),
+)
 ```
-
- -->
 
 Alternative way to specify which points to remove is to use filter.
 
-```
+```http request
 POST /collections/{collection_name}/points/delete
 
 {
@@ -304,6 +370,22 @@ POST /collections/{collection_name}/points/delete
 }
 ```
 
+```python
+client.delete(
+    collection_name="{collection_name}",
+    points_selector=models.FilterSelector(
+        filter=models.Filter(
+            must=[
+                models.FieldCondition(
+                    key="color",
+                    match=models.MatchValue(value="red"),
+                ),
+            ],
+        )
+    ),
+)
+```
+
 This example removes all points with `{ "color": "red" }` from the collection.
 
 
@@ -314,7 +396,7 @@ There is a method for retrieving points by their ids.
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/get_points)):
 
-```
+```http request
 POST /collections/{collection_name}/points
 
 {
@@ -322,13 +404,12 @@ POST /collections/{collection_name}/points
 }
 ```
 
-<!--
-
- Python client:
-
 ```python
+client.retrieve(
+    collection_name="{collection_name}",
+    ids=[0, 3, 10],
+)
 ```
- -->
 
 This method has additional parameters `with_vector` and `with_payload`. 
 Using these parameters, you can select parts of the point you want as a result.
@@ -339,7 +420,7 @@ The single point can also be retrieved via the API:
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/get_point)):
 
-```
+```http request
 GET /collections/{collection_name}/points/{point_id}
 ```
 
@@ -357,7 +438,7 @@ Sometimes it might be necessary to get all stored points without knowing ids, or
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/scroll_points)):
 
-```
+```http request
 POST /collections/{collection_name}/points/scroll
 
 {
@@ -375,6 +456,23 @@ POST /collections/{collection_name}/points/scroll
     "with_payload": true,
     "with_vector": false
 }
+```
+
+```python
+client.scroll(
+    collection_name="{collection_name}", 
+    scroll_filter=models.Filter(
+        must=[
+            models.FieldCondition(
+                key="color", 
+                match=models.Match(value="red")
+            ),
+        ]
+    ),
+    limit=1,
+    with_payload=True,
+    with_vector=False,
+)
 ```
 
 Returns all point with `color` = `red`.
