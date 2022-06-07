@@ -16,6 +16,8 @@ At the first stage, the operation is written to the Write-ahead-log.
 
 After this moment, the service will not lose the data, even if the machine loses power supply.
 
+## Awaiting result
+
 If the API is called with the `&wait=false` parameter, or if it is not explicitly specified, the client will receive an acknowledgment of receiving data: 
 
 ```json
