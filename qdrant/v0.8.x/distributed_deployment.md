@@ -77,6 +77,14 @@ GET /cluster
 Example result:
 
 ```json
+{
+  "result": {
+    "status": "enabled",
+    "peer_id": 11532566549086892000,
+    "peers": {
+      "9834046559507417430": {
+        "uri": "http://172.18.0.3:6335/"
+      },
       "11532566549086892528": {
         "uri": "http://qdrant_node_1:6335/"
       }
