@@ -3,12 +3,10 @@ title: Distributed deployment
 weight: 50
 ---
 
-# Distributed Deployment
+Since version v0.8.0 Qdrant supports an experimental mode of distributed deployment.
+In this mode, multiple Qdrant services communicate with each other to distribute the data across the peers to extend the storage capabilities and increase stability.
 
-Since version v0.8.0 Qdrant supports experimental version of distributed deployment mode.
-In this mode, multiple Qdrant services communicate with each other to distribute the data across the peers to extend storage capabilities and increase stability.
-
-To enable distributed deployment - enable cluster mode in the [configuration](../configuration) or using ENV variable: `QDRANT__CLUSTER__ENABLED=true`.
+To enable distributed deployment - enable the cluster mode in the [configuration](../configuration) or using the ENV variable: `QDRANT__CLUSTER__ENABLED=true`.
 
 ```yaml
 cluster:
@@ -30,10 +28,10 @@ cluster:
 ```
 
 With default configuration, Qdrant will use port `6335` for its internal communication.
-All peers should be accessible on this port from withing the cluster, but make sure to isolate this port from outside access, as it might be used to perform write operations.
+All peers should be accessible on this port from within the cluster, but make sure to isolate this port from outside access, as it might be used to perform write operations.
 
 Additionally, the first peer of the cluster should be provided with its URL, so it could tell other nodes how it should be reached.
-Use CLI argument to provide URL to the peer:
+Use the `uri` CLI argument to provide the URL to the peer:
 
 ```
 ./qdrant --uri 'http://qdrant_node_1:6335'
@@ -70,7 +68,6 @@ OPTIONS:
 
 ```
 
-
 After a successful synchronization you can observe the state of the cluster through the [REST API](https://qdrant.github.io/qdrant/redoc/index.html?v=master#tag/cluster):
 
 ```
@@ -79,15 +76,7 @@ GET /cluster
 
 Example result:
 
-```json
-{
-  "result": {
-    "status": "enabled",
-    "peer_id": 11532566549086892000,
-    "peers": {
-      "9834046559507417430": {
-        "uri": "http://172.18.0.3:6335/"
-      },
+```jsondecline
       "11532566549086892528": {
         "uri": "http://qdrant_node_1:6335/"
       }
@@ -107,27 +96,27 @@ Example result:
 
 ## Raft
 
-Qdrant is using [Raft](https://raft.github.io/) consensus protocol to maintain consistency regarding cluster topology and the collection structure.
+Qdrant is using the [Raft](https://raft.github.io/) consensus protocol to maintain consistency regarding the cluster topology and the collections structure.
 
-Operation with points, on the other hand, are not going through the consensus.
-Qdrant it is not intended to have strong transaction guarantees, which allows it to perform point operations with low overhead. 
-In practice, it means that Qdrant does not guarantee atomic distributed updates but allows you to wait until the [operation is complete](../points/#awaiting-result).
+Operation with points, on the other hand, are not going through the consensus infrastructure.
+Qdrant is not intended to have strong transaction guarantees, which allows it to perform point operations with low overhead.
+In practice, it means that Qdrant does not guarantee atomic distributed updates but allows you to wait until the [operation is complete](../points/#awaiting-result) to see the results of your writes.
 
 Collection operations, on the contrary, are part of the consensus.
 It means that all nodes should agree on what operations should be applied before the service will perform them.
 
-Practically, it means that if the cluster is in a transition state - either electing a new leader after the failure or starting up, the collection update operations will decline.
+Practically, it means that if the cluster is in a transition state - either electing a new leader after a failure or starting up, the collection update operations will be denied.
 
 You may use the cluster [REST API](https://qdrant.github.io/qdrant/redoc/index.html?v=master#tag/cluster) to check the state of the consensus.
 
 ## Sharding
 
-Collections in Qdrant consist of Shards. 
-Each shard is an independent storage of points which is able to perform all operations collection provides.
-Points are distributed between shards according to [consistent hashing](https://en.wikipedia.org/wiki/Consistent_hashing) algorithm, so that shards are managing non-intersecting subsets of points.
+A Collection in Qdrant is made of one or several shards.
+Each shard is an independent storage of points which is able to perform all operations provided by collections.
+Points are distributed among shards according to the [consistent hashing](https://en.wikipedia.org/wiki/Consistent_hashing) algorithm, so that shards are managing non-intersecting subsets of points.
 
 During the creation of the collection, shards are evenly distributed across all existing nodes.
-Each node knows where all parts of the collection are stored through the [consensus protocol](./#raft), so if it is time to search - each node could query all other nodes to obtain the full search result.   
+Each node knows where all parts of the collection are stored through the [consensus protocol](./#raft), so if it is time to search - each node could query all other nodes to obtain the full search result.
 
 You can define number of shards in your create-collection request:
 
@@ -160,8 +149,7 @@ For example, if you have 3 nodes, 6 shards could be a good option.
 
 ### Shard re-balancing
 
-In case you want to extend your cluster with new nodes or some nodes become slower than the others, it might be helpful to 
-re-balance shard alignment in the cluster.
+In case you want to extend your cluster with new nodes or some nodes become slower than the others, it might be helpful to re-balance shard alignment in the cluster.
 
 Shard re-balancing operation will move shards from over-loaded nodes to less loaded, creating more even data distribution.
 
