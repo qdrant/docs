@@ -76,7 +76,7 @@ GET /cluster
 
 Example result:
 
-```jsondecline
+```json
       "11532566549086892528": {
         "uri": "http://qdrant_node_1:6335/"
       }
