@@ -149,6 +149,35 @@ Example result of this API would be
 
 The `result` contains ordered by `score` list of found point ids.
 
+If the collection was created with multiple vectors, name of searching vector should be provided:
+
+```http
+POST /collections/{collection_name}/points/search
+
+{
+    "filter": {
+        "must": [
+            {
+                "key": "city",
+                "match": {
+                    "value": "London"
+                }
+            }
+        ]
+    },
+    "params": {
+        "hnsw_ef": 128
+    },
+    "vector": {
+        "name": "image",
+        "vector": [0.2, 0.1, 0.9, 0.7]
+    },
+    "limit": 3
+}
+```
+
+Search is processing only with vectors with the same name.
+
 ### Filtering results by score
 
 In addition to payload filtering, it might be useful to filter out results with a low similarity score.

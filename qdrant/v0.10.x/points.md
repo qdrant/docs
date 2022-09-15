@@ -250,6 +250,32 @@ In this case, it means that points with the same id will be overwritten when re-
 Idempotence property is useful if you use, for example, a message queue that doesn't provide an exactly-ones guarantee.
 Even with such a system, Qdrant ensures data consistency.
 
+If the collection was created with multiple vectors, each vector data should be provided using the vectors name:
+
+```http
+PUT /collections/{collection_name}/points
+
+{
+    "points": [
+        {
+            "id": 1,
+            "payload": {"color": "red"},
+            "vector": {
+                "image": [0.9, 0.1, 0.1, 0.2],
+                "text": [0.4, 0.7, 0.1, 0.8, 0.1, 0.1, 0.9, 0.2]
+            }
+        },
+        {
+            "id": 2,
+            "payload": {"color": "green"},
+            "vector": {
+                "image": [0.2, 0.1, 0.3, 0.9],
+                "text": [0.5, 0.2, 0.7, 0.4, 0.7, 0.2, 0.3, 0.9]
+            }
+        }
+    ]
+}
+```
 
 ## Modify points
 

@@ -27,8 +27,10 @@ PUT /collections/{collection_name}
 
 {
     "name": "example_collection",
-    "distance": "Cosine",
-    "vector_size": 300
+    "vectors": {
+      "size": 300,
+      "distance": "Cosine"
+    }
 }
 ```
 
@@ -51,6 +53,28 @@ In addition to the required options, you can also specify custom values for the 
 - `optimizers_config` - see [optimizer](../optimizer) for details.
 - `shard_number` - which defines how many shards the collection should have. See [distributed deployment](../distributed_deployment#sharding) section for details.
 - `on_disk_payload` - defines where to store payload data. If `true` - payload will be stored on disk only. Might be useful for limiting the RAM usage in case of large payload.
+
+There is support for multiple vectors per record. This feature allows for content multiple vector storages per collection. To separate different vectors in one record, each vector should have a unique name. Each vector in this mode has its own distance and size there should be defined while collection creation at once:
+
+```http
+PUT /collections/{collection_name}
+
+{
+    "name": "example_collection",
+    "vectors": {
+        "image": {
+            "size": 4,
+            "distance": "Dot"
+        },
+        "text": {
+            "size": 8,
+            "distance": "Cosine"
+        }
+    }
+}
+```
+
+For rare use cases, it is possible to create a collection without any vector storage.
 
 Default parameters for the optional collection parameters are defined in [configuration file](https://github.com/qdrant/qdrant/blob/master/config/config.yaml).
 

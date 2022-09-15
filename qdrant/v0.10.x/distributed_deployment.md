@@ -133,8 +133,10 @@ PUT /collections/{collection_name}
 
 {
     "name": "example_collection",
-    "distance": "Cosine",
-    "vector_size": 300,
+    vectors: {
+      "size": 300,
+      "distance": "Cosine"
+    },
     "shard_number": 6
 }
 ```
