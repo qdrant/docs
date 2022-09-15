@@ -155,19 +155,6 @@ If the collection was created with multiple vectors, name of searching vector sh
 POST /collections/{collection_name}/points/search
 
 {
-    "filter": {
-        "must": [
-            {
-                "key": "city",
-                "match": {
-                    "value": "London"
-                }
-            }
-        ]
-    },
-    "params": {
-        "hnsw_ef": 128
-    },
     "vector": {
         "name": "image",
         "vector": [0.2, 0.1, 0.9, 0.7]
