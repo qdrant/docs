@@ -194,6 +194,75 @@ client.search(
 )
 ```
 
+## Batch search API
+
+*Available since v0.10.0*
+
+The batch search API enables to perform multiple search requests via a single request.
+
+Its semantic is straigh-forward, `n` batched search requests are equivalent to `n` singular search request.
+
+This approach has several advantages. First fewer network connections are required to perform which can be very beneficial.
+
+More importantly, batched requests will be efficiently processed via the query planner which can detect and optimize requests if they have the same `query_filter`.
+
+This can have a great effect on latency for non trivial filters.
+
+In order to use it, simply reuse your search requests packed together. All the regular attributes of a search request are available.
+
+```http
+POST /collections/{collection_name}/points/search/batch
+
+{
+    "searches": [
+        {
+            "filter": {
+                "must": [
+                    {
+                        "key": "city",
+                        "match": {
+                            "value": "London"
+                        }
+                    }
+                ]
+            },
+            "vector": [0.2, 0.1, 0.9, 0.7],
+            "limit": 3
+        },
+          {
+            "filter": {
+                "must": [
+                    {
+                        "key": "city",
+                        "match": {
+                            "value": "London"
+                        }
+                    }
+                ]
+            },
+            "vector": [0.5, 0.3, 0.2, 0.3],
+            "limit": 3
+        },
+    ]
+}
+```
+
+```python
+```
+
+The result of this API contains one array per requests.
+
+```json
+{
+  "result": [
+    [{ "id": 10, "score": 0.81 }, { "id": 14, "score": 0.75 }, { "id": 11, "score": 0.73 }],
+    [{ "id": 1, "score": 0.92 }, { "id": 3, "score": 0.89 }, { "id": 9, "score": 0.75 }]
+  ],
+  "status": "ok",
+  "time": 0.001
+}
+```
+
 ## Recommendation API
 
 <aside role="alert">Negative vectors is an experimental functionality that is not guaranteed to work with all kind of embeddings.</aside>
@@ -266,9 +335,15 @@ Example result of this API would be
 }
 ```
 
+## Batch recommendation API
+
+*Available since v0.10.0*
+
+Similar to the batch search API, it is possible to batch recommendation requests.
+
 ## Pagination
 
-*Avalable since v0.8.3*
+*Available since v0.8.3*
 
 Search and recommendation APIs allow to skip first results of the search and return only the result starting from some specified offset:
 
