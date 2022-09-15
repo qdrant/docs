@@ -120,7 +120,7 @@ Currently, it could be:
 Since the `filter` parameter is specified, the search is performed only among those points that satisfy the filter condition.
 See details of possible filters and their work in the [filtering](../filtering) section.
 
-Example result of this API would be 
+Example result of this API would be
 
 ```json
 {
@@ -200,7 +200,7 @@ client.search(
 
 The batch search API enables to perform multiple search requests via a single request.
 
-Its semantic is straigh-forward, `n` batched search requests are equivalent to `n` singular search request.
+Its semantic is straigh-forward, `n` batched search requests are equivalent to `n` singular search requests.
 
 This approach has several advantages. First fewer network connections are required to perform which can be very beneficial.
 
@@ -255,8 +255,16 @@ The result of this API contains one array per requests.
 ```json
 {
   "result": [
-    [{ "id": 10, "score": 0.81 }, { "id": 14, "score": 0.75 }, { "id": 11, "score": 0.73 }],
-    [{ "id": 1, "score": 0.92 }, { "id": 3, "score": 0.89 }, { "id": 9, "score": 0.75 }]
+    [
+        { "id": 10, "score": 0.81 },
+        { "id": 14, "score": 0.75 },
+        { "id": 11, "score": 0.73 }
+    ],
+    [
+        { "id": 1, "score": 0.92 },
+        { "id": 3, "score": 0.89 },
+        { "id": 9, "score": 0.75 }
+        ]
   ],
   "status": "ok",
   "time": 0.001
@@ -321,7 +329,7 @@ client.recommend(
 )
 ```
 
-Example result of this API would be 
+Example result of this API would be
 
 ```json
 {
@@ -339,7 +347,70 @@ Example result of this API would be
 
 *Available since v0.10.0*
 
-Similar to the batch search API, it is possible to batch recommendation requests.
+Similar to the batch search API in terms of usage and advantages, it enables the batching recommendation requests.
+
+```http
+POST /collections/{collection_name}/points/recommend/batch
+
+{
+    "searches": [
+        {
+            "filter": {
+                    "must": [
+                        {
+                            "key": "city",
+                            "match": {
+                                "value": "London"
+                            }
+                        }
+                    ]
+            },
+            "negative": [718],
+            "positive": [100, 231],
+            "limit": 10
+        },
+          {
+            "filter": {
+                "must": [
+                    {
+                        "key": "city",
+                        "match": {
+                            "value": "London"
+                        }
+                    }
+                    ]
+            },
+            "negative": [300],
+            "positive": [200, 67],
+            "limit": 10
+        },
+    ]
+}
+```
+
+```python
+```
+
+The result of this API contains one array per requests.
+
+```json
+{
+  "result": [
+    [
+        { "id": 10, "score": 0.81 },
+        { "id": 14, "score": 0.75 },
+        { "id": 11, "score": 0.73 }
+    ],
+    [
+        { "id": 1, "score": 0.92 },
+        { "id": 3, "score": 0.89 },
+        { "id": 9, "score": 0.75 }
+        ]
+  ],
+  "status": "ok",
+  "time": 0.001
+}
+```
 
 ## Pagination
 
@@ -382,4 +453,3 @@ It is impossible to retrieve Nth closest vector without retrieving the first N v
 However, using the offset parameter saves the resources by reducing network traffic and the number of times the storage is accessed.
 
 Using an `offset` parameter, will require to internally retrieve `offset + limit` points, but only access payload and vector from the storage those points which are going to be actually returned.
-
