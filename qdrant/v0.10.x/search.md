@@ -199,13 +199,13 @@ The batch search API enables to perform multiple search requests via a single re
 
 Its semantic is straigh-forward, `n` batched search requests are equivalent to `n` singular search requests.
 
-This approach has several advantages. First fewer network connections are required to perform which can be very beneficial.
+This approach has several advantages. First fewer network connections are required which can be very beneficial.
 
 More importantly, batched requests will be efficiently processed via the query planner which can detect and optimize requests if they have the same `query_filter`.
 
-This can have a great effect on latency for non trivial filters.
+This can have a great effect on latency for non trivial filters as the intermediary results can be shared among the request.
 
-In order to use it, simply reuse your search requests packed together. All the regular attributes of a search request are available.
+In order to use it, simply pack together your search requests. All the regular attributes of a search request are of course available.
 
 ```http
 POST /collections/{collection_name}/points/search/batch
