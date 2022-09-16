@@ -55,7 +55,7 @@ In addition to the required options, you can also specify custom values for the 
 
 *Available since v0.10.0*
 
-There is support for multiple vectors per record. This feature allows for content multiple vector storages per collection. To separate different vectors in one record, each vector should have a unique name that should be defined while collection creation at once. Each named vector in this mode has its own distance and size:
+It is possible to have multiple vectors per record. This feature allows for multiple vector storages per collection. To separate different vectors in one record, each vector should have a unique name that should be defined when creating the collection. Each named vector in this mode has its own distance and size:
 
 ```http
 PUT /collections/{collection_name}
