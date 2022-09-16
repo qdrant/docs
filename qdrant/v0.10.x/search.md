@@ -149,6 +149,8 @@ Example result of this API would be
 
 The `result` contains ordered by `score` list of found point ids.
 
+*Available since v0.10.0*
+
 If the collection was created with multiple vectors, name of searching vector should be provided:
 
 ```http
@@ -161,6 +163,19 @@ POST /collections/{collection_name}/points/search
     },
     "limit": 3
 }
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.search(
+    collection_name="{collection_name}",
+    query_vector=("image", [0.2, 0.1, 0.9, 0.7]),
+    limit=3,
+)
 ```
 
 Search is processing only with vectors with the same name.

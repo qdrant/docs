@@ -41,8 +41,7 @@ client = QdrantClient(host="localhost", port=6333)
 
 client.recreate_collection(
     name="{collection_name}",
-    distance="Cosine",
-    vector_size=300, 
+    vectors_config=VectorParams(size=100, distance=Distance.COSINE),
 )
 ```
 
@@ -53,6 +52,8 @@ In addition to the required options, you can also specify custom values for the 
 - `optimizers_config` - see [optimizer](../optimizer) for details.
 - `shard_number` - which defines how many shards the collection should have. See [distributed deployment](../distributed_deployment#sharding) section for details.
 - `on_disk_payload` - defines where to store payload data. If `true` - payload will be stored on disk only. Might be useful for limiting the RAM usage in case of large payload.
+
+*Available since v0.10.0*
 
 There is support for multiple vectors per record. This feature allows for content multiple vector storages per collection. To separate different vectors in one record, each vector should have a unique name. Each vector in this mode has its own distance and size there should be defined while collection creation at once:
 
@@ -72,6 +73,20 @@ PUT /collections/{collection_name}
         }
     }
 }
+```
+
+```python
+from qdrant_client import QdrantClient
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.recreate_collection(
+    name="{collection_name}",
+    vectors_config={
+        "image": VectorParams(size=4, distance=Distance.DOT),
+        "text": VectorParams(size=8, distance=Distance.COSINE),
+    }
+)
 ```
 
 For rare use cases, it is possible to create a collection without any vector storage.
