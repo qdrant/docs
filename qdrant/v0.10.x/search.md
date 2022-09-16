@@ -182,6 +182,11 @@ POST /collections/{collection_name}/points/search
 ```
 
 ```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
 client.search(
     collection_name="{collection_name}",
     query_vector=[0.2, 0.1, 0.9, 0.7],
@@ -197,9 +202,9 @@ client.search(
 
 The batch search API enables to perform multiple search requests via a single request.
 
-Its semantic is straight-forward, `n` batched search requests are equivalent to `n` singular search requests.
+Its semantic is straightforward, `n` batched search requests are equivalent to `n` singular search requests.
 
-This approach has several advantages. First fewer network connections are required which can be very beneficial.
+This approach has several advantages. Logically, fewer network connections are required which can be very beneficial on its own.
 
 More importantly, batched requests will be efficiently processed via the query planner which can detect and optimize requests if they have the same `query_filter`.
 
@@ -245,6 +250,11 @@ POST /collections/{collection_name}/points/search/batch
 ```
 
 ```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
 filter = models.Filter(
     must=[
         models.FieldCondition(
@@ -335,6 +345,11 @@ POST /collections/{collection_name}/points/recommend
 ```
 
 ```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
 client.recommend(
     collection_name="{collection_name}",
     query_filter=models.Filter(
@@ -371,7 +386,7 @@ Example result of this API would be
 
 *Available since v0.10.0*
 
-Similar to the batch search API in terms of usage and advantages, it enables the batching recommendation requests.
+Similar to the batch search API in terms of usage and advantages, it enables the batching of recommendation requests.
 
 ```http
 POST /collections/{collection_name}/points/recommend/batch
@@ -413,6 +428,11 @@ POST /collections/{collection_name}/points/recommend/batch
 ```
 
 ```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
 filter = models.Filter(
     must=[
         models.FieldCondition(
@@ -487,6 +507,10 @@ POST /collections/{collection_name}/points/search
 ```
 
 ```python
+from qdrant_client import QdrantClient
+
+client = QdrantClient(host="localhost", port=6333)
+
 client.search(
     collection_name="{collection_name}",
     query_vector=[0.2, 0.1, 0.9, 0.7],
