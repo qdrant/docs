@@ -12,7 +12,6 @@ It could be, for example, texts with similar meanings, visually similar pictures
 
 ![Embeddings](/docs/encoders.png)
 
-
 ## Metrics
 
 There are many ways to estimate the similarity of vectors with each other.
@@ -50,7 +49,6 @@ However, the general principles are:
 - estimate the cardinality of a filtered result before selecting a strategy
 - retrieve points using payload index (see [indexing](../indexing)) if cardinality is below threshold
 - use filterable vector index if the cardinality is above a threshold
-
 
 You can adjust the threshold using a [configuration file](https://github.com/qdrant/qdrant/blob/master/config/config.yaml), as well as independently for each collection.
 
@@ -115,7 +113,6 @@ Values under the key `params` specify custom parameters for the search.
 Currently, it could be:
 
 * `hnsw_ef` - value that specifies `ef` parameter of the HNSW algorithm.
-
 
 Since the `filter` parameter is specified, the search is performed only among those points that satisfy the filter condition.
 See details of possible filters and their work in the [filtering](../filtering) section.
@@ -248,9 +245,37 @@ POST /collections/{collection_name}/points/search/batch
 ```
 
 ```python
+filter = models.Filter(
+    must=[
+        models.FieldCondition(
+            key="city",
+            match=models.MatchValue(
+                value="London",
+            ),
+        )
+    ]
+)
+
+search_queries = [
+    SearchRequest(
+        vector=[0.2, 0.1, 0.9, 0.7],
+        filter=filter,
+        limit=3
+    ),
+    SearchRequest(
+        vector=[0.5, 0.3, 0.2, 0.3],
+        filter=filter,
+        limit=3
+    )
+]
+
+client.search_batch(
+    collection_name="{collection_name}",
+    requests=search_queries
+)
 ```
 
-The result of this API contains one array per requests.
+The result of this API contains one array per search requests.
 
 ```json
 {
@@ -264,7 +289,7 @@ The result of this API contains one array per requests.
         { "id": 1, "score": 0.92 },
         { "id": 3, "score": 0.89 },
         { "id": 9, "score": 0.75 }
-        ]
+    ]
   ],
   "status": "ok",
   "time": 0.001
@@ -286,7 +311,6 @@ If there is only one positive ID provided - this request is equivalent to the re
 
 Vector components that have a greater value in a negative vector are penalized, and those that have a greater value in a positive vector, on the contrary, are amplified.
 This average vector will be used to find the most similar vectors in the collection.
-
 
 REST API - API Schema definition is available [here](https://qdrant.github.io/qdrant/redoc/index.html#operation/recommend_points)
 
@@ -389,9 +413,39 @@ POST /collections/{collection_name}/points/recommend/batch
 ```
 
 ```python
+filter = models.Filter(
+    must=[
+        models.FieldCondition(
+            key="city",
+            match=models.MatchValue(
+                value="London",
+            ),
+        )
+    ]
+)
+
+recommend_queries = [
+    RecommendRequest(
+        positive=[100, 231],
+        negative=[718],
+        filter=filter,
+        limit=3
+    ),
+    RecommendRequest(
+        positive=[200, 67],
+        negative=[300],
+        filter=filter,
+        limit=3
+    )
+]
+
+client.recommend_batch(
+    collection_name="{collection_name}",
+    requests=recommend_queries
+)
 ```
 
-The result of this API contains one array per requests.
+The result of this API contains one array per recommendation requests.
 
 ```json
 {
@@ -405,7 +459,7 @@ The result of this API contains one array per requests.
         { "id": 1, "score": 0.92 },
         { "id": 3, "score": 0.89 },
         { "id": 9, "score": 0.75 }
-        ]
+    ]
   ],
   "status": "ok",
   "time": 0.001
