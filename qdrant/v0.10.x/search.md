@@ -197,7 +197,7 @@ client.search(
 
 The batch search API enables to perform multiple search requests via a single request.
 
-Its semantic is straigh-forward, `n` batched search requests are equivalent to `n` singular search requests.
+Its semantic is straight-forward, `n` batched search requests are equivalent to `n` singular search requests.
 
 This approach has several advantages. First fewer network connections are required which can be very beneficial.
 
@@ -497,7 +497,7 @@ client.search(
 )
 ```
 
-Is equvalent to retrieving 11th page with 10 records per page.
+Is equivalent to retrieving 11th page with 10 records per page.
 
 <aside role="alert">Large offset values may cause performance issues</aside>
 
