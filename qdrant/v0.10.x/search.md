@@ -151,7 +151,7 @@ The `result` contains ordered by `score` list of found point ids.
 
 *Available since v0.10.0*
 
-If the collection was created with multiple vectors, name of searching vector should be provided:
+If the collection was created with multiple vectors, the name of the vector to use for searching should be provided:
 
 ```http
 POST /collections/{collection_name}/points/search
