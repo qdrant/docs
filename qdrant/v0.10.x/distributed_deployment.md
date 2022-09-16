@@ -148,8 +148,7 @@ client = QdrantClient(host="localhost", port=6333)
 
 client.recreate_collection(
     name="{collection_name}",
-    distance="Cosine",
-    vector_size=300, 
+    vectors_config=VectorParams(size=300, distance=Distance.COSINE),
     shard_number=6
 )
 ```
