@@ -133,6 +133,37 @@ Example result of this API would be
 
 The `result` contains ordered by `score` list of found point ids.
 
+*Available since v0.10.0*
+
+If the collection was created with multiple vectors, the name of the vector to use for searching should be provided:
+
+```http
+POST /collections/{collection_name}/points/search
+
+{
+    "vector": {
+        "name": "image",
+        "vector": [0.2, 0.1, 0.9, 0.7]
+    },
+    "limit": 3
+}
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.search(
+    collection_name="{collection_name}",
+    query_vector=("image", [0.2, 0.1, 0.9, 0.7]),
+    limit=3,
+)
+```
+
+Search is processing only among vectors with the same name.
+
 ### Filtering results by score
 
 In addition to payload filtering, it might be useful to filter out results with a low similarity score.
@@ -306,6 +337,7 @@ The result of this API contains one array per search requests.
 }
 ```
 
+
 ## Recommendation API
 
 <aside role="alert">Negative vectors is an experimental functionality that is not guaranteed to work with all kind of embeddings.</aside>
@@ -382,6 +414,33 @@ Example result of this API would be
 }
 ```
 
+*Available since v0.10.0*
+
+If the collection was created with multiple vectors, the name of the vector should be specified in the recommendation request:
+
+```http
+POST /collections/{collection_name}/points/recommend
+
+{
+  "positive": [100, 231],
+  "negative": [718],
+  "using": "image",
+  "limit": 10
+ }
+```
+
+```python
+client.recommend(
+    collection_name="{collection_name}",
+    positive=[100, 231],
+    negative=[718],
+    using="image",
+    limit=10,
+)
+```
+
+Parameter `using` specifies which stored vectors to use for the recommendation. 
+
 ## Batch recommendation API
 
 *Available since v0.10.0*
@@ -445,13 +504,13 @@ filter = models.Filter(
 )
 
 recommend_queries = [
-    RecommendRequest(
+    models.RecommendRequest(
         positive=[100, 231],
         negative=[718],
         filter=filter,
         limit=3
     ),
-    RecommendRequest(
+    models.RecommendRequest(
         positive=[200, 67],
         negative=[300],
         filter=filter,

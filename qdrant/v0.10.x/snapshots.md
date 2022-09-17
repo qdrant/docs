@@ -29,7 +29,6 @@ POST /collections/{collection_name}/snapshots
 
 ```python
 from qdrant_client import QdrantClient
-from qdrant_client.http import models
 
 client = QdrantClient(host="localhost", port=6333)
 
@@ -50,7 +49,6 @@ GET /collections/{collection_name}/snapshots
 
 ```python
 from qdrant_client import QdrantClient
-from qdrant_client.http import models
 
 client = QdrantClient(host="localhost", port=6333)
 
@@ -100,7 +98,6 @@ POST /snapshots
 
 ```python
 from qdrant_client import QdrantClient
-from qdrant_client.http import models
 
 client = QdrantClient(host="localhost", port=6333)
 
@@ -115,7 +112,6 @@ GET /snapshots
 
 ```python
 from qdrant_client import QdrantClient
-from qdrant_client.http import models
 
 client = QdrantClient(host="localhost", port=6333)
 
@@ -127,6 +123,7 @@ client.list_full_snapshots()
 ```http
 GET /snapshots/{snapshot_name}
 ```
+
 
 ## Restore full storage snapshot
 
