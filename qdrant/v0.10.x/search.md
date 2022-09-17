@@ -206,7 +206,7 @@ Its semantic is straightforward, `n` batched search requests are equivalent to `
 
 This approach has several advantages. Logically, fewer network connections are required which can be very beneficial on its own.
 
-More importantly, batched requests will be efficiently processed via the query planner which can detect and optimize requests if they have the same `query_filter`.
+More importantly, batched requests will be efficiently processed via the query planner which can detect and optimize requests if they have the same `filter`.
 
 This can have a great effect on latency for non trivial filters as the intermediary results can be shared among the request.
 
@@ -231,7 +231,7 @@ POST /collections/{collection_name}/points/search/batch
             "vector": [0.2, 0.1, 0.9, 0.7],
             "limit": 3
         },
-          {
+        {
             "filter": {
                 "must": [
                     {
@@ -244,7 +244,7 @@ POST /collections/{collection_name}/points/search/batch
             },
             "vector": [0.5, 0.3, 0.2, 0.3],
             "limit": 3
-        },
+        }
     ]
 }
 ```
@@ -408,7 +408,7 @@ POST /collections/{collection_name}/points/recommend/batch
             "positive": [100, 231],
             "limit": 10
         },
-          {
+        {
             "filter": {
                 "must": [
                     {
@@ -422,7 +422,7 @@ POST /collections/{collection_name}/points/recommend/batch
             "negative": [300],
             "positive": [200, 67],
             "limit": 10
-        },
+        }
     ]
 }
 ```
