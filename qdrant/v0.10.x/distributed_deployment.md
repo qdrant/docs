@@ -143,12 +143,13 @@ PUT /collections/{collection_name}
 
 ```python
 from qdrant_client import QdrantClient
+from qdrant_client.http import models
 
 client = QdrantClient(host="localhost", port=6333)
 
 client.recreate_collection(
     name="{collection_name}",
-    vectors_config=VectorParams(size=300, distance=Distance.COSINE),
+    vectors_config=models.VectorParams(size=300, distance=models.Distance.COSINE),
     shard_number=6
 )
 ```

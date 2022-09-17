@@ -12,10 +12,6 @@ It could be, for example, texts with similar meanings, visually similar pictures
 
 ![Embeddings](/docs/encoders.png)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 ## Metrics
 
 There are many ways to estimate the similarity of vectors with each other.
@@ -54,10 +50,6 @@ However, the general principles are:
 - retrieve points using payload index (see [indexing](../indexing)) if cardinality is below threshold
 - use filterable vector index if the cardinality is above a threshold
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 You can adjust the threshold using a [configuration file](https://github.com/qdrant/qdrant/blob/master/config/config.yaml), as well as independently for each collection.
 
 ## Search API
@@ -122,18 +114,10 @@ Currently, it could be:
 
 * `hnsw_ef` - value that specifies `ef` parameter of the HNSW algorithm.
 
-<<<<<<< HEAD
 Since the `filter` parameter is specified, the search is performed only among those points that satisfy the filter condition.
 See details of possible filters and their work in the [filtering](../filtering) section.
 
 Example result of this API would be
-=======
-
-Since the `filter` parameter is specified, the search is performed only among those points that satisfy the filter condition.
-See details of possible filters and their work in the [filtering](../filtering) section.
-
-Example result of this API would be 
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 
 ```json
 {
@@ -178,7 +162,7 @@ client.search(
 )
 ```
 
-Search is processing only with vectors with the same name.
+Search is processing only among vectors with the same name.
 
 ### Filtering results by score
 
@@ -370,10 +354,6 @@ If there is only one positive ID provided - this request is equivalent to the re
 Vector components that have a greater value in a negative vector are penalized, and those that have a greater value in a positive vector, on the contrary, are amplified.
 This average vector will be used to find the most similar vectors in the collection.
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 REST API - API Schema definition is available [here](https://qdrant.github.io/qdrant/redoc/index.html#operation/recommend_points)
 
 ```http
@@ -397,14 +377,11 @@ POST /collections/{collection_name}/points/recommend
 ```
 
 ```python
-<<<<<<< HEAD
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 
 client = QdrantClient(host="localhost", port=6333)
 
-=======
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 client.recommend(
     collection_name="{collection_name}",
     query_filter=models.Filter(
@@ -423,11 +400,7 @@ client.recommend(
 )
 ```
 
-<<<<<<< HEAD
 Example result of this API would be
-=======
-Example result of this API would be 
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 
 ```json
 {
@@ -441,7 +414,33 @@ Example result of this API would be
 }
 ```
 
-<<<<<<< HEAD
+*Available since v0.10.0*
+
+If the collection was created with multiple vectors, the name of the vector should be specified in the recommendation request:
+
+```http
+POST /collections/{collection_name}/points/recommend
+
+{
+  "positive": [100, 231],
+  "negative": [718],
+  "using": "image",
+  "limit": 10
+ }
+```
+
+```python
+client.recommend(
+    collection_name="{collection_name}",
+    positive=[100, 231],
+    negative=[718],
+    using="image",
+    limit=10,
+)
+```
+
+Parameter `using` specifies which stored vectors to use for the recommendation. 
+
 ## Batch recommendation API
 
 *Available since v0.10.0*
@@ -505,13 +504,13 @@ filter = models.Filter(
 )
 
 recommend_queries = [
-    RecommendRequest(
+    models.RecommendRequest(
         positive=[100, 231],
         negative=[718],
         filter=filter,
         limit=3
     ),
-    RecommendRequest(
+    models.RecommendRequest(
         positive=[200, 67],
         negative=[300],
         filter=filter,
@@ -549,11 +548,6 @@ The result of this API contains one array per recommendation requests.
 ## Pagination
 
 *Available since v0.8.3*
-=======
-## Pagination
-
-*Avalable since v0.8.3*
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 
 Search and recommendation APIs allow to skip first results of the search and return only the result starting from some specified offset:
 
@@ -572,13 +566,10 @@ POST /collections/{collection_name}/points/search
 ```
 
 ```python
-<<<<<<< HEAD
 from qdrant_client import QdrantClient
 
 client = QdrantClient(host="localhost", port=6333)
 
-=======
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 client.search(
     collection_name="{collection_name}",
     query_vector=[0.2, 0.1, 0.9, 0.7],
@@ -589,11 +580,7 @@ client.search(
 )
 ```
 
-<<<<<<< HEAD
 Is equivalent to retrieving 11th page with 10 records per page.
-=======
-Is equvalent to retrieving 11th page with 10 records per page.
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
 
 <aside role="alert">Large offset values may cause performance issues</aside>
 
@@ -603,7 +590,3 @@ It is impossible to retrieve Nth closest vector without retrieving the first N v
 However, using the offset parameter saves the resources by reducing network traffic and the number of times the storage is accessed.
 
 Using an `offset` parameter, will require to internally retrieve `offset + limit` points, but only access payload and vector from the storage those points which are going to be actually returned.
-<<<<<<< HEAD
-=======
-
->>>>>>> a717227 (0.10.x version as 0.9.x copy)
