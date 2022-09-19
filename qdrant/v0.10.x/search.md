@@ -579,7 +579,7 @@ client.search(
 )
 ```
 
-Is equivalent to retrieving 11th page with 10 records per page.
+Is equivalent to retrieving the 11th page with 10 records per page.
 
 <aside role="alert">Large offset values may cause performance issues</aside>
 

@@ -332,7 +332,7 @@ You can apply it to [keyword](../payload/#keyword), [integer](../payload/#intege
 
 ### Full Text Match
 
-*Avaliable since version 0.10.0*
+*Available since version 0.10.0*
 
 A special case of the `match` condition is the `text` match condition.
 It allows you to search for a specific substring, token or phrase within the text field.
