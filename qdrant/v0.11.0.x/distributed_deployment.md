@@ -268,6 +268,20 @@ POST /collections/{collection_name}/cluster
 
 Keep in mind that a collection must contain at least one active replica of a shard.
 
+### Error handling
+
+Replicas can be in different state:
+
+- Active: healthy and ready to serve traffic
+- Dead: unhealthy and not ready to serve traffic
+- Partial: currently under resynchronization before activation
+
+A replica is marked as dead if it does not respond to internal healthchecks or if it fails to serve traffic.
+
+A dead replica will not receive traffic from other peers and might require a manual intervention if it does not recover automatically.
+
+This mechanism ensures data consistency and availability if a subset of the replicas fail during an update operation.
+
 ### Consistency guarantees
 
 During the normal state of operation, it is possible to search and modify data from any peers in the cluster.
@@ -275,7 +289,7 @@ During the normal state of operation, it is possible to search and modify data f
 Before responding to the client, the peer handling the request dispatches all operations according to the current topology in order to keep the data synchronized across the cluster.
 
 - reads uses a partial fan-out strategy to optimize latency and availability
-- writes are executed in parallel on all healthy sharded replicas
+- writes are executed in parallel on all active sharded replicas
 
 Once the server responds, peers have been updated provididing a read after write consistency for sequential operations.
 
