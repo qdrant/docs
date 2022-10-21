@@ -7,7 +7,10 @@ Qdrant exposes administration tools which enable to modify at runtime the behavi
 
 ## Locking
 
-Qdrant has locking functionality when you want to turn off some features from qdrant process. Locking is not persistent and you have to lock again after restarting qdrant.
+A locking API enables users to turn off restrict the possible operations on a qdrant process.
+It is important to mention that:
+- The configuration is not persistent therefore it is necessary to lock again following a restart.
+- Locking applies to a single node only. It is necessary to call lock on all the desired nodes in a distributed deployment setup.
 
 Lock request sample:
 
