@@ -3,7 +3,7 @@ title: Administration
 weight: 21
 ---
 
-Qdrant has administration tools. It is useful when you get access to your qdrant instance or run qdrant in the cloud.
+Qdrant exposes administration tools which enable to modify at runtime the behavior of a running instance without changing its configuration manually.
 
 ## Locking
 
