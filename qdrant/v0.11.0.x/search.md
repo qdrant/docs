@@ -115,7 +115,7 @@ Values under the key `params` specify custom parameters for the search.
 Currently, it could be:
 
 * `hnsw_ef` - value that specifies `ef` parameter of the HNSW algorithm.
-* `exact` - option that disables approximating. If set to true, search may run long but with exact results.
+* `exact` - option to not use the approximate search (ANN). If set to true, the search may run for a long as it performs a full scan to retrieve exact results.
 
 Since the `filter` parameter is specified, the search is performed only among those points that satisfy the filter condition.
 See details of possible filters and their work in the [filtering](../filtering) section.
