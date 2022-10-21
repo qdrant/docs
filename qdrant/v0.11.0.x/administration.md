@@ -21,7 +21,7 @@ POST /locks
 
 Write flags enables/disables write lock.
 If write lock is enabled, qdrant doesn't allow creating collections or adding new data to storage.
-But deletion or updating is not forbidden.
+However deletion operations or updates are not forbidden under the write lock.
 This feature enables administrators to prevent a qdrant process from using more disk space while permitting users to search and delete unnecessary data.
 
 You can optionally provide the error message that should be used for error responses to users.
