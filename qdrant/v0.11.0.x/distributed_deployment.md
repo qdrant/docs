@@ -285,6 +285,6 @@ Given that qdrant does not provide transactional operations at the level of a co
 
 ![Embeddings](/docs/concurrent-operations-replicas.png)
 
-For this reason it is recommended to perform write operation targetting a specific collection in a sequential fashion by for instance using a distributed queueing mechanism as a proxy.
+For this reason it is recommended to perform write operation targeting a specific collection with overlapping keys in a sequential fashion by, for instance, using a distributed queueing mechanism as a proxy.
 
 Search queries can be safely performed concurrently without risks.
