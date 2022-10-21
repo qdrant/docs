@@ -266,7 +266,7 @@ POST /collections/{collection_name}/cluster
 }
 ```
 
-Keep in mind that a collection must contain at least one shard.
+Keep in mind that a collection must contain at least one active replica of a shard.
 
 ### Consistency guarantees
 
