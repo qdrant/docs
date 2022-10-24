@@ -197,11 +197,11 @@ After that, Qdrant will exclude the node from the consensus, and the instance wi
 *Since version v0.11.0*, Qdrant allows to replicate shards between nodes in the cluster.
 
 Shard replication increases the reliability of the cluster by keeping several copies of a shard spread among the cluster.
-This ensure the availability of the shards in case of node failures except of all replicas are lost.
+This ensure the availability of the shards in case of node failures, except if all replicas are lost.
 
 By default, all the shards in a cluster have a replication factor of one, meaning no additional copy is maintained.
 
-The replication factor of a collection can be setup at creation time.
+The replication factor of a collection can be configured at creation time.
 
 ```http
 PUT /collections/{collection_name}
@@ -233,7 +233,7 @@ client.recreate_collection(
 
 This code sample creates a collection with a total of 6 logical shards backed by a total of 12 physical shards.
 
-It is advised to make sure the hardware can host the additional shards before-hand.
+It is advised to make sure the hardware can host the additional shards beforehand.
 
 ### Scaling replication factor
 
@@ -288,17 +288,17 @@ During the normal state of operation, it is possible to search and modify data f
 
 Before responding to the client, the peer handling the request dispatches all operations according to the current topology in order to keep the data synchronized across the cluster.
 
-- reads uses a partial fan-out strategy to optimize latency and availability
+- reads are using a partial fan-out strategy to optimize latency and availability
 - writes are executed in parallel on all active sharded replicas
 
 Once the server responds, peers have been updated provididing a read after write consistency for sequential operations.
 
-However it gets more complicated for concurrent operations, especially when they are issued against different peers.
+However, it gets more complicated for concurrent operations, especially when they are issued against different peers.
 
-Given that qdrant does not provide transactional operations at the level of a collection, it is not possible to enforce that all peers have observed the same operations in the same order.
+Given that, Qdrant does not provide transactional operations at the level of a collection, it is not possible to enforce that all peers have observed the same operations in the same order.
 
 ![Embeddings](/docs/concurrent-operations-replicas.png)
 
-For this reason it is recommended to perform write operation targeting a specific collection with overlapping keys in a sequential fashion by, for instance, using a distributed queueing mechanism as a proxy.
+For this reason, it is recommended to perform write operation targeting a specific collection with overlapping keys in a sequential fashion by, for instance, using a distributed queueing mechanism as a proxy.
 
 Search queries can be safely performed concurrently without risks.
