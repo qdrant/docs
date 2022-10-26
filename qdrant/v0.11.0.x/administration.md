@@ -3,7 +3,7 @@ title: Administration
 weight: 21
 ---
 
-Qdrant exposes administration tools which enable to modify at runtime the behavior of a running instance without changing its configuration manually.
+Qdrant exposes administration tools which enable to modify at runtime the behavior of a qdrant instance without changing its configuration manually.
 
 ## Locking
 
