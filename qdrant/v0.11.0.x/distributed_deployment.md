@@ -133,7 +133,7 @@ PUT /collections/{collection_name}
 
 {
     "name": "example_collection",
-    vectors: {
+    "vectors": {
       "size": 300,
       "distance": "Cosine"
     },
