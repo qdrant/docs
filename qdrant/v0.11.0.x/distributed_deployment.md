@@ -291,7 +291,43 @@ Before responding to the client, the peer handling the request dispatches all op
 - reads are using a partial fan-out strategy to optimize latency and availability
 - writes are executed in parallel on all active sharded replicas
 
-Once the server responds, peers have been updated provididing a read after write consistency for sequential operations.
+In case of write operations, it is possible to control when the server replies to the client using the write concern factor configuration.
+
+The `write_concern_factor` represents the number of replicas that must acknowledge a write operation before responding to the client. It is set to one by default.
+
+It can be configured at the collection's creation time.
+
+```http
+PUT /collections/{collection_name}
+
+{
+    "name": "example_collection",
+    vectors: {
+      "size": 300,
+      "distance": "Cosine"
+    },
+    "shard_number": 6,
+    "replication_factor": 2,
+    "write_concern_factor": 2,
+}
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.recreate_collection(
+    name="{collection_name}",
+    vectors_config=models.VectorParams(size=300, distance=models.Distance.COSINE),
+    shard_number=6,
+    replication_factor=2,
+    write_concern_factor=2,
+)
+```
+
+Setting `write_concern_factor` equal to `replication_factor` ensures that all replicas are updated synchonously, provididing a read after write consistency for sequential operations.
 
 However, it gets more complicated for concurrent operations, especially when they are issued against different peers.
 
