@@ -119,5 +119,5 @@ pip install qdrant-client
 
 ### Integrations
 
-Qdrant may be also used as an efficient vector search backend in some other tools. Please check out the [Integrations](/documentation/collections/) section
+Qdrant may be also used as an efficient vector search backend in some other tools. Please check out the [Integrations](../integrations/) section
 for some more details.
