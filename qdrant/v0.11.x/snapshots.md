@@ -73,7 +73,7 @@ There is a difference in recovering snapshots in single-deployment node and dist
 
 ### Recover in single deployment mode
 
-Single deployment is simpler, you can recover any collection on the start-up and it will be immideatelly available in the service.
+Single deployment is simpler, you can recover any collection on the start-up and it will be immediately available in the service.
 Restoring snapshots is done through the Qdrant CLI at startup time.
 
 The main entry point is the `--snapshot` argument which accepts a list of pairs `<snapshot_file_path>:<target_collection_name>`
