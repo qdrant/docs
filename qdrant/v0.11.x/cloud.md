@@ -21,7 +21,7 @@ qdrant_client = QdrantClient(
 )
 ```
 
-```http request
-GET https://xyz-example.eu-central.aws.staging-cloud.qdrant.io/collections
-Api-Key: <<-provide-your-own-key->>
-```
+```bash
+curl \
+  -X GET https://xyz-example.eu-central.aws.staging-cloud.qdrant.io:6333 \
+  --header 'api-key: <provide-your-own-key>'
