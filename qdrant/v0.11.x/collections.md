@@ -215,6 +215,8 @@ depends on the [optimizer configuration](../optimizer). A new index segment is b
 value of `indexing_threshold`(in KB).  If your collection is very small or the dimensionality of the vectors is low, there might be no HNSW segment
 created and `indexed_vectors_count` might be equal to `0`.
 
+It is possible to reduce the `indexing_threshold` for an existing collection by [updating collection parameters](#update-collection-parameters).
+
 ## Collection aliases
 
 In a production environment, it is sometimes necessary to switch different versions of vectors seamlessly.
