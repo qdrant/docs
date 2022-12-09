@@ -1,5 +1,5 @@
 ---
-title: Qdrant Cloud Documentatio
+title: Qdrant Cloud
 section_title: How Qdrant Cloud operates
 subtitle: 
 ---
