@@ -309,3 +309,33 @@ POST /collections/aliases
     ]
 }
 ```
+
+### List collection aliases
+
+```http
+GET /collections/{collection_name}/aliases
+```
+
+```python
+from qdrant_client import QdrantClient
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.list_collection_aliases(
+  collection_name="{collection_name}"
+)
+```
+
+### List all aliases
+
+```http
+GET /aliases
+```
+
+```python
+from qdrant_client import QdrantClient
+
+client = QdrantClient(host="localhost", port=6333)
+
+client.list_aliases()
+```
