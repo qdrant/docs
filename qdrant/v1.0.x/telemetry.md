@@ -57,8 +57,8 @@ For example,
 
 You can deactivate telemetry by:
 
-- setting the `QDRANT__DISABLE_TELEMETRY` environment variable to `true`
-- setting the config option `disable_telemetry` to `true` in the `config/production.yaml` or `config/config.yaml` files
+- setting the `QDRANT__TELEMETRY_DISABLED` environment variable to `true`
+- setting the config option `telemetry_disabled` to `true` in the `config/production.yaml` or `config/config.yaml` files
 - using cli option `--disable-telemetry`
 
 Any of these options will prevent Qdrant from sending any telemetry data.
