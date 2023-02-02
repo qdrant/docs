@@ -381,12 +381,117 @@ client.recreate_collection(
 
 Setting `write_concern_factor` equal to `replication_factor` ensures that all replicas are updated synchonously, provididing a read after write consistency for sequential operations.
 
-However, it gets more complicated for concurrent operations, especially when they are issued against different peers.
-
-Given that, Qdrant does not provide transactional operations at the level of a collection, it is not possible to enforce that all peers have observed the same operations in the same order.
+However, by default, Qdrant does not provide strong consistency guarantees for concurrent operations,
+when they are issued against different peers.
 
 ![Embeddings](/docs/concurrent-operations-replicas.png)
 
-For this reason, it is recommended to perform write operation targeting a specific collection with overlapping keys in a sequential fashion by, for instance, using a distributed queueing mechanism as a proxy.
+To enforce internal and external consistency, Qdrant implements two opt-in features:
+read `consistency` and write `ordering`.
 
-Search queries can be safely performed concurrently without risks.
+Read `consistency` can be specified for most read requests and will ensure that the returned result
+is consistent across cluster nodes.
+
+- `All` will query all nodes and return points, which present on all of them
+- `Majority` will query all nodes and return points, which present on the majority of them
+- `Quorum` will query randomly selected majority of nodes and return points, which present on all of them
+- `N` - will query `N` randomly selected nodes and return points, which present on all of them
+- default `consistency` is `1`
+
+```http
+POST /collections/{collection_name}/points/search?consistency=majority
+
+{
+    "filter": {
+        "must": [
+            {
+                "key": "city",
+                "match": {
+                    "value": "London"
+                }
+            }
+        ]
+    },
+    "params": {
+        "hnsw_ef": 128,
+        "exact": false
+    },
+    "vector": [0.2, 0.1, 0.9, 0.7],
+    "limit": 3
+}
+```
+
+```python
+client.search(
+    collection_name="{collection_name}",
+    query_filter=models.Filter(
+        must=[
+            models.FieldCondition(
+                key="city",
+                match=models.MatchValue(
+                    value="London",
+                ),
+            )
+        ]
+    ),
+    search_params=models.SearchParams(
+        hnsw_ef=128,
+        exact=False
+    ),
+    query_vector=[0.2, 0.1, 0.9, 0.7],
+    limit=3,
+    consistency="majority",
+)
+```
+
+Write `ordering` can be specified for any write request to serialize it through a single "leader" node,
+which ensure that all write operations (issued with the same `ordering`) are performed and observed
+sequentially.
+
+- `Weak` ordering does not provide any additional guarantees, so write operations can be freely reordered
+- `Medium` ordering serializes all write operations through a dynamically elected leader,
+  which cause minor inconsistencies in case of leader change
+- `Strong` ordering serializes all write operations through the permanent leader,
+  which provides strong consistency, but write operations may be unavailable
+  if the leader is down
+- default ordering is `Weak`
+
+```http
+PUT /collections/{collection_name}/points?ordering=strong
+
+{
+    "batch": {
+        "ids": [1, 2, 3],
+        "payloads": [
+            {"color": "red"},
+            {"color": "green"},
+            {"color": "blue"}
+        ],
+        "vectors": [
+            [0.9, 0.1, 0.1],
+            [0.1, 0.9, 0.1],
+            [0.1, 0.1, 0.9]
+        ]
+    }
+}
+```
+
+```python
+client.upsert(
+    collection_name="{collection_name}",
+    points=models.Batch(
+        ids=[1, 2, 3],
+        payloads=[
+            {"color": "red"},
+            {"color": "green"},
+            {"color": "blue"},
+        ],
+        vectors=[
+            [0.9, 0.1, 0.1],
+            [0.1, 0.9, 0.1],
+            [0.1, 0.1, 0.9],
+        ]
+    ),
+    ordering="strong"
+)
+```
