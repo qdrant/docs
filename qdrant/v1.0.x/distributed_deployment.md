@@ -352,7 +352,7 @@ However, in some cases, it is necessary to ensure addition guarantees during the
 
 Qdrant provides a few options to control consistency guarantees:
 
-- `write_concern_factor` - defines the number of replicas that must acknowledge a write operation before responding to the client. Increasing this value will make write operations tollerant to network partitions in the cluster, but will require higher number of replicas to be active to perform write operations.
+- `write_concern_factor` - defines the number of replicas that must acknowledge a write operation before responding to the client. Increasing this value will make write operations tolerant to network partitions in the cluster, but will require a higher number of replicas to be active to perform write operations.
 - Read `consistency` param, can be used with search and retrieve operations to ensure that the results obtained from all replicas are the same. In this option is used, qdrant will perform read operation on multiple replicas and resolve the result according to selected strategy. This option is useful to avoid data inconsistency in case of concurrent updates of the same documents. This options is preffered if update operations are frequent and the number of replicas is low.
 - Write `ordering` param, can be used with update and delete operations to ensure that the operations are executed in the same order on all replicas. If this option is used, qdrant will route the operation to the leader replica of the shard and wait for the response before responding to the client. This option is useful to avoid data inconsistency in case of concurrent updates of the same documents. This options is preffered if read operations are more frequent then update and search performance is critical.
 
