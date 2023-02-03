@@ -392,7 +392,7 @@ client.recreate_collection(
 )
 ```
 
-Write operation will fail if the number of active replicas is less than the `write_concern_factor`.
+Write operations will fail if the number of active replicas is less than the `write_concern_factor`.
 
 ### Read consistency
 
