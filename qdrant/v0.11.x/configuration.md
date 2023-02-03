@@ -88,7 +88,10 @@ storage:
     # Interval between forced flushes.
     flush_interval_sec: 5
     
-    # Max number of threads, which can be used for optimization.
+    # Max number of threads, which can be used for optimization per collection.
+    # Note: Each optimization thread will also use `max_indexing_threads` for index building.
+    # So total number of threads used for optimization will be `max_optimization_threads * max_indexing_threads`
+    # If `max_optimization_threads = 0`, optimization will be disabled.
     max_optimization_threads: 1
 
   # Default parameters of HNSW Index. Could be overridden for each collection individually
