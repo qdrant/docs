@@ -334,7 +334,10 @@ The service will download specified snapshot of the collection and recover shard
 
 Once all shards of the collection are recovered, the collection will become operational again.
 
-### Consistency guarantees
+## Consistency guarantees
+
+By default, qdrant focuses on availability and maximum throughput of search operations.
+For the majority of use cases, this is a preferable trade-off.
 
 During the normal state of operation, it is possible to search and modify data from any peers in the cluster.
 
@@ -343,10 +346,20 @@ Before responding to the client, the peer handling the request dispatches all op
 - reads are using a partial fan-out strategy to optimize latency and availability
 - writes are executed in parallel on all active sharded replicas
 
-In case of write operations, it is possible to control when the server replies to the client using the write concern factor configuration.
+![Embeddings](/docs/concurrent-operations-replicas.png)
+
+However, in some cases, it is necessary to ensure addition guarantees during the possible hardware instability, mass concurrent updates of same documents, etc.
+
+Qdrant provides a few options to control consistency guarantees:
+
+- `write_concern_factor` - defines the number of replicas that must acknowledge a write operation before responding to the client. Increasing this value will make write operations tollerant to network partitions in the cluster, but will require higher number of replicas to be active to perform write operations.
+- Read `consistency` param, can be used with search and retrieve operations to ensure that the results obtained from all replicas are the same. In this option is used, qdrant will perform read operation on multiple replicas and resolve the result according to selected strategy. This option is useful to avoid data inconsistency in case of concurrent updates of the same documents. This options is preffered if update operations are frequent and the number of replicas is low.
+- Write `ordering` param, can be used with update and delete operations to ensure that the operations are executed in the same order on all replicas. If this option is used, qdrant will route the operation to the leader replica of the shard and wait for the response before responding to the client. This option is useful to avoid data inconsistency in case of concurrent updates of the same documents. This options is preffered if read operations are more frequent then update and search performance is critical.
+
+
+### Write concern factor
 
 The `write_concern_factor` represents the number of replicas that must acknowledge a write operation before responding to the client. It is set to one by default.
-
 It can be configured at the collection's creation time.
 
 ```http
@@ -379,15 +392,9 @@ client.recreate_collection(
 )
 ```
 
-Setting `write_concern_factor` equal to `replication_factor` ensures that all replicas are updated synchonously, provididing a read after write consistency for sequential operations.
+Write operation will fail if the number of active replicas is less than the `write_concern_factor`.
 
-However, by default, Qdrant does not provide strong consistency guarantees for concurrent operations,
-when they are issued against different peers.
-
-![Embeddings](/docs/concurrent-operations-replicas.png)
-
-To enforce internal and external consistency, Qdrant implements two opt-in features:
-read `consistency` and write `ordering`.
+### Read consistency
 
 Read `consistency` can be specified for most read requests and will ensure that the returned result
 is consistent across cluster nodes.
@@ -444,17 +451,16 @@ client.search(
 )
 ```
 
+### Write ordering
+
 Write `ordering` can be specified for any write request to serialize it through a single "leader" node,
 which ensure that all write operations (issued with the same `ordering`) are performed and observed
 sequentially.
 
-- `Weak` ordering does not provide any additional guarantees, so write operations can be freely reordered
-- `Medium` ordering serializes all write operations through a dynamically elected leader,
-  which cause minor inconsistencies in case of leader change
-- `Strong` ordering serializes all write operations through the permanent leader,
-  which provides strong consistency, but write operations may be unavailable
-  if the leader is down
-- default ordering is `Weak`
+- `weak` ordering does not provide any additional guarantees, so write operations can be freely reordered
+- `medium` ordering serializes all write operations through a dynamically elected leader, which might cause minor inconsistencies in case of leader change
+- `strong` ordering serializes all write operations through the permanent leader, which provides strong consistency, but write operations may be unavailable if the leader is down
+- default ordering is `weak`
 
 ```http
 PUT /collections/{collection_name}/points?ordering=strong
