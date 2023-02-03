@@ -28,11 +28,14 @@ storage:
   # Where to store all the data
   storage_path: ./storage
 
+  # Where to store snapshots
+  snapshots_path: ./snapshots
+
   # If true - point's payload will not be stored in memory.
   # It will be read from the disk every time it is requested.
   # This setting saves RAM by (slightly) increasing the response time.
   # Note: those payload values that are involved in filtering and are indexed - remain in RAM.
-  on_disk_payload: false
+  on_disk_payload: true
 
   # Write-ahead-log related configuration
   wal:
@@ -46,6 +49,10 @@ storage:
   performance:
     # Number of parallel threads used for search operations. If 0 - auto selection.
     max_search_threads: 0
+    # Max total number of threads, which can be used for running optimization processes across all collections.
+    # Note: Each optimization thread will also use `max_indexing_threads` for index building.
+    # So total number of threads used for optimization will be `max_optimization_threads * max_indexing_threads`
+    max_optimization_threads: 1
 
   optimizers:
     # The minimal fraction of deleted vectors in a segment, required to perform segment optimization
@@ -71,12 +78,14 @@ storage:
     # If indexation speed have more priority for your - make this parameter lower.
     # If search speed is more important - make this parameter higher.
     # Note: 1Kb = 1 vector of size 256
-    max_segment_size_kb: 200000
+    # If not set, will be automatically selected considering the number of available CPUs.
+    max_segment_size_kb: null
 
     # Maximum size (in KiloBytes) of vectors to store in-memory per segment.
     # Segments larger than this threshold will be stored as read-only memmaped file.
     # To enable memmap storage, lower the threshold
     # Note: 1Kb = 1 vector of size 256
+    # If not set, mmap will not be used.
     memmap_threshold_kb: null
 
     # Maximum size (in KiloBytes) of vectors allowed for plain index.
@@ -85,12 +94,15 @@ storage:
     indexing_threshold_kb: 20000
 
     # Interval between forced flushes.
-    flush_interval_sec: 1
+    flush_interval_sec: 5
     
-    # Max number of threads, which can be used for optimization. If 0 - `NUM_CPU - 1` will be used
-    max_optimization_threads: 0
+    # Max number of threads, which can be used for optimization per collection.
+    # Note: Each optimization thread will also use `max_indexing_threads` for index building.
+    # So total number of threads used for optimization will be `max_optimization_threads * max_indexing_threads`
+    # If `max_optimization_threads = 0`, optimization will be disabled.
+    max_optimization_threads: 1
 
-  # Default parameters of HNSW Index. Could be override for each collection individually
+  # Default parameters of HNSW Index. Could be overridden for each collection individually
   hnsw_index:
     # Number of edges per node in the index graph. Larger the value - more accurate the search, more space required.
     m: 16
@@ -101,6 +113,12 @@ storage:
     # in this case full-scan search should be preferred by query planner and additional indexing is not required.
     # Note: 1Kb = 1 vector of size 256
     full_scan_threshold_kb: 10000
+    # Number of parallel threads used for background index building. If 0 - auto selection.
+    max_indexing_threads: 0
+    # Store HNSW index on disk. If set to false, index will be stored in RAM. Default: false
+    on_disk: false
+    # Custom M param for hnsw graph built for payload index. If not set, default M will be used.
+    payload_m: null
 
 service:
 
@@ -119,7 +137,7 @@ service:
 
   # gRPC port to bind the service on.
   # If `null` - gRPC is disabled. Default: null
-  grpc_port: null
+  grpc_port: 6334
   # Uncomment to enable gRPC:
   # grpc_port: 6334
 
@@ -146,4 +164,10 @@ cluster:
     # tick period may create significant network and CPU overhead.
     # We encourage you NOT to change this parameter unless you know what you are doing.
     tick_period_ms: 100
+
+
+# Set to true to prevent service from sending usage statistics to the developers.
+# Read more: https://qdrant.tech/documentation/telemetry
+telemetry_disabled: false
+
 ```
