@@ -348,7 +348,7 @@ Before responding to the client, the peer handling the request dispatches all op
 
 ![Embeddings](/docs/concurrent-operations-replicas.png)
 
-However, in some cases, it is necessary to ensure addition guarantees during the possible hardware instability, mass concurrent updates of same documents, etc.
+However, in some cases, it is necessary to ensure additional guarantees during possible hardware instabilities, mass concurrent updates of same documents, etc.
 
 Qdrant provides a few options to control consistency guarantees:
 
