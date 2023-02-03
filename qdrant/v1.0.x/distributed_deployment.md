@@ -454,7 +454,7 @@ client.search(
 ### Write ordering
 
 Write `ordering` can be specified for any write request to serialize it through a single "leader" node,
-which ensure that all write operations (issued with the same `ordering`) are performed and observed
+which ensures that all write operations (issued with the same `ordering`) are performed and observed
 sequentially.
 
 - `weak` ordering does not provide any additional guarantees, so write operations can be freely reordered
