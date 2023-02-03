@@ -399,10 +399,10 @@ Write operation will fail if the number of active replicas is less than the `wri
 Read `consistency` can be specified for most read requests and will ensure that the returned result
 is consistent across cluster nodes.
 
-- `All` will query all nodes and return points, which present on all of them
-- `Majority` will query all nodes and return points, which present on the majority of them
-- `Quorum` will query randomly selected majority of nodes and return points, which present on all of them
-- `N` - will query `N` randomly selected nodes and return points, which present on all of them
+- `all` will query all nodes and return points, which present on all of them
+- `majority` will query all nodes and return points, which present on the majority of them
+- `quorum` will query randomly selected majority of nodes and return points, which present on all of them
+- `1`/`2`/`3`/etc - will query specified number of randomly selected nodes and return points which present on all of them
 - default `consistency` is `1`
 
 ```http
