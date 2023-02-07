@@ -66,7 +66,9 @@ See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operat
 
 It is possible to initialize a collection from another existing collection.
 
-This might be useful for experimenting with different configurations for the same data.
+This might be useful for experimenting quickly with different configurations for the same data set.
+
+Make sure the vectors have the correct size when setting up the vectors configuration in the new collection.
 
 ```http
 PUT /collections/{collection_name}
@@ -93,7 +95,7 @@ client.recreate_collection(
     collection_name="{collection_name}",
     vectors_config=models.VectorParams(size=100, distance=models.Distance.COSINE),
     init_from=models.InitFrom(
-        collection= {from_collection_name}
+        collection={from_collection_name}
     )
 )
 ```
