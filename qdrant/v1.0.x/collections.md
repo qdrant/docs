@@ -68,7 +68,7 @@ It is possible to initialize a collection from another existing collection.
 
 This might be useful for experimenting quickly with different configurations for the same data set.
 
-Make sure the vectors have the correct size when setting up the vectors configuration in the new collection.
+Make sure the vectors have the same size and distance function when setting up the vectors configuration in the new collection.
 
 ```http
 PUT /collections/{collection_name}
