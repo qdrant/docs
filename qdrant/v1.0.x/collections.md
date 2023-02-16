@@ -174,7 +174,7 @@ PATCH /collections/{collection_name}
 client.update_collection(
     collection_name="{collection_name}",
     optimizer_config=models.OptimizersConfigDiff(
-        max_segment_size=10000
+        indexing_threshold=10000
     )
 )
 ```
