@@ -458,7 +458,7 @@ client.retrieve(
 )
 ```
 
-This method has additional parameters `with_vector` and `with_payload`. 
+This method has additional parameters `with_vectors` and `with_payload`. 
 Using these parameters, you can select parts of the point you want as a result.
 Excluding helps you not to waste traffic transmitting useless data.
 
@@ -499,7 +499,7 @@ POST /collections/{collection_name}/points/scroll
     },
     "limit": 1,
     "with_payload": true,
-    "with_vector": false
+    "with_vectors": false
 }
 ```
 
@@ -516,7 +516,7 @@ client.scroll(
     ),
     limit=1,
     with_payload=True,
-    with_vector=False,
+    with_vectors=False,
 )
 ```
 
