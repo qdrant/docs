@@ -330,6 +330,36 @@ The simplest kind of condition is one that checks if the stored value equals the
 If several values are stored, at least one of them should match the condition.
 You can apply it to [keyword](../payload/#keyword), [integer](../payload/#integer) and [bool](../payload/#bool) payloads.
 
+### Match Any
+
+*Available since version 1.1.0*
+
+In case you want to check if the stored value is one of multiple values, you can use the a Match Any condition.
+Match Any works as a logical OR for the given values. It can also be described as a `IN` operator.
+
+You can apply it to [keyword](../payload/#keyword) and [integer](../payload/#integer) payloads.
+
+Example:
+
+```json
+{ 
+    "key": "color",
+    "match": {
+        "any": ["black", "yellow"] 
+    }
+}
+```
+
+```python
+FieldCondition(
+    key="color",
+    match=models.MatchAny(any=["black", "yellow"]),
+)
+```
+
+In this example, the condition will be satisfied if the stored value is either `black` or `yellow`.
+
+
 ### Full Text Match
 
 *Available since version 0.10.0*
@@ -358,7 +388,7 @@ models.FieldCondition(
 )
 ```
 
-If the query has several words, the condition will be satisfied if all of them are present in the text.
+If the query has several words, then the condition will be satisfied only if all of them are present in the text.
 
 ### Range
 
