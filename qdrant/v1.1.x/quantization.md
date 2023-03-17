@@ -216,7 +216,7 @@ In this section, we will discuss how to tune the memory and speed of the search 
 
 There are 3 possible modes to place storage of vectors within the qdrant collection:
 
-- **All in RAM** - all vector, original and quantized, are stored in RAM. This is the fastest mode, but requires a lot of RAM. Enabled by default.
+- **All in RAM** - all vector, original and quantized, are loaded and kept in RAM. This is the fastest mode, but requires a lot of RAM. Enabled by default.
 
 - **Original on Disk, quantized in RAM** - this is a hybrid mode, allows to obtain a good balance between speed and memory usage. Recommended scenario if you are aiming to shrink the memory footprint while keeping the search speed.
 
