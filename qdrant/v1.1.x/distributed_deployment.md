@@ -528,3 +528,24 @@ All shards, stored on the listener node, will be converted to the `Listener` sta
 
 Additionally, all write requests sent to the listener node will be processed with `wait=false` option, which means that the write oprations will be considered successful once they are written to WAL.
 This mechanism should allow to minimize upsert latency in case of parallel snapshotting.
+
+## Consensus Checkpointing
+
+Consensus checkpointing is a technique used in Raft to improve performance and simplify log management by periodically creating a consistent snapshot of the system state.
+This snapshot represents a point in time where all nodes in the cluster have reached agreement on the state, and it can be used to truncate the log, reducing the amount of data that needs to be stored and transferred between nodes.
+
+For example, if you attach a new node to the cluster, it should replay all the log entries to catch up with the current state.
+In long-running clusters, this can take a long time, and the log can grow very large.
+
+To prevent this, one can use a special checkpointing mechanism, that will truncate the log and create a snapshot of the current state.
+
+To use this feature, simply call the `/cluster/recover` API on required node:
+
+```http
+POST /cluster/recover
+```
+
+This API can be triggered on any non-leader node, it will send a request to the current consensus leader to create a snapshot.
+
+In some cases, this API can be used to recover from an inconsistent cluster state by forcing a snapshot creation.
+
