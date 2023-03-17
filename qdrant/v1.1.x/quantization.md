@@ -156,7 +156,7 @@ client.search(
 
 `ignore` - whether to ignore quantized vectors during the search process. By default, Qdrant will use quantized vectors if they are available.
 
-`rescore` - Having the original vectors available, Qdrant can re-svaluate top-k search results using the original vectors. 
+`rescore` - Having the original vectors available, Qdrant can re-evaluate top-k search results using the original vectors. 
 This can improve the search quality, but may slightly decrease the search speed, compared to the search without rescore.
 If is recommended to disable rescore only if original vectors are stored on a slow storage (e.g. HDD or network storage).
 By default, rescore is enabled.
