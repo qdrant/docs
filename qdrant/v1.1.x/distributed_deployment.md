@@ -501,3 +501,30 @@ client.upsert(
     ordering="strong"
 )
 ```
+
+
+## Listener mode
+
+<aside role="alert">This is an experimental feature, its behavior may change in the future.</aside>
+
+In some cases it might be useful to have a qdrant node that only accumulates data and does not participate in search operations.
+There are several scenarios where this can be useful:
+
+- Listener option can be used to store data in a separate node, which can be used for backup purposes or to store data for a long time.
+- Listener node can be used to syncronize data into another region, while still performing search operations in the local region.
+
+
+To enable listener mode, set `node_type` to `Listener` in the config file:
+
+
+```yaml
+storage:
+  node_type: "Listener"
+```
+
+Listener node will not participate in search operations, but will still accept write operations and will store the data in the local storage.
+
+All shards, stored on the listener node, will be converted to the `Listener` state.
+
+Additionally, all write requests sent to the listener node will be processed with `wait=false` option, which means that the write oprations will be considered successful once they are written to WAL.
+This mechanism should allow to minimize upsert latency in case of parallel snapshotting.
