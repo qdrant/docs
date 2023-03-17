@@ -545,7 +545,7 @@ To use this feature, simply call the `/cluster/recover` API on required node:
 POST /cluster/recover
 ```
 
-This API can be triggered on any non-leader node, it will send a request to the current consensus leader to create a snapshot.
+This API can be triggered on any non-leader node, it will send a request to the current consensus leader to create a snapshot. The leader will in turn send the snapshot back to the requesting node for application.
 
 In some cases, this API can be used to recover from an inconsistent cluster state by forcing a snapshot creation.
 
