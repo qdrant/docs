@@ -109,7 +109,7 @@ Using quantiles lower than `1.0` might be useful if there are outliers in your v
 This parameter only affects the resulting precision and not the memory footprint.
 It might be worth tuning this parameter if you experience a significant decrease in search quality.
 
-`always_ram` - whether to store quantized vectors in RAM or on disk. By default, quantized vectors are stored on the same place as the original vectors.
+`always_ram` - whether to keep quantized vectors always cached in RAM or not. By default, quantized vectors are loaded in the same way as the original vectors.
 However, in some setups you might want to keep quantized vectors in RAM to speed up the search process.
 
 In this case, you can set `always_ram` to `true` to store quantized vectors in RAM.
