@@ -23,7 +23,7 @@ The level of this tradeoff depends on the quantization method and its parameters
 
 ## Scalar Quantization
 
-*Avaliable in Qdrant since v1.1.0*
+*Available in Qdrant since v1.1.0*
 
 Scalar quantization, in the context of vector search engines, is a compression technique that compresses vectors by reducing the number of bits used to represent each vector component.
 
