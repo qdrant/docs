@@ -510,7 +510,7 @@ client.upsert(
 In some cases it might be useful to have a qdrant node that only accumulates data and does not participate in search operations.
 There are several scenarios where this can be useful:
 
-- Listener can be used to store data in a separate cluster, which can be used for backup purposes or to store data for a long time.
+- Listener option can be used to store data in a separate node, which can be used for backup purposes or to store data for a long time.
 - Listener node can be used to syncronize data into another region, while still performing search operations in the local region.
 
 
