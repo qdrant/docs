@@ -334,7 +334,7 @@ You can apply it to [keyword](../payload/#keyword), [integer](../payload/#intege
 
 *Available since version 1.1.0*
 
-In case you want to check if the stored value is one of multiple values, you can use the a Match Any condition.
+In case you want to check if the stored value is one of multiple values, you can use the Match Any condition.
 Match Any works as a logical OR for the given values. It can also be described as a `IN` operator.
 
 You can apply it to [keyword](../payload/#keyword) and [integer](../payload/#integer) payloads.
