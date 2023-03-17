@@ -28,7 +28,7 @@ The level of this tradeoff depends on the quantization method and its parameters
 Scalar quantization, in the context of vector search engines, is a compression technique that compresses vectors by reducing the number of bits used to represent each vector component.
 
 
-For instance, Qdrant uses 32-bit floating numbers to represent the original vector components. Scalar quantization allows you to reduce the number of bits used 8.
+For instance, Qdrant uses 32-bit floating numbers to represent the original vector components. Scalar quantization allows you to reduce the number of bits used to 8.
 In other words, Qdrant performs `float32 -> uint8` conversion for each vector component.
 Effectively, this means that the amount of memory required to store a vector is reduced by a factor of 4.
 
