@@ -99,7 +99,7 @@ client.recreate_collection(
 
 There are 3 parameters that you can specify in the `quantization_config` section:
 
-`type` - the type of the quantized vector components. Currently, Qdrant supports only supports `int8`.
+`type` - the type of the quantized vector components. Currently, Qdrant supports only `int8`.
 
 `quantile` - the quantile of the quantized vector components.
 The quantile is used to calculate the quantization bounds.
