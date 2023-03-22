@@ -207,7 +207,7 @@ By setting it to a value lower than 1.0, you can exclude extreme values (outlier
 For example, if you set the quantile to 0.99, 1% of the extreme values will be excluded.
 By adjusting the quantile, you find an optimal value that will provide the best search quality for your collection. 
 
-- **enable rescore**: Having the original vectors available, Qdrant can re-evaluate top-k search results using the original vectors. On large collections, this can improve the search quality, with just minor performance impact.
+- **Enable rescore**: Having the original vectors available, Qdrant can re-evaluate top-k search results using the original vectors. On large collections, this can improve the search quality, with just minor performance impact.
 
 
 #### Memory and speed tuning
