@@ -84,6 +84,16 @@ To use this approach, you need to:
 
 ToDo: code examples
 
+## Bulk upload a large number of vectors
+
+
+- If you have enough RAM, you may not care
+- If you upload vectors faster than qdrant can index them, you might be out of RAM before you finish uploading
+- To prevent this, you can disable indexing during upload
+- Also it might help setting mmap threshold lower than indexing threshold
+
+
+
 <!--- ## Implement search-as-you-type functionality -->
 
 
