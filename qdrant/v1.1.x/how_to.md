@@ -9,16 +9,96 @@ This sections contains a collection of how-to guides and tutorials for different
 
 ## Optimize qdrant
 
-- different use-cases have different requirements for balancing between memory/speed/precision
-- Qdrant is designed to be flexible and customizable, so you can tune it to your needs
+Different use cases have different requirements for balancing between memory, speed, and precision.
+Qdrant is designed to be flexible and customizable so you can tune it to your needs.
 
 ![Trafeoff](/docs/tradeoff.png)
 
+
+Let's look deeper into each of those possible optimization scenarios.
+
 ### Prefer Low memory footprint with high speed search
 
-- Use quantization with on-disk original vectors
-- Optionally disable rescoring
-- It will reduce memory footprint and speed up search, but potentially slightly decrease precision.
+The main way to achieve high speed search with low memory footprint is keep vectors on disk at the same time minimizing number of disk reads.
+
+Vector Quantization is one way to achieve this. Quantization converts vectors into a more compact representation, which can be stored in memory and used for search. With smaller vectors you can cache more in RAM and reduce number of disk reads.
+
+To configure in-memory quantization, with on-disk original vectors, you need to create a collection with the following config:
+
+```http
+PUT /collections/{collection_name}
+
+{
+    "vectors": {
+      "size": 768,
+      "distance": "Cosine"
+    },
+    "optimizers_config": {
+        "memmap_threshold": 20000
+    },
+    "quantization_config": {
+        "scalar": {
+            "type": "int8",
+            "always_ram": true
+        }
+    }
+}
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient("localhost", port=6333)
+
+client.recreate_collection(
+    collection_name="{collection_name}",
+    vectors_config=models.VectorParams(size=768, distance=models.Distance.COSINE),
+    optimizers_config=models.OptimizersConfigDiff(memmap_threshold=20000),
+    quantization_config=models.ScalarQuantization(
+        scalar=models.ScalarQuantizationConfig(
+            type=models.ScalarType.INT8,
+            always_ram=True,
+        ),
+    ),
+)
+```
+
+`mmmap_threshold` will ensure that vectors will be stored on disk, while `always_ram` will ensure that quantized vectors will be stored in RAM.
+
+Optionally, you can disable rescoring with search `params`, which will reduce disk reads even further, but potentially slightly decrease precision.
+
+
+```http
+POST /collections/{collection_name}/points/search
+
+{
+    "params": {
+        "quantization": {
+            "rescore": false
+        }
+    },
+    "vector": [0.2, 0.1, 0.9, 0.7],
+    "limit": 10
+}
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient("localhost", port=6333)
+
+client.search(
+    collection_name="{collection_name}",
+    query_vector=[0.2, 0.1, 0.9, 0.7],
+    search_params=models.SearchParams(
+        quantization=models.QuantizationSearchParams(
+            rescore=False
+        )
+    )
+)
+```
 
 
 ### Prefer High precision with low memory footprint
@@ -91,6 +171,63 @@ ToDo: code examples
 - If you upload vectors faster than qdrant can index them, you might be out of RAM before you finish uploading
 - To prevent this, you can disable indexing during upload
 - Also it might help setting mmap threshold lower than indexing threshold
+
+
+## Choose optimizer parameters
+
+Optimizer is a fundamental architecture component of Qdrant.
+It is responsible for indexing, merging, vacuuming, and quantizing segments of the collection.
+
+Optimizer allows to combine dynamic updates of any record in the collection with the ability to perform efficient bulk updates. It is especially important for building efficient indexes, which require knowledge of various statistics and distributions before they can be built.
+
+The parameters, which affect optimizer behavior the most are:
+
+```yaml
+# Target amount of segments optimizer will try to keep.
+# Real amount of segments may vary depending on multiple parameters:
+#  - Amount of stored points
+#  - Current write RPS
+#
+# It is recommended to select default number of segments as a factor of the number of search threads,
+# so that each segment would be handled evenly by one of the threads.
+# If `default_segment_number = 0`, will be automatically selected by the number of available CPUs
+default_segment_number: 0
+
+# Do not create segments larger this size (in KiloBytes).
+# Large segments might require disproportionately long indexation times,
+# therefore it makes sense to limit the size of segments.
+#
+# If indexation speed have more priority for your - make this parameter lower.
+# If search speed is more important - make this parameter higher.
+# Note: 1Kb = 1 vector of size 256
+# If not set, will be automatically selected considering the number of available CPUs.
+max_segment_size_kb: null
+
+# Maximum size (in KiloBytes) of vectors to store in-memory per segment.
+# Segments larger than this threshold will be stored as read-only memmaped file.
+# To enable memmap storage, lower the threshold
+# Note: 1Kb = 1 vector of size 256
+# If not set, mmap will not be used.
+memmap_threshold_kb: null
+
+# Maximum size (in KiloBytes) of vectors allowed for plain index.
+# Default value based on https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md
+# Note: 1Kb = 1 vector of size 256
+indexing_threshold_kb: 20000
+```
+
+Those parameters are working as a conditional statement, which is evaluated for each segment after each update.
+If the condition is true, the segment will be scheduled for optimization.
+
+Values of those parameters will affect how qdrant handles updates of the data.
+
+- If you have enough RAM and CPU, it fine to go with default values - qdrant will index all vectors as fast as possible.
+- If you have a limited amount of RAM, you can set `memmap_threshold_kb=20000` same value as `indexing_threshold_kb`. It will ensure that all vectors will be stored on disk as the same optimization iteration as indexation.
+- If you are doing bulk updates, you can set `indexing_threshold_kb=100000000` (some very large value) to **disable** indexing during bulk updates. It will speed up the process significantly, but will require additional parameter change after bulk updates are finished.
+
+Depending on your collection, you might have not enough vectors per segment to start building index.
+E.g. if you have 100k vecotrs and 8 segments, one for each CPU core, each segment will have only 12.5k vectors, which is not enough to build index.
+In this case, you can set `indexing_threshold_kb=5000` to start building index even for small segments.
 
 
 
