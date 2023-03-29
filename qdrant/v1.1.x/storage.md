@@ -66,8 +66,7 @@ client = QdrantClient("localhost", port=6333)
 client.recreate_collection(
     collection_name="{collection_name}",
     vectors_config=models.VectorParams(size=768, distance=models.Distance.COSINE),
-    optimizers_config=models.OptimizersConfigDiff(memmap_threshold=20000),
-    hnsw_config=models.HnswConfigDiff(on_disk=True)
+    optimizers_config=models.OptimizersConfigDiff(memmap_threshold=20000)
 )
 ```
 
