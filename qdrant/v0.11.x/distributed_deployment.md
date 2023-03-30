@@ -345,7 +345,7 @@ Before responding to the client, the peer handling the request dispatches all op
 
 In case of write operations, it is possible to control when the server replies to the client using the write concern factor configuration.
 
-The `write_concern_factor` represents the number of replicas that must acknowledge a write operation before responding to the client. It is set to one by default.
+The `write_consistency_factor` represents the number of replicas that must acknowledge a write operation before responding to the client. It is set to one by default.
 
 It can be configured at the collection's creation time.
 
@@ -360,7 +360,7 @@ PUT /collections/{collection_name}
     },
     "shard_number": 6,
     "replication_factor": 2,
-    "write_concern_factor": 2,
+    "write_consistency_factor": 2,
 }
 ```
 
@@ -375,11 +375,11 @@ client.recreate_collection(
     vectors_config=models.VectorParams(size=300, distance=models.Distance.COSINE),
     shard_number=6,
     replication_factor=2,
-    write_concern_factor=2,
+    write_consistency_factor=2,
 )
 ```
 
-Setting `write_concern_factor` equal to `replication_factor` ensures that all replicas are updated synchonously, provididing a read after write consistency for sequential operations.
+Setting `write_consistency_factor` equal to `replication_factor` ensures that all replicas are updated synchonously, provididing a read after write consistency for sequential operations.
 
 However, it gets more complicated for concurrent operations, especially when they are issued against different peers.
 
