@@ -102,7 +102,7 @@ qdrant_client.upsert(
     collection_name="MyCollection",
     points=Batch(
         ids=[1],
-        vectors=[response["data"]["embedding"]],
+        vectors=[response["data"][0]["embedding"]],
     )
 )
 ```
