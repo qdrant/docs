@@ -3,7 +3,7 @@ title: Indexing
 weight: 90
 ---
 
-A key feature of Qdrant is the effective combination of vector and traditional indices. It is essential to have this because for vector search to work effectively with filters, having vector index only is not enough.
+A key feature of Qdrant is the effective combination of vector and traditional indexes. It is essential to have this because for vector search to work effectively with filters, having vector index only is not enough. In simpler terms, a vector index improves vector search, and payload indexes improve filtering.
 
 The indexes in the segments exist independently, but the parameters of the indexes themselves are configured for the whole collection.
 
@@ -13,9 +13,9 @@ Their necessity is determined by the [optimizer](../optimizer) settings and depe
 ## Payload Index
 
 Payload index in Qdrant is similar to the index in conventional document-oriented databases.
-This index is built for a specific field and type and is used for quick point requests by the corresponding filtering condition.
+This index is built for a specific field and type, and is used for quick point requests by the corresponding filtering condition.
 
-The index is also used to accurately estimate the filter cardinality, which helps the [query planned](../search) choose a search strategy.
+The index is also used to accurately estimate the filter cardinality, which helps the [query planning](../search#query-planning) choose a search strategy.
 
 Creating an index requires additional computational resources and memory, so choosing fields to be indexed is essential. Qdrant does not make this choice but grants it to the user.
 
