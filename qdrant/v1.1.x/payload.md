@@ -44,8 +44,7 @@ During the filtering, Qdrant will check the conditions over those values that ma
 
 For example, you will get an empty output if you apply the [range condition](../filtering/#range) on the string data.
 
-Qdrant also allows multiple values of the same type to be stored and applied to the filter at once.
-The condition will be considered satisfied if at least one value meets the condition.
+However, arrays (multiple values of the same type) are treated a little bit different. When we apply a filter to an array, it will succeed if at least one of the values inside the array meets the condition.
 
 The filtering process is discussed in detail in the section [Filtering](../filtering).
 
