@@ -78,7 +78,7 @@ Example of single and multiple `float` values:
 
 ### Bool
 
-Bool - is binary value equals to `true` or `false`.
+Bool - binary value. Equals to `true` or `false`.
 
 Example of single and multiple `bool` values:
 
