@@ -9,9 +9,9 @@ You can impose conditions both on the [payload](../payload) and on, for example,
 The use of additional conditions is important when, for example, it is impossible to express all the features of the object in the embedding.
 Examples include a variety of business requirements: stock availability, user location, or desired price range.
 
-## Filtering causes
+## Filtering clauses
 
-Qdrant allows you to combine conditions in causes.
+Qdrant allows you to combine conditions in clauses.
 Clauses are different logical operations, such as `OR`, `AND`, and `NOT`.
 Clauses can be recursively nested into each other so that you can reproduce an arbitrary boolean expression.
 
@@ -54,7 +54,6 @@ Filtered points would be:
 ]
 ```
 
-
 When using `must`, the clause becomes `true` only if every condition listed inside `must` is satisfied.
 In this sense, `must` is equivalent to the operator `AND`.
 
@@ -88,7 +87,6 @@ Filtered points would be:
 When using `should`, the clause becomes `true` if at least one condition listed inside `should` is satisfied.
 In this sense, `should` is equivalent to the operator `OR`.
 
-
 ### Must Not
 
 Example:
@@ -116,7 +114,6 @@ Filtered points would be:
 
 When using `must_not`, the clause becomes `true` if none if the conditions listed inside `should` is satisfied.
 In this sense, `must_not` is equivalent to the expression `(NOT A) AND (NOT B) AND (NOT C)`.
-
 
 ### Clauses combination
 
@@ -185,23 +182,22 @@ Let's look at the existing condition variants and what types of data they apply 
 ### Match
 
 ```
-{ 
+{
     "key": "color",
     "match": {
-        "keyword": "red" 
+        "keyword": "red"
     }
 }
 ```
 
 ```
-{ 
+{
     "key": "count",
     "match": {
-        "integer": 0 
+        "integer": 0
     }
 }
 ```
-
 
 The simplest kind of condition is one that checks if the stored value equals the given one. If several values are stored, at least one of them should match the condition. You can apply it to payloads of type `keyword` or `integer`.
 
@@ -222,7 +218,7 @@ The simplest kind of condition is one that checks if the stored value equals the
 The `range` condition sets the range of possible values for stored payload values.
 If several values are stored, at least one of them should match the condition.
 
-Comparisons that can be used: 
+Comparisons that can be used:
 
 - `gt` - greater than
 - `gte` - greater than or equal
@@ -249,9 +245,7 @@ Can be applied to payloads of type `float` or `integer`.
 }
 ```
 
-
 It matches with `location`s inside a rectangle with the coordinates of the upper left corner in `bottom_right` and the coordinates of the lower right corner in `top_left`.
-
 
 ```
 {
@@ -271,7 +265,6 @@ It matches with `location`s inside a circle with the `center` at the center and 
 If several values are stored, at least one of them should match the condition.
 These conditions can only be applied to payloads of the `geo` type.
 
-
 ### Has id
 
 This type of query is not related to payload, but can be very useful in some situations.
@@ -287,7 +280,6 @@ For example, the user could mark some specific search results as irrelevant, or 
   ...
 }
 ```
-
 
 Filtered points would be:
 
