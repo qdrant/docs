@@ -745,7 +745,6 @@ models.IsNullCondition(
 
 This condition will match all records where the field `reports` exists and has `NULL` value.
 
-<aside role="status">The <b>IsNull</b> is often useful together with the logical negation <b>must_not</b>. In this case all non-null values will be selected. It can be combined with <b>IsEmpty</b> to filter empty values.</aside>
 
 ### Has id
 
