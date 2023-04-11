@@ -17,7 +17,7 @@ docker run -p 6333:6333 \
     qdrant/qdrant
 ```
 
-Example of the configuration file:
+## Configuration file example
 
 ```yaml
 debug: false
@@ -169,5 +169,20 @@ cluster:
 # Set to true to prevent service from sending usage statistics to the developers.
 # Read more: https://qdrant.tech/documentation/telemetry
 telemetry_disabled: false
+```
+
+## Validation
+
+*Available since v1.1.1*
+
+The configuration is validated on startup. If a configuration is loaded but
+validation fails, a warning is logged. E.g.:
 
 ```
+WARN Settings configuration file has validation errors:
+WARN - storage.optimizers.memmap_threshold: value 123 invalid, must be 1000 or larger
+WARN - storage.hnsw_index.m: value 1 invalid, must be from 4 to 10000
+```
+
+The server will continue to operate. Any validation errors should be fixed as
+soon as possible though to prevent problematic behavior.
