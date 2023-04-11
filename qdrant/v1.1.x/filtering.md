@@ -720,7 +720,7 @@ models.IsEmptyCondition(
 )
 ```
 
-This condition will match all records where the field `reports` either does not exist, or has `[]` value.
+This condition will match all records where the field `reports` either does not exist, or has `null` or `[]` value.
 
 <aside role="status">The <b>IsEmpty</b> is often useful together with the logical negation <b>must_not</b>. In this case all non-empty values will be selected.</aside>
 
