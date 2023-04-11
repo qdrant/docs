@@ -137,15 +137,17 @@ storage:
 
 ```
 
-The HNSW parameters can also be configured on a collection and named vector
-level by setting [`hnsw_config`](../indexing/#vector-index) to fine-tune search
-performance.
-
 And so in the process of creating a [collection](../collections). The `ef` parameter is configured during [the search](../search) and by default is equal to `ef_construct`.
 
 HNSW is chosen for several reasons.
 First, HNSW is well-compatible with the modification that allows Qdrant to use filters during a search.
 Second, it is one of the most accurate and fastest algorithms, according to [public benchmarks](https://github.com/erikbern/ann-benchmarks).
+
+*Available since v1.1.1*
+
+The HNSW parameters can also be configured on a collection and named vector
+level by setting [`hnsw_config`](../indexing/#vector-index) to fine-tune search
+performance.
 
 ## Filtrable Index
 
