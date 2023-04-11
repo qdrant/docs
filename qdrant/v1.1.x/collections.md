@@ -141,6 +141,12 @@ client.recreate_collection(
 )
 ```
 
+For each named vector you can optionally specify
+[`hnsw_config`](../indexing/#vector-index) or
+[`quantization_config`](../quantization/#setting-up-quantization-in-qdrant) to
+deviate from the collection configuration. This can be useful to fine-tune
+search performance on a vector level.
+
 For rare use cases, it is possible to create a collection without any vector storage.
 
 ### Delete collection
