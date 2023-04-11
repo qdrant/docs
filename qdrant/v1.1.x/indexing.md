@@ -121,7 +121,7 @@ The corresponding parameters could be configured in the configuration file:
 
 ```yaml
 storage:
-  # Default parameters of HNSW Index. Could be override for each collection individually
+  # Default parameters of HNSW Index. Could be overridden for each collection or named vector individually
   hnsw_index:
     # Number of edges per node in the index graph.
     # Larger the value - more accurate the search, more space required.
@@ -136,6 +136,10 @@ storage:
     full_scan_threshold: 10000
 
 ```
+
+The HNSW parameters can also be configured on a collection and named vector
+level by setting [`hnsw_config`](../indexing/#vector-index) to fine-tune search
+performance.
 
 And so in the process of creating a [collection](../collections). The `ef` parameter is configured during [the search](../search) and by default is equal to `ef_construct`.
 
