@@ -84,6 +84,7 @@ PUT /collections/{collection_name}
        "collection": {from_collection_name}
     }
 }
+If using curl: -H 'Content-Type: application/json'
 ```
 
 ```python
