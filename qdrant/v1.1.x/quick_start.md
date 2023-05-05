@@ -5,15 +5,144 @@ weight: 10
 
 ## Installation
 
-The easiest way to use Qdrant is to run a pre-built image. To do this, make sure Docker is installed on your system.
+There are three different ways to use Qdrant:
 
-Download image from [DockerHub](https://hub.docker.com/r/qdrant/qdrant):
+1. **Use our Python client - for trying out Qdrant** If you're familiar with Python, this is the easiest way to try out Qdrant. It uses an in-memory database, so all you need to do is `pip install qdrant-client`.
+1. **Use our Docker container - for trying out Qdrant and for local development** This is the easiest way to try out Qdrant if you don't have a Python development environment, but have Docker installed. You can run a local Qdrant server with local storage in one command.
+3. **Qdrant Cloud - for production** This is the easiest way to run Qdrant in production.
+
+![Local mode workflow](https://raw.githubusercontent.com/qdrant/qdrant-client/master/docs/images/try-develop-deploy.png)
+
+Below we'll walk through examples of using the Python client and the Docker container. You can choose to follow whichever you prefer.
+
+## Quick start with the Python client
+
+With the Python client, you can try Qdrant without running a Docker container.
+
+Install the library with pip:
+
+```
+pip install qdrant-client
+```
+
+Local mode is useful for development, prototyping and testing.
+
+* Run tests in your CI/CD pipeline.
+* Prototype using Colab or Jupyter Notebook. See a [Colab Example](https://colab.research.google.com/drive/1Bz8RSVHwnNDaNtDwotfPj0w7AYzsdXZ-?usp=sharing)
+
+Once you're ready to scale, you can switch Qdrant to server mode and use the same code.
+
+## End-to-end Python example
+
+Now that you have Qdrant running, let's take a look at a full example where we'll create a collection, add some data to it, and run a query.
+
+Specifically, we'll create a collection of major cities with their coordinates, and use this to find the closest major city to a given point.
+
+### 1. Import Qdrant and initialise a client
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http.models import Distance, VectorParams
+from qdrant_client.http.models import PointStruct
+
+import json
+
+client = QdrantClient(path="qdrant_data")
+```
+
+This imports a QdrantClient and some helper models.
+
+The client will save all data locally in the `qdrant_data` subdirectory. Alternatively, you can use `path=":memory:"` in the last line to keep data only in RAM instead of saving it to your local disk.
+
+### 2. Get some data
+
+Usually, you'd be reading data from a file, database, or over the network, but to keep things simple we'll just define some example data in Python.
+
+```python
+london = [51.510153801633486, -0.12426723052208427]
+new_york = [40.711945865996896, -74.01608438990867]
+berlin = [52.52302625792642, 13.406869876820677]
+cape_town = [-33.92079694839083, 18.379983604092548]
+```
+
+This lists some major cities and their coordinates.
+
+### 3. Create a collection
+
+```python
+client.recreate_collection(
+    collection_name="cities",
+    vectors_config=VectorParams(size=2, distance=Distance.EUCLID),
+)
+```
+
+This creates a collection called 'cities'. We tell Qdrant that our vectors will be of size 2 as each vector consists of two points (latitude and longitude). In most cases, you'll likely be working with far larger vectors.
+
+We also define that we want to calculate the distance between vectors by using Euclidean distance. Here you could instead use `DOT`, or `COSINE` for other distance measures.
+
+### 4. Add the data to the collection 
+
+```python
+operation_info = client.upsert(
+    collection_name="cities",
+    wait=True,
+    points=[
+        PointStruct(id=1, vector=london, payload={"name":"london"}),
+        PointStruct(id=2, vector=new_york, payload={"name":"new york"}),
+        PointStruct(id=3, vector=berlin, payload={"name":"berlin"}),
+        PointStruct(id=4, vector=cape_town, payload={"name":"cape town"})
+
+    ]
+)
+```
+
+Here we add our data to the collection. We pass in a unique ID for each vector, the vector data from our variables above, and a "payload". The fact that Qdrant allows you to store arbitrary JSON data with any vector is one of Qdrant's key features. In this case, we are only storing the city name with each vector, but in real-world cases, your payload is likely to be a complex JSON object that stores all relevant context for a given vector.
+
+### 5. Make a query
+
+Let's find cities that are close to Paris, which itself is not stored in our collection.
+
+```python
+paris = [48.856490961532266, 2.3507957718453563]
+search_result = client.search(
+    collection_name="cities",
+    query_vector=paris,
+    limit=4
+)
+```
+
+Here we define the coordinates of Paris and query the collection for nearby vectors. We set the limit to 4, which in this example is the entire dataset so we'll see the distance to each city.
+
+```python
+print(search_result)
+```
+
+If you print the results, you should see output similar to that shown below.
+
+```
+[ScoredPoint(id=1, version=0, score=3.6287557396195402, payload={'name': 'london'}, vector=None),
+ ScoredPoint(id=3, version=0, score=11.648186574893794, payload={'name': 'berlin'}, vector=None),
+ ScoredPoint(id=2, version=0, score=76.79995945974255, payload={'name': 'new york'}, vector=None),
+ ScoredPoint(id=4, version=0, score=84.31496911120838, payload={'name': 'cape town'}, vector=None)]
+```
+
+We get back a ranked list of cities. We can see that London is the closest city and Cape Town is the furthest, as expected.
+
+In this example, we ran everything locally to understand how Qdrant works. However, this doesn't really show off the benefits of Qdrant as with only four vectors we could easily achieve the same without any specialised software. Qdrant really shines when you need to work with large amounts of vectors, each with thousands or millions of points.
+
+To scale up, you'll almost always want to run Qdrant as a separate server process and interact with it using an API. Next we'll take a look at how to do this using Docker.
+
+## Quick start with Docker
+
+Make sure Docker is installed on your system.
+
+Download the image from [DockerHub](https://hub.docker.com/r/qdrant/qdrant) by running:
 
 ```bash
 docker pull qdrant/qdrant
 ```
 
-And run the service inside the docker:
+And run the service inside the Docker:
 
 ```bash
 docker run -p 6333:6333 \
@@ -21,40 +150,9 @@ docker run -p 6333:6333 \
     qdrant/qdrant
 ```
 
-In this case Qdrant will use default configuration and store all data under `./qdrant_storage` directory.
+In this case, Qdrant will use the default configuration and store all data under `./qdrant_storage` directory (relative to where you start the Docker container).
 
 Now Qdrant should be accessible at [localhost:6333](http://localhost:6333)
-
-
-### Local mode
-
-![Local mode workflow](https://raw.githubusercontent.com/qdrant/qdrant-client/master/docs/images/try-develop-deploy.png)
-
-
-With python client it is possible to try Qdrant without running docker container at all.
-
-Simply install it
-
-```
-pip install qdrant-client
-```
-
-and initialize client like this:
-
-```
-from qdrant_client import QdrantClient
-
-client = QdrantClient(":memory:")
-# or
-client = QdrantClient(path="path/to/db")  # Persists changes to disk
-```
-
-Local mode is useful for development, prototyping and testing.
-
-* You can use it to run tests in your CI/CD pipeline.
-* Run it in Colab or Jupyter Notebook, no extra dependencies required. See a [Colab Example](https://colab.research.google.com/drive/1Bz8RSVHwnNDaNtDwotfPj0w7AYzsdXZ-?usp=sharing)
-* When you need to scale, simply switch to server mode.
-
 
 ## API
 
