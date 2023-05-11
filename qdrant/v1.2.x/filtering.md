@@ -516,6 +516,140 @@ client.scroll(
 
 This query would only output the point with id 2 as only Japan has a city with the "Osaka castke" as part of the sightseeing.
 
+### Nested object filter
+
+_Available since version 1.2.0_
+
+By default, the conditions are taking into account the entire payload of a point.
+
+For instance, given two points with the following payload:
+
+```json
+[
+  {
+    "id": 1,
+    "data": [
+      { "a": 1, "b": 1 },
+      { "a": 1, "b": 2 }
+    ]
+  },
+  {
+    "id": 2,
+    "data": [
+      { "a": 1, "b": 1 },
+      { "a": 2, "b": 2 }
+    ]
+  }
+]
+```
+
+The following query would match both points:
+
+```http
+POST /collections/{collection_name}/points/scroll
+
+{
+    "filter": {
+        "must": [
+            {
+                "key": "data[].a",
+                  "match": {
+                    "value": 1
+                }
+            },
+            {
+                "key": "data[].b",
+                  "match": {
+                    "value": 2
+                }
+            }
+        ]
+    }
+}
+```
+
+```python
+client.scroll(
+    collection_name="{collection_name}",
+    scroll_filter=models.Filter(
+        must=[
+            models.FieldCondition(
+                key="data[].a",
+                match=models.MatchValue(value=1")
+            ),
+            models.FieldCondition(
+                key="data[].b",
+                match=models.MatchValue(value=2)
+            ),
+        ],
+    ),
+)
+```
+
+This happens because both points are matching the conditions.
+
+To retrieve only the point with id 1, you would need to use a nested object filter.
+
+Nested object filters allow arrays of objects to be queried independently of each other.
+
+It is achieved by adding a new filter condition type called `nested` formed by a payload path to focus on and a filter to apply.
+
+```http
+POST /collections/{collection_name}/points/scroll
+
+{
+    "filter": {
+        "nested" {
+            "key": "data",
+            "filter":{
+                "must": [
+                    {
+                        "key": "a",
+                        "match": {
+                            "value": 1
+                        }
+                    },
+                    {
+                        "key": "b",
+                        "match": {
+                            "value": 2
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
+```
+
+// TODO python client
+
+```python
+client.scroll(
+    collection_name="{collection_name}",
+    scroll_filter=models.Filter(
+        must=[
+            models.FieldCondition(
+                key="data[].a",
+                match=models.MatchValue(value=1")
+            ),
+            models.FieldCondition(
+                key="data[].b",
+                match=models.MatchValue(value=2)
+            ),
+        ],
+    ),
+)
+```
+
+The matching logic is modified to be applied at level of an array element within the payload.
+
+It can be used with `must`, `must_not` and `should` with the following semantic:
+
+- nested `must`: at least a single element matches all conditions.
+- nested `must_not`: at least a single element does not match any of the conditions.
+- nested `should`: at least a single element matches at least one of the conditions (equivalent to not using `nested`).
+
 ### Full Text Match
 
 _Available since version 0.10.0_
