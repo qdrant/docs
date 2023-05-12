@@ -592,3 +592,175 @@ It is impossible to retrieve Nth closest vector without retrieving the first N v
 However, using the offset parameter saves the resources by reducing network traffic and the number of times the storage is accessed.
 
 Using an `offset` parameter, will require to internally retrieve `offset + limit` points, but only access payload and vector from the storage those points which are going to be actually returned.
+
+## Grouping API
+
+*Available since v1.2.0*
+
+It is possible to group results by a certain field. This is useful when you have multiple points for the same item, and you want to avoid redundancy of the same item in the results.
+
+For example, if you have a large document split into multiple chunks, and you want to search or recommend on a per-document basis, you can group the results by the document ID. 
+
+Consider having points with the following payloads:
+
+```json
+{
+    {
+        "id": 0,
+        "payload": {
+            "chunk_part": 0, 
+            "document_id": "a",
+        },
+        "vector": ...,
+    },
+    {
+        "id": 1,
+        "payload": {
+            "chunk_part": 1, 
+            "document_id": "a",
+        },
+        "vector": ...,
+    },
+    {
+        "id": 2,
+        "payload": {
+            "chunk_part": 2, 
+            "document_id": "a",
+        },
+        "vector": ...,
+    },
+    {
+        "id": 3,
+        "payload": {
+            "chunk_part": 0, 
+            "document_id": 123,
+        },
+        "vector": ...,
+    },
+    {
+        "id": 4,
+        "payload": {
+            "chunk_part": 1, 
+            "document_id": 123,
+        },
+        "vector": ...,
+    },
+    {
+        "id": 5,
+        "payload": {
+            "chunk_part": 0, 
+            "document_id": 2.42,
+        },
+        "vector": ...,
+    },
+}
+```
+
+With the ***groups*** API, you will be able to get the top *N* points for each document, assuming that the payload of the points contains the document ID.
+
+### Search groups
+
+```http
+POST /collections/{collection_name}/points/search/groups
+
+{
+    // Same as in the regular search API
+    "vector": [0.2, 0.3, 0.1, 0.5],
+    ...,
+
+    // Grouping parameters
+    "group_by": "document_id",  // Path of the field to group by
+    "limit": 3,                 // Max amount of groups
+    "per_group": 2,             // Max amount of points per group
+}
+```
+
+```python
+client.search_groups(
+    collection_name="{collection_name}",
+
+    # Same as in the regular search() API
+    vector=[0.2, 0.3, 0.1, 0.5],
+    ...,
+    
+    # Grouping parameters
+    group_by="document_id", # Path of the field to group by
+    limit=3,                # Max amount of groups
+    per_group=2,            # Max amount of points per group
+)
+```
+
+### Recommend groups
+
+```http
+POST /collections/{collection_name}/points/recommend/groups
+
+{
+    // Same as in the regular recommend API
+    "negative": [1],
+    "positive": [2, 5],
+    ...,
+
+    // Grouping parameters
+    "group_by": "document_id",  // Path of the field to group by
+    "limit": 3,                 // Max amount of groups
+    "per_group": 2,             // Max amount of points per group
+}
+```
+
+```python
+client.recommend_groups(
+    collection_name="{collection_name}",
+
+    # Same as in the regular recommend() API
+    negative=[1],
+    positive=[2, 5],
+    ...,
+
+    # Grouping parameters
+    group_by="document_id", # Path of the field to group by
+    limit=3,                # Max amount of groups
+    per_group=2,            # Max amount of points per group
+)
+```
+
+In either case (search or recommend), the output would look like this:
+
+```json
+{
+    "result": {
+        "groups": [
+            {
+                "group_id": { "document_id": "a" },
+                "hits": [
+                    { "id": 0, "score": 0.91 },
+                    { "id": 1, "score": 0.71 },
+                ]
+            },
+            {
+                "group_id": { "document_id": 123},
+                "hits": [
+                    { "id": 3, "score": 0.81 },
+                    { "id": 4, "score": 0.73 }
+                ]
+            },
+            {
+                "group_id": { "document_id": 2.42},
+                "hits": [
+                    { "id": 5, "score": 0.71 },
+                ]
+            }
+        ],
+    },
+    "status": "ok",
+    "time": 0.001
+}
+```
+
+The groups will be ordered by the score of the top point in the group. Inside each group the points will be sorted too.
+
+**Limitations**:
+
+* The `group_by` field does not accept the `[]` syntax to use whole arrays. However, if the field of a point is an array (e.g. `"document_id": ["a", "b"]`), only the first element will be used (e.g. `"document_id": "a"`).
+* Only string and numeric fields are supported for grouping. Payload fields with other types will be ignored.
+* Pagination is not enabled when using **groups**, so the `offset` parameter is not allowed.
