@@ -626,21 +626,28 @@ POST /collections/{collection_name}/points/scroll
 }
 ```
 
-// TODO python client
-
 ```python
 client.scroll(
     collection_name="{collection_name}",
     scroll_filter=models.Filter(
         must=[
-            models.FieldCondition(
-                key="data[].a",
-                match=models.MatchValue(value=1")
-            ),
-            models.FieldCondition(
-                key="data[].b",
-                match=models.MatchValue(value=2)
-            ),
+            models.NestedContainer(
+                nested=models.NestedCondition(
+                    key="data",
+                    filter=(
+                        must=[
+                            models.FieldCondition(
+                                key="a",
+                                match=models.MatchValue(value=1")
+                            ),
+                            models.FieldCondition(
+                                key="b",
+                                match=models.MatchValue(value=2)
+                            ),
+                        ]
+                    )
+                )
+            )
         ],
     ),
 )
@@ -653,6 +660,41 @@ It can be used with `must`, `must_not` and `should` with the following semantic:
 - nested `must`: at least a single element matches all conditions.
 - nested `must_not`: at least a single element does not match any of the conditions.
 - nested `should`: at least a single element matches at least one of the conditions (equivalent to not using `nested`).
+
+The `has id` condition is not supported within the nested object filter. If you need it, place it in an adjacent `must` clause.
+
+```http
+POST /collections/{collection_name}/points/scroll
+
+{
+    "filter": {
+        "must": [
+            "nested": {
+                {
+                    "key": "data",
+                    "filter":{
+                        "must": [
+                            {
+                                "key": "a",
+                                "match": {
+                                    "value": 1
+                                }
+                            },
+                            {
+                                "key": "b",
+                                "match": {
+                                    "value": 2
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            { "has_id": [1] }
+        ]
+    }
+}
+```
 
 ### Full Text Match
 
