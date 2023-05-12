@@ -599,25 +599,29 @@ POST /collections/{collection_name}/points/scroll
 
 {
     "filter": {
-        "nested" {
-            "key": "data",
-            "filter":{
-                "must": [
-                    {
-                        "key": "a",
-                        "match": {
-                            "value": 1
-                        }
-                    },
-                    {
-                        "key": "b",
-                        "match": {
-                            "value": 2
-                        }
+        "must": [
+            "nested": {
+                {
+                    "key": "data",
+                    "filter":{
+                        "must": [
+                            {
+                                "key": "a",
+                                "match": {
+                                    "value": 1
+                                }
+                            },
+                            {
+                                "key": "b",
+                                "match": {
+                                    "value": 2
+                                }
+                            }
+                        ]
                     }
-                ]
+                }
             }
-        }
+        ]
     }
 }
 ```
