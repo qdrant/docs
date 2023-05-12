@@ -646,7 +646,7 @@ client.scroll(
 )
 ```
 
-The matching logic is modified to be applied at level of an array element within the payload.
+The matching logic is modified to be applied at the level of an array element within the payload.
 
 It can be used with `must`, `must_not` and `should` with the following semantic:
 
