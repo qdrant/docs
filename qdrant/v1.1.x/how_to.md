@@ -632,7 +632,7 @@ In this case, you can set `indexing_threshold_kb=5000` to start building index e
 
 Each collection segment needs some files to be open. At some point you may encounter the following errors in your server log:
 
-```"Error: Too many files open (OS error 24)".```
+```Error: Too many files open (OS error 24)```
 
 In such a case you may need to increase the limit of the open files. It might be done, for example, while you launch the Docker container:
 
