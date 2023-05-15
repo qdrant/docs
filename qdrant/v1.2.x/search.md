@@ -671,7 +671,7 @@ POST /collections/{collection_name}/points/search/groups
     // Grouping parameters
     "group_by": "document_id",  // Path of the field to group by
     "limit": 3,                 // Max amount of groups
-    "group_size": 2,             // Max amount of points per group
+    "group_size": 2,            // Max amount of points per group
 }
 ```
 
@@ -686,7 +686,7 @@ client.search_groups(
     # Grouping parameters
     group_by="document_id", # Path of the field to group by
     limit=3,                # Max amount of groups
-    group_size=2,            # Max amount of points per group
+    group_size=2,           # Max amount of points per group
 )
 ```
 
@@ -704,7 +704,7 @@ POST /collections/{collection_name}/points/recommend/groups
     // Grouping parameters
     "group_by": "document_id",  // Path of the field to group by
     "limit": 3,                 // Max amount of groups
-    "group_size": 2,             // Max amount of points per group
+    "group_size": 2,            // Max amount of points per group
 }
 ```
 
@@ -720,7 +720,7 @@ client.recommend_groups(
     # Grouping parameters
     group_by="document_id", # Path of the field to group by
     limit=3,                # Max amount of groups
-    group_size=2,            # Max amount of points per group
+    group_size=2,           # Max amount of points per group
 )
 ```
 
@@ -757,7 +757,7 @@ In either case (search or recommend), the output would look like this:
 }
 ```
 
-The groups will be ordered by the score of the top point in the group. Inside each group the points will be sorted too.
+The groups are ordered by the score of the top point in the group. Inside each group the points are sorted too.
 
 The `group_by` field does not accept the `[]` syntax to use whole arrays. However, if the field of a point is an array (e.g. `"document_id": ["a", "b"]`), the point can be included in multiple groups (e.g. `"document_id": "a"` and `document_id: "b"`).
 
