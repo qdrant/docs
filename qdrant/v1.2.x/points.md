@@ -198,7 +198,7 @@ PUT /collections/{collection_name}/points
             "id": 3,
             "payload": {"color": "blue"},
             "vector": [0.1, 0.1, 0.9]
-        },
+        }
     ]
 }
 ```
@@ -409,7 +409,7 @@ POST /collections/{collection_name}/points/delete
     "filter": {
         "must": [
             {
-                "key": "color"
+                "key": "color",
                 "match": {
                     "value": "red"
                 }
