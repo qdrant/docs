@@ -677,7 +677,7 @@ client.count(
 )
 ```
 
-Returns number of counts mathcing given filtering conditions:
+Returns number of counts matching given filtering conditions:
 
 ```json
 {
