@@ -252,7 +252,7 @@ Even with such a system, Qdrant ensures data consistency.
 
 *Available since v0.10.0*
 
-If the collection was created with multiple vectors, each vector data should be provided using the vectors name:
+If the collection was created with multiple vectors, each vector data can be provided using the vectors name:
 
 ```http
 PUT /collections/{collection_name}/points
@@ -298,6 +298,18 @@ client.upsert(
     ]
 )
 ```
+
+*Available since v1.2.0*
+
+Named vectors are optional. When uploading points, some vectors may be omitted.
+For example, you can upload one point with only the `image` vector and a second
+one with only the `text` vector.
+
+When uploading a point with an existing ID, the entire point is replaced.
+Unspecified vectors are set to null. In other words; when uploading such point,
+the existing point is deleted first, then it is inserted with just the specified
+vectors. To keep existing vectors unchanged and only update specified vectors,
+see [update vectors](#update-vectors).
 
 ## Modify points
 
