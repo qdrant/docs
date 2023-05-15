@@ -318,6 +318,59 @@ Currently, you would need to re-upload the point to modify the vector.
 
 The second is to modify the payload, for which there are several methods.
 
+### Update vectors
+
+*Available since v1.2.0*
+
+This method updates the specified vectors on the given points. Unspecified
+vectors are kept unchanged. All given points must exist.
+
+REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/update_vectors)):
+
+```http
+PUT /collections/{collection_name}/points/vectors
+
+{
+    "points": [
+        {
+            "id": 1,
+            "vector": {
+                "image": [0.1, 0.2, 0.3, 0.4]
+            }
+        },
+        {
+            "id": 2,
+            "vector": {
+                "text": [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2]
+            }
+        }
+    ]
+}
+```
+
+```python
+client.update_vectors(
+    collection_name="{collection_name}",
+    points=[
+        models.PointStruct(
+            id=1,
+            vector={
+                "image": [0.1, 0.2, 0.3, 0.4],
+            },
+        ),
+        models.PointStruct(
+            id=2,
+            vector={
+                "text": [0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2],
+            },
+        ),
+    ]
+)
+```
+
+To update points without keeping existing vectors intact, see [uploading
+points](#upload-points).
+
 ### Set payload
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/set_payload)):
