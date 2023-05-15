@@ -313,10 +313,8 @@ see [update vectors](#update-vectors).
 
 ## Modify points
 
-You can modify a point in two ways. The first is to modify the vector.
-Currently, you would need to re-upload the point to modify the vector.
-
-The second is to modify the payload, for which there are several methods.
+You can modify a point in two ways. You can either modify the vectors or modify
+the payload. For both are several methods.
 
 ### Update vectors
 
