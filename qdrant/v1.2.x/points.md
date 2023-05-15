@@ -371,6 +371,36 @@ client.update_vectors(
 To update points without keeping existing vectors intact, see [uploading
 points](#upload-points).
 
+### Delete vectors
+
+*Available since v1.2.0*
+
+This method deletes just the specified vectors from the given points. Other
+vectors are kept unchanged. Points are never deleted.
+
+REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/deleted_vectors)):
+
+```http
+POST /collections/{collection_name}/points/vectors/delete
+
+{
+    "points": [0, 1],
+    "vectors": ["text", "image"]
+}
+```
+
+```python
+client.delete_vectors(
+    collection_name="{collection_name}",
+    points_selector=models.PointIdsList(
+        points=[0, 3, 100],
+    ),
+    vectors=["text", "image"]
+)
+```
+
+To delete entire points, see [deleting points](#delete-points).
+
 ### Set payload
 
 REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/set_payload)):
