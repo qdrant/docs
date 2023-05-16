@@ -31,12 +31,13 @@ in handy during the transition.
 | **Query**      | **Search**     | Name of the method used to find the nearest neighbors for a given vector, possibly with some additional filters applied on top.                                                                                                                                                |
 | N/A            | **Scroll**     | Pinecone does not offer a way to iterate through all the vectors in a particular index. Qdrant has a `scroll` method to get them all without using search.                                                                                                                     |
 
-#### Known metadata limitations
+#### Known limitations
 
 1. Pinecone does not support arbitrary JSON metadata, but a flat structure with strings, numbers, booleans, or lists of strings used as values. Qdrant accepts any JSON object as a payload, even nested structures.
 2. NULL values are not supported in Pinecone metadata but are handled properly by Qdrant.
 3. The maximum size of Pinecone metadata is 40kb per vector. 
 4. Pinecone, unlike Qdrant, does not support geolocation and filtering based on geographical criteria.
+5. Qdrant allows storing multiple vectors per point, and those might be of a different dimensionality. Pinecone doesn't support anything similar.
 
 It is worth mentioning, that **Pinecone will automatically create metadata indexes for all the fields**. Qdrant assumes you know
 your data and your future queries best, so it's up to you to choose the fields to be indexed. Thus, **you need to explicitly define the payload indexes while using Qdrant**.
