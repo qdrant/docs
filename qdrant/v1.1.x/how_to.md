@@ -643,3 +643,11 @@ docker run -d -dlimit nofile=10000:10000 qdrant/qdrant:latest
 ```
 
 The command above will set both soft and hard limits to `10000`.
+
+If you are not using Docker, the following command will change the limit for the current user session:
+
+```bash
+ulimit -n 10000
+```
+
+Please note, the command should be executed before you run Qdrant server.
