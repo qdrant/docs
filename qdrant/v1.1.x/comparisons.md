@@ -41,8 +41,7 @@ in handy during the transition.
 4. Pinecone, unlike Qdrant, does not support geolocation and filtering based on geographical criteria.
 
 It is worth mentioning, that **Pinecone will automatically create metadata indexes for all the fields**. Qdrant assumes you know
-your data and your future queries best, so it's up to you to choose the fields to be indexed. Thus, **you need to explicitly 
-define the payload indexes while using Qdrant**.
+your data and your future queries best, so it's up to you to choose the fields to be indexed. Thus, **you need to explicitly define the payload indexes while using Qdrant**.
 
 ### Supported technologies
 
