@@ -3,14 +3,15 @@ title: Comparisons
 weight: 180
 ---
 
-Qdrant might just be the right vector search engine for you —  but before you even consider switching: every transition has its challenges, primarily understanding new terminologies and concepts. 
+Qdrant might just be the right vector search engine for you - but before you even consider switching: every transition has its challenges, primarily understanding new terminologies and concepts. 
 That's where this guide comes in. It succinctly breaks down the key differences between Qdrant and other vector databases and engines, paving the way for a smoother, more informed transition:
-| Feature | Pinecone | Qdrant | Comments |
-|---|---|---|---|
-| Deployment Modes | SaaS-only | Local, on-premise, Cloud | Qdrant offers more flexibility in deployment modes |
-| Supported Technologies | Python, JavaScript/TypeScript | Python, JavaScript/TypeScript, Rust, Go | Qdrant supports a broader range of programming languages |
-| Performance (e.g., query speed) | TnC Prohibit Benchmarking | [Benchmark result](/benchmarks/) | Compare performance metrics |
-| Pricing | Starts at $70/mo | Free and Open Source, Cloud starts at $25/mo | Pricing as on May 2023 |
+
+| Feature                         | Pinecone                      | Qdrant                                       | Comments                                                 |
+|---------------------------------|-------------------------------|----------------------------------------------|----------------------------------------------------------|
+| Deployment Modes                | SaaS-only                     | Local, on-premise, Cloud                     | Qdrant offers more flexibility in deployment modes       |
+| Supported Technologies          | Python, JavaScript/TypeScript | Python, JavaScript/TypeScript, Rust, Go      | Qdrant supports a broader range of programming languages |
+| Performance (e.g., query speed) | TnC Prohibit Benchmarking     | [Benchmark result](/benchmarks/)             | Compare performance metrics                              |
+| Pricing                         | Starts at $70/mo              | Free and Open Source, Cloud starts at $25/mo | Pricing as on May 2023                                   |
 
 ## Pinecone
 
