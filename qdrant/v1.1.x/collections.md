@@ -187,12 +187,12 @@ client.update_collection(
 )
 ```
 
-This command enables indexing for segments that have more than 10000 KB of vectors stored.
+This command enables indexing for segments that have more than 10000 kB of vectors stored.
 
 ## Collection info
 
 Qdrant allows determining the configuration parameters of an existing collection to better understand how the points are
-distributed and indexed. 
+distributed and indexed.
 
 ```http
 GET /collections/{collection_name}

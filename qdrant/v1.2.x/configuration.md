@@ -86,19 +86,17 @@ storage:
     # If not set, will be automatically selected considering the number of available CPUs.
     max_segment_size_kb: null
 
-    # Maximum size (in KiloBytes) of vectors to store in-memory per segment.
+    # Maximum size (in kilobytes) of vectors to store in-memory per segment.
     # Segments larger than this threshold will be stored as read-only memmaped file.
-    # To enable memmap storage, lower the threshold
-    # Note: 1Kb = 1 vector of size 256
+    # Memmap storage is disabled by default, to enable it, set this threshold to a reasonable value.
     # To explicitly disable mmap optimization, set to `0`.
-    # If not set, will be disabled by default.
+    # Note: 1Kb = 1 vector of size 256
     memmap_threshold_kb: null
 
-    # Maximum size (in KiloBytes) of vectors allowed for plain index.
-    # Default value based on https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md
-    # Note: 1Kb = 1 vector of size 256
+    # Maximum size (in kilobytes) of vectors allowed for plain index, exceeding this threshold will enable vector indexing
+    # Default value is 20,000, based on <https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md>.
     # To explicitly disable vector indexing, set to `0`.
-    # If not set, the default value will be used.
+    # Note: 1kB = 1 vector of size 256.
     indexing_threshold_kb: 20000
 
     # Interval between forced flushes.
@@ -230,7 +228,7 @@ tls:
 The configuration is validated on startup. If a configuration is loaded but
 validation fails, a warning is logged. E.g.:
 
-```
+```text
 WARN Settings configuration file has validation errors:
 WARN - storage.optimizers.memmap_threshold: value 123 invalid, must be 1000 or larger
 WARN - storage.hnsw_index.m: value 1 invalid, must be from 4 to 10000
