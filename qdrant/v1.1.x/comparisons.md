@@ -35,7 +35,7 @@ in handy during the transition.
 
 #### Known metadata limitations
 
-1. Pinecone does not support any JSON metadata, but a flat structure with strings, numbers, booleans, or lists of strings used as values. Qdrant accepts any JSON object as a payload, even nested structures.
+1. Pinecone does not support arbitrary JSON metadata, but a flat structure with strings, numbers, booleans, or lists of strings used as values. Qdrant accepts any JSON object as a payload, even nested structures.
 2. NULL values are not supported in Pinecone metadata but are handled properly by Qdrant.
 3. The maximum size of Pinecone metadata is 40kb per vector. 
 4. Pinecone, unlike Qdrant, does not support geolocation and filtering based on geographical criteria.
