@@ -3,10 +3,8 @@ title: Comparisons
 weight: 180
 ---
 
-Various vector libraries and databases are available, and you might have tried several before choosing Qdrant. 
-If you have experience with a different tool, then you probably also know some of the terms they use to describe 
-various concepts and some limitations. This document describes the most critical differences between Qdrant and 
-the alternatives to help you make your transition easier.
+Qdrant might just be the right vector search engine for you —  but before you even consider switching: every transition has its challenges, primarily understanding new terminologies and concepts. 
+That's where this guide comes in. It succinctly breaks down the key differences between Qdrant and other vector databases and engines, paving the way for a smoother, more informed transition:
 
 ## Pinecone
 
