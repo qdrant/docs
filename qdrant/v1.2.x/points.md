@@ -252,7 +252,7 @@ Even with such a system, Qdrant ensures data consistency.
 
 *Available since v0.10.0*
 
-If the collection was created with multiple vectors, each vector data can be provided using the vectors name:
+If the collection was created with multiple vectors, each vector data can be provided using the vector's name:
 
 ```http
 PUT /collections/{collection_name}/points
