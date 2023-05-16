@@ -599,7 +599,7 @@ Using an `offset` parameter, will require to internally retrieve `offset + limit
 
 It is possible to group results by a certain field. This is useful when you have multiple points for the same item, and you want to avoid redundancy of the same item in the results.
 
-For example, if you have a large document split into multiple chunks, and you want to search or recommend on a per-document basis, you can group the results by the document ID. 
+For example, if you have a large document split into multiple chunks, and you want to search or recommend on a per-document basis, you can group the results by the document ID.
 
 Consider having points with the following payloads:
 
@@ -611,15 +611,15 @@ Consider having points with the following payloads:
             "chunk_part": 0, 
             "document_id": "a",
         },
-        "vector": ...,
+        "vector": [0.91],
     },
     {
         "id": 1,
         "payload": {
             "chunk_part": 1, 
-            "document_id": "a",
+            "document_id": ["a", "b"],
         },
-        "vector": ...,
+        "vector": [0.8],
     },
     {
         "id": 2,
@@ -627,7 +627,7 @@ Consider having points with the following payloads:
             "chunk_part": 2, 
             "document_id": "a",
         },
-        "vector": ...,
+        "vector": [0.2],
     },
     {
         "id": 3,
@@ -635,7 +635,7 @@ Consider having points with the following payloads:
             "chunk_part": 0, 
             "document_id": 123,
         },
-        "vector": ...,
+        "vector": [0.79],
     },
     {
         "id": 4,
@@ -643,20 +643,20 @@ Consider having points with the following payloads:
             "chunk_part": 1, 
             "document_id": 123,
         },
-        "vector": ...,
+        "vector": [0.75],
     },
     {
         "id": 5,
         "payload": {
             "chunk_part": 0, 
-            "document_id": 2.42,
+            "document_id": -10,
         },
-        "vector": ...,
+        "vector": [0.6],
     },
 }
 ```
 
-With the ***groups*** API, you will be able to get the top *N* points for each document, assuming that the payload of the points contains the document ID.
+With the ***groups*** API, you will be able to get the best *N* points for each document, assuming that the payload of the points contains the document ID. Of course there will be times where the best *N* points cannot be fulfilled due to lack of points or a big distance with respect to the query. In every case, the `group_size` is a best-effort parameter, akin to the `limit` parameter.
 
 ### Search groups
 
@@ -665,12 +665,12 @@ POST /collections/{collection_name}/points/search/groups
 
 {
     // Same as in the regular search API
-    "vector": [0.2, 0.3, 0.1, 0.5],
+    "vector": [1.1],
     ...,
 
     // Grouping parameters
     "group_by": "document_id",  // Path of the field to group by
-    "limit": 3,                 // Max amount of groups
+    "limit": 4,                 // Max amount of groups
     "group_size": 2,            // Max amount of points per group
 }
 ```
@@ -680,12 +680,12 @@ client.search_groups(
     collection_name="{collection_name}",
 
     # Same as in the regular search() API
-    vector=[0.2, 0.3, 0.1, 0.5],
+    vector=[1.1],
     ...,
     
     # Grouping parameters
     group_by="document_id", # Path of the field to group by
-    limit=3,                # Max amount of groups
+    limit=4,                # Max amount of groups
     group_size=2,           # Max amount of points per group
 )
 ```
@@ -703,7 +703,7 @@ POST /collections/{collection_name}/points/recommend/groups
 
     // Grouping parameters
     "group_by": "document_id",  // Path of the field to group by
-    "limit": 3,                 // Max amount of groups
+    "limit": 4,                 // Max amount of groups
     "group_size": 2,            // Max amount of points per group
 }
 ```
@@ -719,7 +719,7 @@ client.recommend_groups(
 
     # Grouping parameters
     group_by="document_id", # Path of the field to group by
-    limit=3,                # Max amount of groups
+    limit=4,                # Max amount of groups
     group_size=2,           # Max amount of points per group
 )
 ```
@@ -734,23 +734,29 @@ In either case (search or recommend), the output would look like this:
                 "group_id": { "document_id": "a" },
                 "hits": [
                     { "id": 0, "score": 0.91 },
-                    { "id": 1, "score": 0.71 },
+                    { "id": 1, "score": 0.85 },
+                ]
+            },
+            {
+                "group_id": { "document_id": "b"},
+                "hits": [
+                    { "id": 1, "score": 0.85 },
                 ]
             },
             {
                 "group_id": { "document_id": 123},
                 "hits": [
-                    { "id": 3, "score": 0.81 },
-                    { "id": 4, "score": 0.73 }
+                    { "id": 3, "score": 0.79 },
+                    { "id": 4, "score": 0.75 }
                 ]
             },
             {
-                "group_id": { "document_id": 2.42},
+                "group_id": { "document_id": -10},
                 "hits": [
-                    { "id": 5, "score": 0.71 },
+                    { "id": 5, "score": 0.6 }
                 ]
             }
-        ],
+        ]
     },
     "status": "ok",
     "time": 0.001
@@ -759,9 +765,9 @@ In either case (search or recommend), the output would look like this:
 
 The groups are ordered by the score of the top point in the group. Inside each group the points are sorted too.
 
-The `group_by` field does not accept the `[]` syntax to use whole arrays. However, if the field of a point is an array (e.g. `"document_id": ["a", "b"]`), the point can be included in multiple groups (e.g. `"document_id": "a"` and `document_id: "b"`).
+If the `group_by` field of a point is an array (e.g. `"document_id": ["a", "b"]`), the point can be included in multiple groups (e.g. `"document_id": "a"` and `document_id: "b"`).
 
 **Limitations**:
 
-* Only string and numeric fields are supported for grouping. Payload fields with other types will be ignored.
-* Pagination is not enabled when using **groups**, so the `offset` parameter is not allowed.
+* Only string and integer (signed and unsigned) fields are supported for the `group_by` parameter. Payload fields with other types will be ignored.
+* At the moment, pagination is not enabled when using **groups**, so the `offset` parameter is not allowed.
