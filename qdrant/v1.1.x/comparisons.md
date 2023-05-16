@@ -3,7 +3,7 @@ title: Comparisons
 weight: 180
 ---
 
-Qdrant might just be the right vector search engine for you —  but before you even consider switching: every transition has its challenges, primarily understanding new terminologies and concepts. 
+Qdrant might just be the right vector search engine for you - but before you even consider switching: every transition has its challenges, primarily understanding new terminologies and concepts. 
 That's where this guide comes in. It succinctly breaks down the key differences between Qdrant and other vector databases and engines, paving the way for a smoother, more informed transition:
 
 ## Pinecone
@@ -62,6 +62,7 @@ Using any of those libraries makes it easier to experiment with different vector
 
 ### Comparison to Qdrant Cloud
 
-Both Pinecone and Qdrant Cloud offer a free cloud tier to check out the services, even without providing the credit card details.
-Each free tier should be enough to keep around 1M of 768-dimensional vectors, but it may vary depending on the additional attributes
-stored with vectors. 
+Both Pinecone and Qdrant Cloud offer a free cloud tier to check out the services, even without providing credit card details.
+Each free tier should be enough to keep around 1M of 768-dimensional vectors, but it may vary depending on the additional attributes 
+stored with vectors. With Qdrant Cloud, however, you can experiment with different models as you may create several collections 
+or keep multiple vectors per each point. That means Qdrant Cloud allows you building several small demos, even on a free tier.
