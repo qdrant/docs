@@ -625,3 +625,29 @@ In this case, you can set `indexing_threshold_kb=5000` to start building index e
 
 
 <!--- ## Move data between clusters -->
+
+## Solve some common errors
+
+### Too many files open (OS error 24)
+
+Each collection segment needs some files to be open. At some point you may encounter the following errors in your server log:
+
+```
+Error: Too many files open (OS error 24)
+```
+
+In such a case you may need to increase the limit of the open files. It might be done, for example, while you launch the Docker container:
+
+```bash
+docker run -d -dlimit nofile=10000:10000 qdrant/qdrant:latest
+```
+
+The command above will set both soft and hard limits to `10000`.
+
+If you are not using Docker, the following command will change the limit for the current user session:
+
+```bash
+ulimit -n 10000
+```
+
+Please note, the command should be executed before you run Qdrant server.
