@@ -305,11 +305,10 @@ Named vectors are optional. When uploading points, some vectors may be omitted.
 For example, you can upload one point with only the `image` vector and a second
 one with only the `text` vector.
 
-When uploading a point with an existing ID, the entire point is replaced.
-Unspecified vectors are set to null. In other words; when uploading such point,
-the existing point is deleted first, then it is inserted with just the specified
-vectors. To keep existing vectors unchanged and only update specified vectors,
-see [update vectors](#update-vectors).
+When uploading a point with an existing ID, the existing point is deleted first, 
+then it is inserted with just the specified vectors. In other words, the entire 
+point is replaced, and any unspecified vectors are set to null. To keep existing 
+vectors unchanged and only update specified vectors, see [update vectors](#update-vectors).
 
 ## Modify points
 
@@ -366,7 +365,7 @@ client.update_vectors(
 )
 ```
 
-To update points without keeping existing vectors intact, see [uploading
+To update points and replace all of its vectors, see [uploading
 points](#upload-points).
 
 ### Delete vectors
@@ -382,7 +381,7 @@ REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#operation/de
 POST /collections/{collection_name}/points/vectors/delete
 
 {
-    "points": [0, 1],
+    "points": [0, 3, 100],
     "vectors": ["text", "image"]
 }
 ```
