@@ -660,6 +660,8 @@ With the ***groups*** API, you will be able to get the best *N* points for each 
 
 ### Search groups
 
+REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#tag/points/operation/search_point_groups)):
+
 ```http
 POST /collections/{collection_name}/points/search/groups
 
@@ -691,6 +693,8 @@ client.search_groups(
 ```
 
 ### Recommend groups
+
+REST API ([Schema](https://qdrant.github.io/qdrant/redoc/index.html#tag/points/operation/recommend_point_groups)):
 
 ```http
 POST /collections/{collection_name}/points/recommend/groups
