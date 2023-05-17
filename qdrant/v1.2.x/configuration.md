@@ -90,12 +90,15 @@ storage:
     # Segments larger than this threshold will be stored as read-only memmaped file.
     # To enable memmap storage, lower the threshold
     # Note: 1Kb = 1 vector of size 256
-    # If not set, mmap will not be used.
+    # To explicitly disable mmap optimization, set to `0`.
+    # If not set, will be disabled by default.
     memmap_threshold_kb: null
 
     # Maximum size (in KiloBytes) of vectors allowed for plain index.
     # Default value based on https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md
     # Note: 1Kb = 1 vector of size 256
+    # To explicitly disable vector indexing, set to `0`.
+    # If not set, the default value will be used.
     indexing_threshold_kb: 20000
 
     # Interval between forced flushes.
@@ -158,6 +161,17 @@ service:
   # Check user HTTPS client certificate against CA file specified in tls config
   verify_https_client_certificate: false
 
+  # Set an api-key.
+  # If set, all requests must include a header with the api-key.
+  # example header: `api-key: <API-KEY>`
+  #
+  # If you enable this you should also enable TLS.
+  # (Either above or via an external service like nginx.)
+  # Sending an api-key over an unencrypted channel is insecure.
+  #
+  # Uncomment to enable.
+  # api_key: your_secret_api_key_here
+
 cluster:
   # Use `enabled: true` to run Qdrant in distributed deployment mode
   enabled: false
@@ -203,6 +217,11 @@ tls:
   #
   # Required if cluster.p2p.enable_tls is true.
   ca_cert: ./tls/cacert.pem
+
+  # TTL, in seconds, to re-load certificate from disk. Useful for certificate rotations,
+  # Only works for HTTPS endpoints, gRPC endpoints (including intra-cluster communication)
+  # doesn't support certificate re-load
+  cert_ttl: 3600
 ```
 
 ## Validation
