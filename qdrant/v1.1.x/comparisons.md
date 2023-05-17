@@ -45,6 +45,7 @@ in handy during the transition.
 3. The maximum size of Pinecone metadata is 40kb per vector. 
 4. Pinecone, unlike Qdrant, does not support geolocation and filtering based on geographical criteria.
 5. Qdrant allows storing multiple vectors per point, and those might be of a different dimensionality. Pinecone doesn't support anything similar.
+6. Vectors in Pinecone are mandatory for each point. Qdrant supports optional vectors.
 
 It is worth mentioning, that **Pinecone will automatically create metadata indexes for all the fields**. Qdrant assumes you know
 your data and your future queries best, so it's up to you to choose the fields to be indexed. Thus, **you need to explicitly define the payload indexes while using Qdrant**.
