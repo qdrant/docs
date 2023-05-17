@@ -100,7 +100,7 @@ for details on how to secure your instance.</aside>
 
 ## Python client
 
-In addition to the service itself, Qdrant has a distinct python client, which has some additional features compared to clients generated from OpenAPI directly.
+In addition to the service itself, Qdrant has a distinct python client, which has some additional features compared to [clients](https://qdrant.tech/documentation/quick_start/#clients) generated from OpenAPI directly.
 
 To install this client, just run the following command:
 
