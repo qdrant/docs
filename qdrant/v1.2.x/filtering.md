@@ -528,16 +528,18 @@ For instance, given two points with the following payload:
 [
   {
     "id": 1,
-    "data": [
-      { "a": 2, "b": 1 },
-      { "a": 1, "b": 2 }
+    "dinosaur": "t-rex",
+    "diet": [
+      { "food": "leaves", "likes": false},
+      { "food": "meat", "likes": true}
     ]
   },
   {
     "id": 2,
-    "data": [
-      { "a": 1, "b": 1 },
-      { "a": 2, "b": 2 }
+    "dinosaur": "diplodocus",
+    "diet": [
+      { "food": "leaves", "likes": true},
+      { "food": "meat", "likes": false}
     ]
   }
 ]
@@ -552,15 +554,15 @@ POST /collections/{collection_name}/points/scroll
     "filter": {
         "must": [
             {
-                "key": "data[].a",
+                "key": "diet[].food",
                   "match": {
-                    "value": 1
+                    "value": "meat"
                 }
             },
             {
-                "key": "data[].b",
+                "key": "diet[].likes",
                   "match": {
-                    "value": 2
+                    "value": true
                 }
             }
         ]
@@ -574,12 +576,12 @@ client.scroll(
     scroll_filter=models.Filter(
         must=[
             models.FieldCondition(
-                key="data[].a",
-                match=models.MatchValue(value=1")
+                key="diet[].food",
+                match=models.MatchValue(value="meat")
             ),
             models.FieldCondition(
-                key="data[].b",
-                match=models.MatchValue(value=2)
+                key="diet[].likes",
+                match=models.MatchValue(value=True)
             ),
         ],
     ),
@@ -588,8 +590,8 @@ client.scroll(
 
 This happens because both points are matching the two conditions:
 
-- id: 1 matches a=1 on data[1].a and b=2 on data[1].b
-- id: 2 matches a=1 on data[0].a and b=2 on data[1].b
+- the "t-rex" matches food=meat on diet[1].food and likes=true on diet[1].likes
+- the "diplodocus" matches food=meat on diet[1].food and likes=true on diet[0].likes
 
 To retrieve only the points which are matching the conditions on an array element basis, that is the point with id 1 in this example, you would need to use a nested object filter.
 
@@ -607,19 +609,19 @@ POST /collections/{collection_name}/points/scroll
         "must": [
             "nested": {
                 {
-                    "key": "data",
+                    "key": "diet",
                     "filter":{
                         "must": [
                             {
-                                "key": "a",
+                                "key": "food",
                                 "match": {
-                                    "value": 1
+                                    "value": "meat"
                                 }
                             },
                             {
-                                "key": "b",
+                                "key": "likes",
                                 "match": {
-                                    "value": 2
+                                    "value": true
                                 }
                             }
                         ]
@@ -638,16 +640,16 @@ client.scroll(
         must=[
             models.NestedContainer(
                 nested=models.NestedCondition(
-                    key="data",
+                    key="diet",
                     filter=(
                         must=[
                             models.FieldCondition(
-                                key="a",
-                                match=models.MatchValue(value=1")
+                                key="food",
+                                match=models.MatchValue(value="meat")
                             ),
                             models.FieldCondition(
-                                key="b",
-                                match=models.MatchValue(value=2)
+                                key="likes",
+                                match=models.MatchValue(value=True)
                             ),
                         ]
                     )
@@ -676,19 +678,19 @@ POST /collections/{collection_name}/points/scroll
         "must": [
             "nested": {
                 {
-                    "key": "data",
+                    "key": "diet",
                     "filter":{
                         "must": [
                             {
-                                "key": "a",
+                                "key": "food",
                                 "match": {
-                                    "value": 1
+                                    "value": "meat"
                                 }
                             },
                             {
-                                "key": "b",
+                                "key": "likes",
                                 "match": {
-                                    "value": 2
+                                    "value": true
                                 }
                             }
                         ]
