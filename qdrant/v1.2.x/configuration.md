@@ -224,6 +224,53 @@ tls:
   cert_ttl: 3600
 ```
 
+## Authentication
+
+*Available since v1.2.0*
+
+Qdrant supports a simple form of client authentication using a static API key.
+This can be used to secure your server.
+
+To enable API key based authentication you must specify a key in the
+configuration:
+
+```yaml
+service:
+  # Set an api-key.
+  # If set, all requests must include a header with the api-key.
+  # example header: `api-key: <API-KEY>`
+  #
+  # If you enable this you should also enable TLS.
+  # (Either above or via an external service like nginx.)
+  # Sending an api-key over an unencrypted channel is insecure.
+  api_key: your_secret_api_key_here
+```
+
+The API key then needs to be present in all REST or gRPC requests to the Qdrant cloud cluster.
+All official Qdrant clients for Python, Go, and Rust support the API key parameter.
+
+<!---
+Examples with clients
+-->
+
+```python
+from qdrant_client import QdrantClient
+
+qdrant_client = QdrantClient(
+    "xyz-example.eu-central.aws.staging-cloud.qdrant.io", 
+    prefer_grpc=True,
+    api_key="your_secret_api_key_here",
+)
+```
+
+```bash
+curl \
+  -X GET https://xyz-example.eu-central.aws.staging-cloud.qdrant.io:6333 \
+  --header 'api-key: your_secret_api_key_here'
+```
+
+<aside role="alert">TLS must be used to prevent leaking the API key over an unencrypted connection.</aside>
+
 ## Validation
 
 *Available since v1.1.1*
