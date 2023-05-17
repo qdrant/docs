@@ -529,7 +529,7 @@ For instance, given two points with the following payload:
   {
     "id": 1,
     "data": [
-      { "a": 1, "b": 1 },
+      { "a": 2, "b": 1 },
       { "a": 1, "b": 2 }
     ]
   },
@@ -586,9 +586,12 @@ client.scroll(
 )
 ```
 
-This happens because both points are matching the conditions.
+This happens because both points are matching the two conditions:
 
-To retrieve only the point with id 1, you would need to use a nested object filter.
+- id: 1 matches a=1 on data[1].a and b=2 on data[1].b
+- id: 2 matches a=1 on data[0].a and b=2 on data[1].b
+
+To retrieve only the points which are matching the conditions on an array element basis, that is the point with id 1 in this example, you would need to use a nested object filter.
 
 Nested object filters allow arrays of objects to be queried independently of each other.
 
