@@ -592,7 +592,9 @@ To retrieve only the point with id 1, you would need to use a nested object filt
 
 Nested object filters allow arrays of objects to be queried independently of each other.
 
-It is achieved by using the `nested` condition type formed by a payload path to focus on and a filter to apply.
+It is achieved by using the `nested` condition type formed by a payload key to focus on and a filter to apply.
+
+The key is expected to point to an array and can be used with or without the bracket notation. ("data" vs "data[]").
 
 ```http
 POST /collections/{collection_name}/points/scroll
