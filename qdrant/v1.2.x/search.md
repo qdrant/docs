@@ -735,27 +735,27 @@ In either case (search or recommend), the output would look like this:
     "result": {
         "groups": [
             {
-                "group_id": { "document_id": "a" },
+                "id": "a",
                 "hits": [
                     { "id": 0, "score": 0.91 },
                     { "id": 1, "score": 0.85 },
                 ]
             },
             {
-                "group_id": { "document_id": "b"},
+                "id": "b",
                 "hits": [
                     { "id": 1, "score": 0.85 },
                 ]
             },
             {
-                "group_id": { "document_id": 123},
+                "id": 123,
                 "hits": [
                     { "id": 3, "score": 0.79 },
                     { "id": 4, "score": 0.75 }
                 ]
             },
             {
-                "group_id": { "document_id": -10},
+                "id": -10,
                 "hits": [
                     { "id": 5, "score": 0.6 }
                 ]
