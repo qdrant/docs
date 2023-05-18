@@ -46,8 +46,19 @@ Please refer to the [Quantization Tips](#quantization-tips) section for more inf
 
 ## Product Quantization
 
-Currently, Work-in-progress.
+*Available in Qdrant since v1.2.0*
 
+Product quantization is a method of compressing vectors to minimize their memory usage by dividing them into 
+chunks and quantizing each segment individually.
+Each chunk is approximated by a centroid index that represents the original vector component.
+The positions of the centroids are determined through the utilization of a clustering algorithm such as k-means.
+For now, Qdrant uses only 256 centroids, so each centroid index can be represented by a single byte.
+
+Product quantization can compress by a more prominent factor than a scalar one.
+But there are some tradeoffs. Product quantization distance calculation is not SIMD-friendly, so it is slower than scalar quantization.
+Also, product quantization has a loss of accuracy, so it is recommended to use it only for high-dimensional vectors.
+
+Please refer to the [Quantization Tips](#quantization-tips) section for more information on how to optimize the quantization parameters for your use case.
 
 ## Setting up Quantization in Qdrant
 
@@ -112,6 +123,56 @@ For instance, if you specify `0.99` as the quantile, 1% of extreme values will b
 Using quantiles lower than `1.0` might be useful if there are outliers in your vector components.
 This parameter only affects the resulting precision and not the memory footprint.
 It might be worth tuning this parameter if you experience a significant decrease in search quality.
+
+`always_ram` - whether to keep quantized vectors always cached in RAM or not. By default, quantized vectors are loaded in the same way as the original vectors.
+However, in some setups you might want to keep quantized vectors in RAM to speed up the search process.
+
+In this case, you can set `always_ram` to `true` to store quantized vectors in RAM.
+
+### Setting up Product Quantization
+
+To enable product quantization, you need to specify the quantization parameters in the `quantization_config` section of the collection configuration.
+
+```http
+PUT /collections/{collection_name}
+
+{
+    "vectors": {
+      "size": 768,
+      "distance": "Cosine"
+    },
+    "quantization_config": {
+        "product": {
+            "compression": "x16",
+            "always_ram": true
+        }
+    }
+}
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient("localhost", port=6333)
+
+client.recreate_collection(
+    collection_name="{collection_name}",
+    vectors_config=models.VectorParams(size=768, distance=models.Distance.COSINE),
+    quantization_config=models.ProductQuantization(
+        scalar=models.ProductQuantizationConfig(
+            compression=models.CompressionRatio.X16,
+            always_ram=True,
+        ),
+    ),
+)
+```
+
+There are 2 parameters that you can specify in the `quantization_config` section:
+
+`compression` - compression ratio.
+Compression ratio represents the size of the quantized vector in bytes divided by the size of the original vector in bytes.
+In this xase, the quantized vector will be 16 times smaller than the original vector.
 
 `always_ram` - whether to keep quantized vectors always cached in RAM or not. By default, quantized vectors are loaded in the same way as the original vectors.
 However, in some setups you might want to keep quantized vectors in RAM to speed up the search process.
@@ -206,7 +267,7 @@ client.search(
 )
 ```
 
-- **Adjust the quantile parameter**: The quantile parameter determines the quantization bounds.
+- **Adjust the quantile parameter**: The quantile parameter in scalar quantization determines the quantization bounds.
 By setting it to a value lower than 1.0, you can exclude extreme values (outliers) from the quantization bounds. 
 For example, if you set the quantile to 0.99, 1% of the extreme values will be excluded.
 By adjusting the quantile, you find an optimal value that will provide the best search quality for your collection. 
