@@ -175,9 +175,7 @@ Compression ratio represents the size of the quantized vector in bytes divided b
 In this xase, the quantized vector will be 16 times smaller than the original vector.
 
 `always_ram` - whether to keep quantized vectors always cached in RAM or not. By default, quantized vectors are loaded in the same way as the original vectors.
-However, in some setups you might want to keep quantized vectors in RAM to speed up the search process.
-
-In this case, you can set `always_ram` to `true` to store quantized vectors in RAM.
+However, in some setups you might want to keep quantized vectors in RAM to speed up the search process. Then set `always_ram` to `true`.
 
 ### Searching with Quantization
 
