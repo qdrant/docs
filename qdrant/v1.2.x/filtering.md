@@ -1,6 +1,6 @@
 ---
 title: Filtering
-weight: 60
+weight: 80
 ---
 
 Qdrant allows you to set the conditions to be used when searching or retrieving points.

@@ -1,6 +1,6 @@
 ---
 title: Payload
-weight: 40
+weight: 50
 ---
 
 One of the significant features of Qdrant is the ability to store additional information along with vectors.

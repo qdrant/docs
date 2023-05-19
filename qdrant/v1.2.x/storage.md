@@ -1,6 +1,6 @@
 ---
 title: Storage
-weight: 80
+weight: 100
 ---
 
 All data within one collection is divided into segments.
