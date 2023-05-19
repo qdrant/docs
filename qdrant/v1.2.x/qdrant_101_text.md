@@ -30,7 +30,7 @@ Vector databases shine in many applications like semantic search and recommendat
 By the end of this tutorial, you will be able
 - Describe what are vector databases and what are they used for.
 - Create, update, and query collections of vectors using Qdrant.
-- Extract vectors from text text data.
+- Extract vectors from text data.
 - Conduct semantic search over a corpus of documents using Qdrant.
 
 ## 2. What is Qdrant?
