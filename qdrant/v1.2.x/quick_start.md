@@ -27,7 +27,7 @@ Now Qdrant should be accessible at [localhost:6333](http://localhost:6333)
 
 <aside role="status">Qdrant has no authentication by default and new instances
 are open to everyone. See
-[Authentication](https://qdrant.tech/documentation/configuration/#authentication)
+[Authentication](https://qdrant.tech/documentation/security/#authentication)
 for details on how to secure your instance.</aside>
 
 ### Local mode

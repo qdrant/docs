@@ -95,7 +95,7 @@ See the comments in the [configuration file itself](https://github.com/qdrant/qd
 
 <aside role="status">Qdrant has no authentication by default and new instances
 are open to everyone. See
-[Authentication](https://qdrant.tech/documentation/configuration/#authentication)
+[Authentication](https://qdrant.tech/documentation/security/#authentication)
 for details on how to secure your instance.</aside>
 
 ## Python client
