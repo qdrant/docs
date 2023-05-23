@@ -172,7 +172,7 @@ There are 2 parameters that you can specify in the `quantization_config` section
 
 `compression` - compression ratio.
 Compression ratio represents the size of the quantized vector in bytes divided by the size of the original vector in bytes.
-In this xase, the quantized vector will be 16 times smaller than the original vector.
+In this case, the quantized vector will be 16 times smaller than the original vector.
 
 `always_ram` - whether to keep quantized vectors always cached in RAM or not. By default, quantized vectors are loaded in the same way as the original vectors.
 However, in some setups you might want to keep quantized vectors in RAM to speed up the search process. Then set `always_ram` to `true`.
