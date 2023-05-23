@@ -36,11 +36,12 @@ You can optionally provide the error message that should be used for error respo
 Recovery mode can help in situations where Qdrant fails to start repeatedly.
 When starting in recovery mode, Qdrant only loads collection metadata to prevent
 going out of memory. This allows you to resolve out of memory situations, for
-example, by removing a collection. After resolving Qdrant can be restarted
+example, by deleting a collection. After resolving Qdrant can be restarted
 normally to continue operation.
 
-In recovery mode, collection operations are limited to removing a collection.
-That is because only collection metadata is loaded during recovery.
+In recovery mode, collection operations are limited to
+[deleting](https://qdrant.tech/documentation/collections/#delete-collection) a
+collection. That is because only collection metadata is loaded during recovery.
 
 To enable recovery mode with the Qdrant Docker image you must set the
 environment variable `QDRANT_ALLOW_RECOVERY_MODE=true`. The container will
