@@ -231,8 +231,8 @@ tls:
 Qdrant supports a simple form of client authentication using a static API key.
 This can be used to secure your instance.
 
-To enable API key based authentication you must specify a key in the
-configuration:
+To enable API key based authentication in your own Qdrant instance you must
+specify a key in the configuration:
 
 ```yaml
 service:
@@ -247,6 +247,10 @@ service:
 ```
 
 <aside role="alert">TLS must be used to prevent leaking the API key over an unencrypted connection.</aside>
+
+For using API key based authentication in Qdrant cloud see the cloud
+[Authentication](https://qdrant.tech/documentation/cloud/cloud-quick-start/#authentication)
+section.
 
 The API key then needs to be present in all REST or gRPC requests to your instance.
 All official Qdrant clients for Python, Go, and Rust support the API key parameter.
