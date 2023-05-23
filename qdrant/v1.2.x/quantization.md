@@ -3,10 +3,6 @@ title: Quantization
 weight: 120
 ---
 
-<!---What is quantization and what it used for.
-
-What are tradeoffs of quantization.-->
-
 Quantization is an optional feature in Qdrant that enables efficient storage and search of high-dimensional vectors.
 By transforming original vectors into a new representations, quantization compresses data while preserving close to original relative distances between vectors.
 Different quantization methods have different mechanics and tradeoffs. We will cover them in this section. 
@@ -168,7 +164,7 @@ client.recreate_collection(
 )
 ```
 
-There are 2 parameters that you can specify in the `quantization_config` section:
+There are two parameters that you can specify in the `quantization_config` section:
 
 `compression` - compression ratio.
 Compression ratio represents the size of the quantized vector in bytes divided by the size of the original vector in bytes.
@@ -226,7 +222,6 @@ By default, rescore is enabled.
 
 
 ## Quantization tips
-
 
 #### Accuracy tuning
 
