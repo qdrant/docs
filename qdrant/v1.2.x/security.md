@@ -74,8 +74,8 @@ First make sure you have a certificate and private key for TLS, usually in
 [mkcert](https://github.com/FiloSottile/mkcert#readme) to generate a self signed
 certificate.
 
-To enable TLS, set the following properties in the Qdrant configuration and
-restart:
+To enable TLS, set the following properties in the Qdrant configuration with the
+correct paths and restart:
 
 ```yaml
 service:
