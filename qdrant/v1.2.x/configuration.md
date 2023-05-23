@@ -246,6 +246,8 @@ service:
   api_key: your_secret_api_key_here
 ```
 
+<aside role="alert">TLS must be used to prevent leaking the API key over an unencrypted connection.</aside>
+
 The API key then needs to be present in all REST or gRPC requests to your instance.
 All official Qdrant clients for Python, Go, and Rust support the API key parameter.
 
@@ -253,23 +255,21 @@ All official Qdrant clients for Python, Go, and Rust support the API key paramet
 Examples with clients
 -->
 
+```bash
+curl \
+  -X GET https://localhost:6333 \
+  --header 'api-key: your_secret_api_key_here'
+```
+
 ```python
 from qdrant_client import QdrantClient
 
 qdrant_client = QdrantClient(
-    "xyz-example.eu-central.aws.staging-cloud.qdrant.io", 
-    prefer_grpc=True,
+    url="https://localhost",
+    port=6333,
     api_key="your_secret_api_key_here",
 )
 ```
-
-```bash
-curl \
-  -X GET https://xyz-example.eu-central.aws.staging-cloud.qdrant.io:6333 \
-  --header 'api-key: your_secret_api_key_here'
-```
-
-<aside role="alert">TLS must be used to prevent leaking the API key over an unencrypted connection.</aside>
 
 ## Validation
 
