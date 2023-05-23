@@ -3,10 +3,10 @@ title: Filtering
 weight: 60
 ---
 
-Qdrant allows you to set the conditions to be used when searching or retrieving points.
-You can impose conditions both on the [payload](../payload) and on, for example, the `id` of the point.
+With Qdrant, you can set conditions when searching or retrieving points.
+For example, you can impose conditions on both the [payload](../payload) and the `id` of the point.
 
-The use of additional conditions is important when, for example, it is impossible to express all the features of the object in the embedding.
+Setting additional conditions is important when it is impossible to express all the features of the object in the embedding.
 Examples include a variety of business requirements: stock availability, user location, or desired price range.
 
 ## Filtering clauses
