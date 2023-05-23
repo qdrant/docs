@@ -599,7 +599,7 @@ Nested object filters allow arrays of objects to be queried independently of eac
 
 It is achieved by using the `nested` condition type formed by a payload key to focus on and a filter to apply.
 
-The key is expected to point to an array and can be used with or without the bracket notation. ("data" vs "data[]").
+The key is should point to an array of objects and can be used with or without the bracket notation. ("data" vs "data[]").
 
 ```http
 POST /collections/{collection_name}/points/scroll
@@ -662,11 +662,10 @@ client.scroll(
 
 The matching logic is modified to be applied at the level of an array element within the payload.
 
-It can be used with `must`, `must_not` and `should` with the following semantic:
+Nested filters work in the same was as if the nested filter was applied to a single element of the array at a time.
+Parent document is considered to match the condition if at least one element of the array matches the nested filter.
 
-- nested `must`: at least a single element matches all conditions.
-- nested `must_not`: at least a single element does not match any of the conditions.
-- nested `should`: at least a single element matches at least one of the conditions (equivalent to not using `nested`).
+** Limitations **
 
 The `has id` condition is not supported within the nested object filter. If you need it, place it in an adjacent `must` clause.
 
@@ -701,6 +700,34 @@ POST /collections/{collection_name}/points/scroll
         ]
     }
 }
+```
+
+```python
+client.scroll(
+    collection_name="{collection_name}",
+    scroll_filter=models.Filter(
+        must=[
+            models.NestedContainer(
+                nested=models.NestedCondition(
+                    key="diet",
+                    filter=(
+                        must=[
+                            models.FieldCondition(
+                                key="food",
+                                match=models.MatchValue(value="meat")
+                            ),
+                            models.FieldCondition(
+                                key="likes",
+                                match=models.MatchValue(value=True)
+                            ),
+                        ]
+                    )
+                )
+            )
+            models.HasIdCondition(has_id=[1]),
+        ],
+    ),
+)
 ```
 
 ### Full Text Match
