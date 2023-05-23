@@ -44,9 +44,9 @@ In recovery mode, collection operations are limited to
 collection. That is because only collection metadata is loaded during recovery.
 
 To enable recovery mode with the Qdrant Docker image you must set the
-environment variable `QDRANT_ALLOW_RECOVERY_MODE=true`. The container will
-restart in recovery mode if initialisation fails. This behavior is disabled by
-default.
+environment variable `QDRANT_ALLOW_RECOVERY_MODE=true`. The container will try
+to start normally first, and restarts in recovery mode if initialisation fails
+due to an out of memory error. This behavior is disabled by default.
 
 If using a Qdrant binary, recovery mode can be enabled by setting a recovery
 message in an environment variable, such as
