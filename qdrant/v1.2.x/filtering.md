@@ -357,6 +357,41 @@ FieldCondition(
 
 In this example, the condition will be satisfied if the stored value is either `black` or `yellow`.
 
+If the stored value is an array, it should have at least one value matching any of the given values. E.g. if the stored value is `["black", "green"]`, the condition will be satisfied, because `"black"` is in `["black", "yellow"]`.
+
+
+### Match Except
+
+_Available since version 1.2.0_
+
+In case you want to check if the stored value is not one of multiple values, you can use the Match Except condition.
+Match Except works as a logical NOR for the given values.
+It can also be described as a `NOT IN` operator.
+
+You can apply it to [keyword](../payload/#keyword) and [integer](../payload/#integer) payloads.
+
+Example:
+
+```json
+{
+  "key": "color",
+  "match": {
+    "except": ["black", "yellow"]
+  }
+}
+```
+
+```python
+FieldCondition(
+    key="color",
+    match=models.MatchExcept(**{"except": ["black", "yellow"]}),
+)
+```
+
+In this example, the condition will be satisfied if the stored value is neither `black` nor `yellow`.
+
+If the stored value is an array, it should have at least one value not matching any of the given values. E.g. if the stored value is `["black", "green"]`, the condition will be satisfied, because `"green"` does not match `"black"` nor `"yellow"`.
+
 ### Nested key
 
 _Available since version 1.1.0_
