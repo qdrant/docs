@@ -79,7 +79,7 @@ correct paths and restart:
 
 ```yaml
 service:
-  # Use HTTPS for the REST API
+  # Enable HTTPS for the REST and gRPC API
   enable_tls: true
 
 # TLS configuration.
@@ -90,6 +90,16 @@ tls:
 
   # Server private key file
   key: ./tls/key.pem
+```
+
+For internal communication when running cluster mode, TLS can be enabled with:
+
+```yaml
+cluster:
+  # Configuration of the inter-cluster communication
+  p2p:
+    # Use TLS for communication between peers
+    enable_tls: true
 ```
 
 With TLS enabled, you must start using HTTPS connections. For example:
