@@ -384,7 +384,7 @@ Example:
 ```python
 FieldCondition(
     key="color",
-    match=models.MatchExcept(except_=["black", "yellow"]),
+    match=models.MatchExcept(**{"except": ["black", "yellow"]}),
 )
 ```
 
