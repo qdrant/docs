@@ -226,7 +226,7 @@ tls:
 
 ## Authentication
 
-*Available since v1.2.0*
+*Available as of v1.2.0*
 
 Qdrant supports a simple form of client authentication using a static API key.
 This can be used to secure your instance.
@@ -246,7 +246,7 @@ service:
   api_key: your_secret_api_key_here
 ```
 
-The API key then needs to be present in all REST or gRPC requests your instance.
+The API key then needs to be present in all REST or gRPC requests to your instance.
 All official Qdrant clients for Python, Go, and Rust support the API key parameter.
 
 <!---
