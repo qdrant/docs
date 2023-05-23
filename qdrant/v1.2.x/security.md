@@ -67,7 +67,7 @@ qdrant_client = QdrantClient(
 TLS for encrypted connections can be enabled on your Qdrant instance to secure
 connections.
 
-<aside role="alert">Connections are unencrypted by default. This allows sniffing and [MitM](https://en.wikipedia.org/wiki/Man-in-the-middle_attack) attacks.</aside>
+<aside role="alert">Connections are unencrypted by default. This allows sniffing and <a href="https://en.wikipedia.org/wiki/Man-in-the-middle_attack">MitM</a> attacks.</aside>
 
 First make sure you have a certificate and private key for TLS, usually in
 `.pem` format. On your local machine you may use
