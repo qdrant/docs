@@ -93,10 +93,7 @@ Among other things, the configuration file allows you to specify the following s
 
 See the comments in the [configuration file itself](https://github.com/qdrant/qdrant/blob/master/config/config.yaml) for details.
 
-<aside role="status">Qdrant has no authentication by default and new instances
-are open to everyone. See
-[Authentication](https://qdrant.tech/documentation/security/#authentication)
-for details on how to secure your instance.</aside>
+<aside role="status">Qdrant has no encryption or authentication by default and new instances are open to everyone. Please read <a href="https://qdrant.tech/documentation/security/">Security</a> carefully for details on how to secure your instance.</aside>
 
 ## Python client
 
