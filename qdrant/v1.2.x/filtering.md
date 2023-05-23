@@ -590,8 +590,8 @@ client.scroll(
 
 This happens because both points are matching the two conditions:
 
-- the "t-rex" matches food=meat on diet[1].food and likes=true on diet[1].likes
-- the "diplodocus" matches food=meat on diet[1].food and likes=true on diet[0].likes
+- the "t-rex" matches food=meat on `diet[1].food` and likes=true on `diet[1].likes`
+- the "diplodocus" matches food=meat on `diet[1].food` and likes=true on `diet[0].likes`
 
 To retrieve only the points which are matching the conditions on an array element basis, that is the point with id 1 in this example, you would need to use a nested object filter.
 
@@ -599,7 +599,7 @@ Nested object filters allow arrays of objects to be queried independently of eac
 
 It is achieved by using the `nested` condition type formed by a payload key to focus on and a filter to apply.
 
-The key is should point to an array of objects and can be used with or without the bracket notation. ("data" vs "data[]").
+The key should point to an array of objects and can be used with or without the bracket notation ("data" or "data[]").
 
 ```http
 POST /collections/{collection_name}/points/scroll
@@ -662,12 +662,12 @@ client.scroll(
 
 The matching logic is modified to be applied at the level of an array element within the payload.
 
-Nested filters work in the same was as if the nested filter was applied to a single element of the array at a time.
+Nested filters work in the same way as if the nested filter was applied to a single element of the array at a time.
 Parent document is considered to match the condition if at least one element of the array matches the nested filter.
 
-** Limitations **
+**Limitations**
 
-The `has id` condition is not supported within the nested object filter. If you need it, place it in an adjacent `must` clause.
+The `has_id` condition is not supported within the nested object filter. If you need it, place it in an adjacent `must` clause.
 
 ```http
 POST /collections/{collection_name}/points/scroll
