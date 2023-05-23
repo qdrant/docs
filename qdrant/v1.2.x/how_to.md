@@ -533,6 +533,52 @@ client.update_collection(
 )
 ```
 
+### Appendable mmap
+
+When the vectors you upload do not all fit in memory, you likely want to use
+appendable mmap support. It is suitable for ingesting a large amount of data,
+essential for the billion scale benchmark.
+
+During collection
+[creation](https://qdrant.tech/documentation/collections/#create-collection),
+appendable mmap's may be enabled on a per-vector basis using the `on_disk`
+parameter. This will store vector data on disk at all times, and doesn't depend
+on the `memmap_threshold` to be reached. For example:
+
+```http
+PUT /collections/{collection_name}
+
+{
+    "vectors": {
+        "image": {
+            "size": 400,
+            "distance": "Dot"
+            "on_disk": true,
+        },
+        "text": {
+            "size": 800,
+            "distance": "Cosine"
+            "on_disk": true,
+        }
+    }
+}
+```
+
+```python
+from qdrant_client import QdrantClient
+from qdrant_client.http import models
+
+client = QdrantClient("localhost", port=6333)
+
+client.recreate_collection(
+    collection_name="{collection_name}",
+    vectors_config={
+        "image": models.VectorParams(size=400, distance=models.Distance.DOT, on_disk=True),
+        "text": models.VectorParams(size=800, distance=models.Distance.COSINE, on_disk=True),
+    }
+)
+```
+
 ### Parallel upload into multiple shards
 
 In Qdrant, each collection is split into shards. Each shard has a separate Write-Ahead-Log (WAL), which is responsible for ordering operations.
