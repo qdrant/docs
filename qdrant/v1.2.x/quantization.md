@@ -156,7 +156,7 @@ client.recreate_collection(
     collection_name="{collection_name}",
     vectors_config=models.VectorParams(size=768, distance=models.Distance.COSINE),
     quantization_config=models.ProductQuantization(
-        scalar=models.ProductQuantizationConfig(
+        product=models.ProductQuantizationConfig(
             compression=models.CompressionRatio.X16,
             always_ram=True,
         ),
