@@ -533,16 +533,22 @@ client.update_collection(
 )
 ```
 
-### Appendable mmap
+### Upload directly to disk
 
-When the vectors you upload do not all fit in memory, you likely want to use
-appendable mmap support. It is suitable for ingesting a large amount of data,
-essential for the billion scale benchmark.
+When the vectors you upload do not all fit in RAM, you likely want to use
+[memmap](https://qdrant.tech/documentation/storage/#configuring-memmap-storage)
+support.
 
 During collection
 [creation](https://qdrant.tech/documentation/collections/#create-collection),
-appendable mmap's may be enabled on a per-vector basis using the `on_disk`
-parameter. This will store vector data on disk at all times.
+memmaps may be enabled on a per-vector basis using the `on_disk` parameter. This
+will store vector data directly on disk at all times. It is suitable for
+ingesting a large amount of data, essential for the billion scale benchmark.
+
+Using `memmap_threshold_kb` is not recommended in this case. It would require
+the internal optimizer to constantly transform in-memory segments into memmap
+segments on disk. This process is slower, and the optimizer can be a bottleneck
+when ingesting a large amount of data.
 
 Read more about this in
 [Configuring Memmap Storage](https://qdrant.tech/documentation/storage/#configuring-memmap-storage).
