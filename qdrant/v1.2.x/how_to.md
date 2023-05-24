@@ -546,9 +546,10 @@ will store vector data directly on disk at all times. It is suitable for
 ingesting a large amount of data, essential for the billion scale benchmark.
 
 Using `memmap_threshold_kb` is not recommended in this case. It would require
-the internal optimizer to constantly transform in-memory segments into memmap
-segments on disk. This process is slower, and the optimizer can be a bottleneck
-when ingesting a large amount of data.
+the [optimizer](https://qdrant.tech/documentation/optimizer/) to constantly
+transform in-memory segments into memmap segments on disk. This process is
+slower, and the optimizer can be a bottleneck when ingesting a large amount of
+data.
 
 Read more about this in
 [Configuring Memmap Storage](https://qdrant.tech/documentation/storage/#configuring-memmap-storage).
