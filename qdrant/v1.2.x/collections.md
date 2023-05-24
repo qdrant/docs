@@ -63,9 +63,10 @@ See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operat
 
 *Available as of v1.2.0*
 
-The `on_disk` parameter can be set in the vector configuration. If true, all
-vectors will be stored on disk at all times. This will enable the use of
-[appendable mmap's](https://qdrant.tech/documentation/storage/#configuring-memmap-storage),
+Vectors all live in RAM for very quick access. The `on_disk` parameter can be
+set in the vector configuration. If true, all vectors will live on disk. This
+will enable the use of
+[mmap's](https://qdrant.tech/documentation/storage/#configuring-memmap-storage),
 which is suitable for ingesting a large amount of data.
 
 ### Create collection from another collection
@@ -161,9 +162,10 @@ search performance on a vector level.
 
 *Available as of v1.2.0*
 
-On a per-vector basis you can set `on_disk` to true to store all vectors on disk
-at all times. This will enable the use of
-[appendable mmap's](https://qdrant.tech/documentation/storage/#configuring-memmap-storage),
+Vectors all live in RAM for very quick access. On a per-vector basis you can set
+`on_disk` to true to store all vectors on disk at all times. This will enable
+the use of
+[mmap's](https://qdrant.tech/documentation/storage/#configuring-memmap-storage),
 which is suitable for ingesting a large amount of data.
 
 ### Delete collection
