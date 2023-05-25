@@ -21,7 +21,7 @@ With that out of the way, let's talk about what are vector databases.
 
 ## What Are Vector Databases?
 
-![dbs](../images/databases.png)
+![dbs](../../images/databases.png)
 
 Vector databases are a type of database designed to store and query high-dimensional vectors efficiently. In traditional [OLTP](https://www.ibm.com/topics/oltp) and [OLAP](https://www.ibm.com/topics/olap) databases (as seen in the image above), data is organized in rows and columns (and these are called **Tables**), and queries are performed based on the values in those columns. However, in certain applications including image recognition, natural language processing, and recommendation systems, data is often represented as vectors in a high-dimensional space, and these vectors, plus an id and a payload, are the elements we store in something called a **Collection** a vector database like Qdrant.
 
@@ -54,7 +54,7 @@ Let's now evaluate, at a high-level, the way Qdrant is architected.
 
 ## High-Level Overview of Qdrant's Architecture
 
-![qdrant](../images/qdrant_overview_high_level.png)
+![qdrant](../../images/qdrant_overview_high_level.png)
 
 The diagram above represents a high-level overview of some of the main components of Qdrant. Here are the terminologies you should get familiar with.
 
