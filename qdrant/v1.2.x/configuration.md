@@ -79,6 +79,12 @@ tls:
   cert_ttl: 3600
 ```
 
+To run Qdrant locally with a different HTTP port you could use:
+
+```bash
+QDRANT__SERVICE__HTTP_PORT=1234 ./qdrant
+```
+
 ## Configuration file example
 
 ```yaml
