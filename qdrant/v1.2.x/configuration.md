@@ -28,7 +28,7 @@ Configurations are loaded in the following order:
 
 1. Embedded base configuration ([source](https://github.com/qdrant/qdrant/blob/master/config/config.yaml))
 2. File `config/config.yaml`
-3. File `config/{RUN_MODE}.yaml`, such as `config/production.yaml`
+3. File `config/{RUN_MODE}.yaml` (such as `config/production.yaml`)
 4. File `config/local.yaml`
 5. Config provided with `--config-path PATH` (if set)
 6. Environment variables
@@ -44,7 +44,40 @@ manually.
 If file 2 or 3 are not found, a warning is shown on startup.
 If file 5 is provided but not found, an error is shown on startup.
 
-Other supported configuration file extensions include: `.toml`, `.json`, `.ini`.
+Other supported configuration file formats and extensions include: `.toml`, `.json`, `.ini`.
+
+## Configuration with environment variables
+
+It is possible to set configuration properties using environment variables.
+Environment variables are always the most significant and cannot be overwritten
+(see [ordering](#configuration-priority-and-order)).
+
+All environment variables are prefixed with `QDRANT_` and are separated with
+`__`.
+
+These variables:
+
+```bash
+QDRANT__DEBUG=1
+QDRANT__LOG_LEVEL=INFO
+QDRANT__SERVICE__HTTP_PORT=6333
+QDRANT__SERVICE__ENABLE_TLS=1
+QDRANT__TLS__CERT=./tls/cert.pem
+QDRANT__TLS__CERT_TTL=3600
+```
+
+result in this effective configuration:
+
+```yaml
+debug: true
+log_level: INFO
+service:
+  http_port: 6333
+  enable_tls: true
+tls:
+  cert: ./tls/cert.pem
+  cert_ttl: 3600
+```
 
 ## Configuration file example
 
