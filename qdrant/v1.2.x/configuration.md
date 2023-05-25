@@ -3,13 +3,17 @@ title: Configuration
 weight: 160
 ---
 
-To change or correct Qdrant's behavior, default collection settings, and network interface parameters, you can use the configuration file.
+To change or correct Qdrant's behavior, default collection settings, and network interface parameters, you can use configuration files.
 
-Default configuration file is located in [config/config.yaml](https://github.com/qdrant/qdrant/blob/master/config/config.yaml).
+The default configuration file is located at [config/config.yaml](https://github.com/qdrant/qdrant/blob/master/config/config.yaml).
 
-In the production environment, you can override any value of this file by providing new values in `/qdrant/config/production.yaml` inside the docker.
+To change the default configuration add a new configuration file and provide the
+path with `--config-path config/my-config.yaml`. If running in production mode,
+you could also choose to overwrite `config/production.yaml`.
+See [ordering](#order-and-priority) for details on how the configuration is
+loaded.
 
-Here is an example of how you can pass custom configuration inside the docker container:
+Here is an example of how you can pass a custom configuration inside the Docker container by overwriting `config/production.yaml`:
 
 ```bash
 docker run -p 6333:6333 \
@@ -17,7 +21,7 @@ docker run -p 6333:6333 \
     qdrant/qdrant
 ```
 
-## Configuration priority and order
+## Order and priority
 
 *Effective as of v1.2.1*
 
@@ -31,7 +35,7 @@ Configurations are loaded in the following order:
 3. File `config/{RUN_MODE}.yaml` (such as `config/production.yaml`)
 4. File `config/local.yaml`
 5. Config provided with `--config-path PATH` (if set)
-6. Environment variables
+6. [Environment variables](#environment-variables)
 
 This list is from least to most significant. Properties in later configurations
 will overwrite those loaded before it. For example, a property set with
@@ -46,11 +50,11 @@ If file 5 is provided but not found, an error is shown on startup.
 
 Other supported configuration file formats and extensions include: `.toml`, `.json`, `.ini`.
 
-## Configuration with environment variables
+## Environment variables
 
 It is possible to set configuration properties using environment variables.
 Environment variables are always the most significant and cannot be overwritten
-(see [ordering](#configuration-priority-and-order)).
+(see [ordering](#order-and-priority)).
 
 All environment variables are prefixed with `QDRANT_` and are separated with
 `__`.
