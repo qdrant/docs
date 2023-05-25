@@ -17,10 +17,12 @@ docker run -p 6333:6333 \
     qdrant/qdrant
 ```
 
-## Configuration order
+## Configuration priority and order
 
-Multiple configurations may be loaded. All of them are merged into a single
-effective configuration that Qdrant uses.
+*Effective as of v1.2.1*
+
+Multiple configurations may be loaded on startup. All of them are merged into a
+single effective configuration that is used by Qdrant.
 
 Configurations are loaded in the following order:
 
@@ -31,11 +33,13 @@ Configurations are loaded in the following order:
 5. Config provided with `--config-path PATH` (if set)
 6. Environment variables
 
-The last configurations are the most significant. Properties in later
-configurations will overwrite those loaded before it.
+This list is from least to most significant. Properties in later configurations
+will overwrite those loaded before it. For example, a property set with
+`--config-path` will overwrite those in other files.
 
-Most of these files are included by default in the Docker container, but are
-likely absent on your local machine if you run the `qdrant` binary manually.
+Most of these files are included by default in the Docker container. But it is
+likely that they are absent on your local machine if you run the `qdrant` binary
+manually.
 
 If file 2 or 3 are not found, a warning is shown on startup.
 If file 5 is provided but not found, an error is shown on startup.
