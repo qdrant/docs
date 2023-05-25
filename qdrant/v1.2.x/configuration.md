@@ -17,6 +17,31 @@ docker run -p 6333:6333 \
     qdrant/qdrant
 ```
 
+## Configuration order
+
+Multiple configurations may be loaded. All of them are merged into a single
+effective configuration that Qdrant uses.
+
+Configurations are loaded in the following order:
+
+1. Embedded base configuration ([source](https://github.com/qdrant/qdrant/blob/master/config/config.yaml))
+2. File `config/config.yaml`
+3. File `config/{RUN_MODE}.yaml`, such as `config/production.yaml`
+4. File `config/local.yaml`
+5. Config provided with `--config-path PATH` (if set)
+6. Environment variables
+
+The last configurations are the most significant. Properties in later
+configurations will overwrite those loaded before it.
+
+Most of these files are included by default in the Docker container, but are
+likely absent on your local machine if you run the `qdrant` binary manually.
+
+If file 2 or 3 are not found, a warning is shown on startup.
+If file 5 is provided but not found, an error is shown on startup.
+
+Other supported configuration file extensions include: `.toml`, `.json`, `.ini`.
+
 ## Configuration file example
 
 ```yaml
