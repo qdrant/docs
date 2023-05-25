@@ -86,17 +86,19 @@ storage:
     # If not set, will be automatically selected considering the number of available CPUs.
     max_segment_size_kb: null
 
-    # Maximum size (in kilobytes) of vectors to store in-memory per segment.
+    # Maximum size (in KiloBytes) of vectors to store in-memory per segment.
     # Segments larger than this threshold will be stored as read-only memmaped file.
-    # Memmap storage is disabled by default, to enable it, set this threshold to a reasonable value.
-    # To explicitly disable mmap optimization, set to `0`.
+    # To enable memmap storage, lower the threshold
     # Note: 1Kb = 1 vector of size 256
+    # To explicitly disable mmap optimization, set to `0`.
+    # If not set, will be disabled by default.
     memmap_threshold_kb: null
 
-    # Maximum size (in kilobytes) of vectors allowed for plain index, exceeding this threshold will enable vector indexing
-    # Default value is 20,000, based on <https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md>.
+    # Maximum size (in KiloBytes) of vectors allowed for plain index.
+    # Default value based on https://github.com/google-research/google-research/blob/master/scann/docs/algorithms.md
+    # Note: 1Kb = 1 vector of size 256
     # To explicitly disable vector indexing, set to `0`.
-    # Note: 1kB = 1 vector of size 256.
+    # If not set, the default value will be used.
     indexing_threshold_kb: 20000
 
     # Interval between forced flushes.
@@ -153,7 +155,7 @@ service:
   # Default: true
   enable_cors: true
 
-  # Enable HTTPS for the REST and gRPC API
+  # Use HTTPS for the REST API
   enable_tls: false
 
   # Check user HTTPS client certificate against CA file specified in tls config
@@ -216,8 +218,9 @@ tls:
   # Required if cluster.p2p.enable_tls is true.
   ca_cert: ./tls/cacert.pem
 
-  # TTL in seconds to reload certificate from disk, useful for certificate rotations.
-  # Only works for HTTPS endpoints. Does not support gRPC (and intra-cluster communication).
+  # TTL, in seconds, to re-load certificate from disk. Useful for certificate rotations,
+  # Only works for HTTPS endpoints, gRPC endpoints (including intra-cluster communication)
+  # doesn't support certificate re-load
   cert_ttl: 3600
 ```
 
