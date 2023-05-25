@@ -7,13 +7,22 @@ To change or correct Qdrant's behavior, default collection settings, and network
 
 The default configuration file is located at [config/config.yaml](https://github.com/qdrant/qdrant/blob/master/config/config.yaml).
 
-To change the default configuration add a new configuration file and provide the
-path with `--config-path config/my-config.yaml`. If running in production mode,
-you could also choose to overwrite `config/production.yaml`.
-See [ordering](#order-and-priority) for details on how the configuration is
+To change the default configuration you can add a new configuration file and
+specify the path with `--config-path path/to/custom_config.yaml`. If running in
+production mode, you could also choose to overwrite `config/production.yaml`.
+See [ordering](#order-and-priority) for details on how configurations are
 loaded.
 
-Here is an example of how you can pass a custom configuration inside the Docker container by overwriting `config/production.yaml`:
+To run Qdrant in Docker using a custom configuration file use:
+
+```bash
+docker run -p 6333:6333 \
+    -v $(pwd)/path/to/custom_config.yaml:/qdrant/config/custom_config.yaml \
+    qdrant/qdrant \
+    ./qdrant --config-path config/custom_config.yaml
+```
+
+Or overwrite the production configuration:
 
 ```bash
 docker run -p 6333:6333 \
@@ -28,7 +37,7 @@ docker run -p 6333:6333 \
 Multiple configurations may be loaded on startup. All of them are merged into a
 single effective configuration that is used by Qdrant.
 
-Configurations are loaded in the following order:
+Configurations are loaded in the following order, if present:
 
 1. Embedded base configuration ([source](https://github.com/qdrant/qdrant/blob/master/config/config.yaml))
 2. File `config/config.yaml`
