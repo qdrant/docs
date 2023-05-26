@@ -250,7 +250,7 @@ In this case, it means that points with the same id will be overwritten when re-
 Idempotence property is useful if you use, for example, a message queue that doesn't provide an exactly-ones guarantee.
 Even with such a system, Qdrant ensures data consistency.
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 If the collection was created with multiple vectors, each vector data should be provided using the vectors name:
 
@@ -555,7 +555,7 @@ Python client:
 
 ## Counting points
 
-*Available since v0.8.4*
+*Available as of v0.8.4*
 
 Sometimes it can be useful to know how many points fit the filter conditions without doing a real search.
 

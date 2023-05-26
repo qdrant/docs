@@ -3,7 +3,7 @@ title: Snapshots
 weight: 51
 ---
 
-*Available since v0.8.4*
+*Available as of v0.8.4*
 
 Snapshots are performed on a per collection basis and consist in a `tar` archive file containing the necessary data to restore the collection at the time of the snapshot.
 
@@ -85,7 +85,7 @@ If you wish instead to overwrite an existing collection, use the `--force_snapsh
 
 ## Snapshots for the whole storage
 
-*Available since v0.8.5*
+*Available as of v0.8.5*
 
 Sometimes it might be handy to create snapshot not just for a single collection, but for the whole storage, including collection aliases.
 Qdrant provides a dedicated API for that as well. It is similar to collection-level snapshots, but does not require `collecton_name`:

@@ -62,7 +62,7 @@ See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operat
 
 ### Create collection from another collection
 
-*Available since v1.0.0*
+*Available as of v1.0.0*
 
 It is possible to initialize a collection from another existing collection.
 
@@ -102,7 +102,7 @@ client.recreate_collection(
 
 ### Collection with multiple vectors
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 It is possible to have multiple vectors per record.
 This feature allows for multiple vector storages per collection. 

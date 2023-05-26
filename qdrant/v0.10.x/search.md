@@ -133,7 +133,7 @@ Example result of this API would be
 
 The `result` contains ordered by `score` list of found point ids.
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 If the collection was created with multiple vectors, the name of the vector to use for searching should be provided:
 
@@ -229,7 +229,7 @@ client.search(
 
 ## Batch search API
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 The batch search API enables to perform multiple search requests via a single request.
 
@@ -413,7 +413,7 @@ Example result of this API would be
 }
 ```
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 If the collection was created with multiple vectors, the name of the vector should be specified in the recommendation request:
 
@@ -442,7 +442,7 @@ Parameter `using` specifies which stored vectors to use for the recommendation.
 
 ## Batch recommendation API
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 Similar to the batch search API in terms of usage and advantages, it enables the batching of recommendation requests.
 
@@ -546,7 +546,7 @@ The result of this API contains one array per recommendation requests.
 
 ## Pagination
 
-*Available since v0.8.3*
+*Available as of v0.8.3*
 
 Search and recommendation APIs allow to skip first results of the search and return only the result starting from some specified offset:
 

@@ -23,7 +23,7 @@ The level of this tradeoff depends on the quantization method and its parameters
 
 ## Scalar Quantization
 
-*Available in Qdrant since v1.1.0*
+*Available as of v1.1.0*
 
 Scalar quantization, in the context of vector search engines, is a compression technique that compresses vectors by reducing the number of bits used to represent each vector component.
 
@@ -56,7 +56,7 @@ You can configure quantization for a collection by specifying the quantization p
 Quantization will be automatically applied to all vectors during the indexation process.
 Quantized vectors are stored alongside the original vectors in the collection, so you will still have access to the original vectors if you need them.
 
-*Available since v1.1.1*
+*Available as of v1.1.1*
 
 The `quantization_config` can also be set on a per vector basis by specifying it in a named vector.
 
