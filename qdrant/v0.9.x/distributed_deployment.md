@@ -3,7 +3,7 @@ title: Distributed deployment
 weight: 50
 ---
 
-Since version v0.8.0 Qdrant supports an experimental mode of distributed deployment.
+As of v0.8.0 Qdrant supports an experimental mode of distributed deployment.
 In this mode, multiple Qdrant services communicate with each other to distribute the data across the peers to extend the storage capabilities and increase stability.
 
 To enable distributed deployment - enable the cluster mode in the [configuration](../configuration) or using the ENV variable: `QDRANT__CLUSTER__ENABLED=true`.
@@ -159,7 +159,7 @@ For example, if you have 3 nodes, 6 shards could be a good option.
 
 If you want to extend your cluster with new nodes or some nodes become slower than the others, it might be helpful to re-balance the shard distribution in the cluster.
 
-*Since version v0.9.0*, Qdrant allows moving shards between nodes in the cluster and removing nodes from the cluster.
+*As of v0.9.0:* Qdrant allows moving shards between nodes in the cluster and removing nodes from the cluster.
 
 This functionality unlocks the ability to dynamically scale the cluster size without downtime.
 

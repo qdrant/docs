@@ -60,7 +60,7 @@ See [schema definitions](https://qdrant.github.io/qdrant/redoc/index.html#operat
 
 ### Collection with multiple vectors
 
-*Available since v0.10.0*
+*Available as of v0.10.0*
 
 It is possible to have multiple vectors per record.
 This feature allows for multiple vector storages per collection. 

@@ -54,7 +54,7 @@ You should not create an index for Boolean fields and fields with only a few pos
 
 ### Full-text index
 
-*Available since Qdrant v0.10.0*
+*Available as of v0.10.0*
 
 Qdrant supports full-text search for string payload.
 Full-text index allows you to filter points by the presence of a word or a phrase in the payload field.
