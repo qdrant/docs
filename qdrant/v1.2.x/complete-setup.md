@@ -21,10 +21,10 @@ Vector databases shine in many applications like [semantic search](https://en.wi
 
 ## 1. Learning Outcomes
 
-By the end of this tutorial, you will be able
+By the end of this tutorial, you will be able to
 - Create, update, and query collections of vectors using Qdrant.
 - Conduct semantic search based on new data.
-- Understand the mechanics behind the recommendation API of Qdrant.
+- Develop an intuition for the mechanics behind the recommendation API of Qdrant.
 - Understand, and get creative with, the kind of data you can add to your payload.
 
 ## 2. Installation
