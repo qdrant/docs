@@ -7,8 +7,8 @@ To change or correct Qdrant's behavior, default collection settings, and network
 
 The default configuration file is located at [config/config.yaml](https://github.com/qdrant/qdrant/blob/master/config/config.yaml).
 
-To change the default configuration you can add a new configuration file and
-specify the path with `--config-path path/to/custom_config.yaml`. If running in
+To change the default configuration, add a new configuration file and specify
+the path with `--config-path path/to/custom_config.yaml`. If running in
 production mode, you could also choose to overwrite `config/production.yaml`.
 See [ordering](#order-and-priority) for details on how configurations are
 loaded.
