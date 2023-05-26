@@ -13,21 +13,21 @@ production mode, you could also choose to overwrite `config/production.yaml`.
 See [ordering](#order-and-priority) for details on how configurations are
 loaded.
 
-To run Qdrant in Docker using a custom configuration file use:
+To use Qdrant in Docker and overwrite the production configuration use:
+
+```bash
+docker run -p 6333:6333 \
+    -v $(pwd)/path/to/custom_config.yaml:/qdrant/config/production.yaml \
+    qdrant/qdrant
+```
+
+Or use your own configuration file and specify it:
 
 ```bash
 docker run -p 6333:6333 \
     -v $(pwd)/path/to/custom_config.yaml:/qdrant/config/custom_config.yaml \
     qdrant/qdrant \
     ./qdrant --config-path config/custom_config.yaml
-```
-
-Or overwrite the production configuration:
-
-```bash
-docker run -p 6333:6333 \
-    -v $(pwd)/path/to/custom_config.yaml:/qdrant/config/production.yaml \
-    qdrant/qdrant
 ```
 
 ## Order and priority
@@ -72,7 +72,7 @@ It is possible to set configuration properties using environment variables.
 Environment variables are always the most significant and cannot be overwritten
 (see [ordering](#order-and-priority)).
 
-All environment variables are prefixed with `QDRANT_` and are separated with
+All environment variables are prefixed with `QDRANT__` and are separated with
 `__`.
 
 These variables:
@@ -86,7 +86,7 @@ QDRANT__TLS__CERT=./tls/cert.pem
 QDRANT__TLS__CERT_TTL=3600
 ```
 
-result in this effective configuration:
+result in this configuration:
 
 ```yaml
 debug: true
