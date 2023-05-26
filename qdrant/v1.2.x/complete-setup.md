@@ -5,7 +5,7 @@ weight: 30
 
 # Getting Started with Qdrant
 
-Vector databases shine in many applications like [semantic search](https://en.wikipedia.org/wiki/Semantic_search) and [recommendation](https://en.wikipedia.org/wiki/Recommender_system), and in this tutorial, we'll learn about how to get started building these systems with one of the most popular and fastest growing vector databases in the market, [Qdrant](qdrant.tech).
+Vector databases shine in many applications like [semantic search](https://en.wikipedia.org/wiki/Semantic_search) and [recommendation systems](https://en.wikipedia.org/wiki/Recommender_system), and in this tutorial, we'll learn about how to get started building these systems with one of the most popular and fastest growing vector databases in the market, [Qdrant](qdrant.tech).
 
 ## Table of Contents
 
