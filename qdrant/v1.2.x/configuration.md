@@ -59,6 +59,13 @@ If file 5 is provided but not found, an error is shown on startup.
 
 Other supported configuration file formats and extensions include: `.toml`, `.json`, `.ini`.
 
+To see the effective (merged) configuration you can query
+[telemetry](https://qdrant.tech/documentation/telemetry/):
+
+```bash
+curl 'http://localhost:6333/telemetry?details_level=6&anonymize=false'
+```
+
 ## Environment variables
 
 It is possible to set configuration properties using environment variables.
