@@ -1,3 +1,7 @@
+**THIS REPO IS DEPRECATED**
+
+Please edit Qdrant documentation here: https://github.com/qdrant/landing_page/tree/master/qdrant-landing/content/documentation
+
 ## How to use documentation markup features
 
 ![Lang switching tabs](images/lang-tabs.png)
